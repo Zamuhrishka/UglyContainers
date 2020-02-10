@@ -172,3 +172,15 @@ bool squeue_denqueue(squeue_t *queue, void *data)
 
 	return true;
 }
+
+
+
+bool squeue_peek(squeue_t *queue, void *data)
+{
+
+}
+
+bool squeue_flush(squeue_t *queue)
+{
+
+}
