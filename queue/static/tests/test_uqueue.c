@@ -467,18 +467,18 @@ void uqueue_test(void)
 {
   const UnitTest tests[] =
   {
-		  unit_test_setup_teardown(preparation_data, uqueue_uint8_main_test, destroy_data),
-		  unit_test_setup_teardown(preparation_data, uqueue_uint8_unique_test, destroy_data),
-		  unit_test_setup_teardown(preparation_data, uqueue_uint16_main_test, destroy_data),
-		  unit_test_setup_teardown(preparation_data, uqueue_uint16_unique_test, destroy_data),
-		  unit_test_setup_teardown(preparation_data, uqueue_uint32_main_test, destroy_data),
-		  unit_test_setup_teardown(preparation_data, uqueue_uint32_unique_test, destroy_data),
-		  unit_test_setup_teardown(preparation_data, uqueue_struct_main_test, destroy_data),
-		  unit_test_setup_teardown(preparation_data, uqueue_struct_unique_test, destroy_data),
-		  unit_test_setup_teardown(preparation_data, uqueue_empty_denqueue_test, destroy_data),
-		  unit_test_setup_teardown(preparation_data, uqueue_full_enqueue_test, destroy_data),
-		  unit_test_setup_teardown(preparation_data, uqueue_peek_test, destroy_data),
-		  unit_test_setup_teardown(preparation_data, uqueue_flush_test, destroy_data),
+		  unit_test_setup_teardown(uqueue_uint8_main_test, preparation_data, destroy_data),
+		  unit_test_setup_teardown(uqueue_uint8_unique_test, preparation_data, destroy_data),
+		  unit_test_setup_teardown(uqueue_uint16_main_test, preparation_data, destroy_data),
+		  unit_test_setup_teardown(uqueue_uint16_unique_test, preparation_data, destroy_data),
+		  unit_test_setup_teardown(uqueue_uint32_main_test, preparation_data, destroy_data),
+		  unit_test_setup_teardown(uqueue_uint32_unique_test, preparation_data, destroy_data),
+		  unit_test_setup_teardown(uqueue_struct_main_test, preparation_data, destroy_data),
+		  unit_test_setup_teardown(uqueue_struct_unique_test, preparation_data, destroy_data),
+		  unit_test_setup_teardown(uqueue_empty_denqueue_test, preparation_data, destroy_data),
+		  unit_test_setup_teardown(uqueue_full_enqueue_test, preparation_data, destroy_data),
+		  unit_test_setup_teardown(uqueue_peek_test, preparation_data, destroy_data),
+		  unit_test_setup_teardown(uqueue_flush_test, preparation_data, destroy_data),
   };
 
   run_tests(tests);

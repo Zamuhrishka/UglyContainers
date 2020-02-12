@@ -262,14 +262,14 @@ void queue_test(void)
 {
   const UnitTest tests[] =
   {
-		  unit_test_setup_teardown(preparation_data, queue_struct_main_test, destroy_data),
-		  unit_test_setup_teardown(preparation_data, queue_uint8_main_test, destroy_data),
-		  unit_test_setup_teardown(preparation_data, queue_uint16_main_test, destroy_data),
-		  unit_test_setup_teardown(preparation_data, queue_uint32_main_test, destroy_data),
-		  unit_test_setup_teardown(preparation_data, queue_empty_denqueue_test, destroy_data),
-		  unit_test_setup_teardown(preparation_data, queue_full_enqueue_test, destroy_data),
-		  unit_test_setup_teardown(preparation_data, queue_peek_test, destroy_data),
-		  unit_test_setup_teardown(preparation_data, queue_flush_test, destroy_data),
+		  unit_test_setup_teardown(queue_struct_main_test, preparation_data, destroy_data),
+		  unit_test_setup_teardown(queue_uint8_main_test, preparation_data, destroy_data),
+		  unit_test_setup_teardown(queue_uint16_main_test, preparation_data, destroy_data),
+		  unit_test_setup_teardown(queue_uint32_main_test, preparation_data, destroy_data),
+		  unit_test_setup_teardown(queue_empty_denqueue_test, preparation_data, destroy_data),
+		  unit_test_setup_teardown(queue_full_enqueue_test, preparation_data, destroy_data),
+		  unit_test_setup_teardown(queue_peek_test, preparation_data, destroy_data),
+		  unit_test_setup_teardown(queue_flush_test, preparation_data, destroy_data),
   };
 
   run_tests(tests);
