@@ -217,3 +217,48 @@ bool queue_denqueue(queue_t *queue, void *data)
 
 	return true;
 }
+
+/**
+* This function used to get data from queue without deleting.
+*
+* Public function defined in queue.h
+*/
+bool queue_peek(queue_t *queue, void *data)
+{
+	uint8_t* pData = (uint8_t*)data;
+
+	if(queue == NULL || data == NULL) {
+		return false;
+	}
+
+	if(mem_free_fn == NULL || mem_alloc_fn == NULL) {
+		return false;
+	}
+
+	if(queue_is_empty(queue)) {
+		return false;
+	}
+
+	for(size_t i = 0; i < queue->esize; i++)
+	{
+		pData[i] = queue->data[i];
+	}
+
+	return true;
+}
+
+/**
+* This function used to reset queue.
+*
+* Public function defined in queue.h
+*/
+void queue_flush(queue_t *queue)
+{
+	queue->write = 0;
+	queue->read = 0;
+	queue->size = 0;
+
+	for(size_t i = 0; i < queue->capacity; i++) {
+		queue->data[i] = 0;
+	}
+}

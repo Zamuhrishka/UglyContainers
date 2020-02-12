@@ -125,3 +125,22 @@ bool queue_enqueue(queue_t *queue, const void *data);
 * \return 	true/false.
 */
 bool queue_denqueue(queue_t *queue, void *data);
+
+/**
+* \brief 	This function used to get data from queue without deleting.
+*
+* \param[in] queue: pointer to queue.
+* \param[out] data: pointer to retrieve data from queue.
+*
+* \return 	true/false.
+*/
+bool queue_peek(queue_t *queue, void *data);
+
+/**
+* \brief 	This function used to reset queue.
+*
+* \param[in] queue: pointer to queue.
+*
+* \return 	true/false.
+*/
+void queue_flush(queue_t *queue);
