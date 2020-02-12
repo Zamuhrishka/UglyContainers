@@ -173,14 +173,43 @@ bool squeue_denqueue(squeue_t *queue, void *data)
 	return true;
 }
 
-
-
+/**
+* This function used to get data from queue without deleting.
+*
+* Public function defined in squeue.h
+*/
 bool squeue_peek(squeue_t *queue, void *data)
 {
+	uint8_t* pData = (uint8_t*)data;
 
+	if(queue == NULL || data == NULL) {
+		return false;
+	}
+
+	if(squeue_is_empty(queue)) {
+		return false;
+	}
+
+	for(size_t i = 0; i < queue->esize; i++)
+	{
+		pData[i] = queue->data[i];
+	}
+
+	return true;
 }
 
-bool squeue_flush(squeue_t *queue)
+/**
+* This function used to reset queue.
+*
+* Public function defined in squeue.h
+*/
+void squeue_flush(squeue_t *queue)
 {
+	queue->write = 0;
+	queue->read = 0;
+	queue->capacity = 0;
 
+	for(size_t i = 0; i < queue->capacity; i++) {
+		queue->data[i] = 0;
+	}
 }

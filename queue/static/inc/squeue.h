@@ -91,3 +91,22 @@ bool squeue_enqueue(squeue_t *queue, const void *data);
 * \return 	true/false.
 */
 bool squeue_denqueue(squeue_t *queue, void *data);
+
+/**
+* \brief 	This function used to get data from queue without deleting.
+*
+* \param[in] queue: pointer to queue.
+* \param[out] data: pointer to retrieve data from queue.
+*
+* \return 	true/false.
+*/
+bool squeue_peek(squeue_t *queue, void *data);
+
+/**
+* \brief 	This function used to reset queue.
+*
+* \param[in] queue: pointer to queue.
+*
+* \return 	true/false.
+*/
+void squeue_flush(squeue_t *queue);

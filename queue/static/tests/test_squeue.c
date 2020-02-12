@@ -188,6 +188,51 @@ static void squeue_full_enqueue_test(void **state)
 	assert_false(squeue_enqueue(&queue, &data[0]));
 }
 
+static void squeue_peek_test(void **state)
+{
+	squeue_t queue;
+	uint8_t tmpData = 0;
+	uint8_t data[QUEUE_SIZE];
+
+	for(size_t i = 0; i < QUEUE_SIZE; i++) {
+		data[i] = i;
+	}
+	assert_true(squeue_init(&queue, sizeof(uint8_t)));
+
+	for(size_t i = 0; i < QUEUE_SIZE; i++) {
+		assert_true(squeue_enqueue(&queue, &data[i]));
+	}
+
+	assert_true(squeue_peek(&queue, &tmpData));
+	assert_int_equal(squeue_size(&queue), QUEUE_SIZE);
+
+	assert_true(squeue_peek(&queue, &tmpData));
+	assert_int_equal(squeue_size(&queue), QUEUE_SIZE);
+}
+
+static void squeue_flush_test(void **state)
+{
+	squeue_t queue;
+	uint8_t tmpData = 0;
+	uint8_t data[QUEUE_SIZE];
+
+	for(size_t i = 0; i < QUEUE_SIZE; i++) {
+		data[i] = i;
+	}
+	assert_true(squeue_init(&queue, sizeof(uint8_t)));
+
+	for(size_t i = 0; i < QUEUE_SIZE; i++) {
+		assert_true(squeue_enqueue(&queue, &data[i]));
+	}
+
+	assert_int_equal(squeue_size(&queue), QUEUE_SIZE);
+
+	squeue_flush(&queue);
+	assert_int_equal(squeue_size(&queue), 0);
+
+	assert_false(squeue_denqueue(&queue, &tmpData));
+}
+
 void squeue_test(void)
 {
   const UnitTest tests[] = {
@@ -197,6 +242,8 @@ void squeue_test(void)
 		  unit_test(squeue_uint32_main_test),
 		  unit_test(squeue_empty_denqueue_test),
 		  unit_test(squeue_full_enqueue_test),
+		  unit_test(squeue_peek_test),
+		  unit_test(squeue_flush_test),
   };
 
   run_tests(tests);
