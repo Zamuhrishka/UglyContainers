@@ -43,11 +43,60 @@
 #include <stddef.h>
 //_____ C O N F I G S  _______________________________________________________
 //_____ D E F I N I T I O N __________________________________________________
+/**
+ * \brief Static queue structure
+ */
+typedef struct sQueue_t
+{
+	uint8_t data[QUEUE_SIZE_IN_BYTES];															///< array of data
+    size_t capacity;																			///< size of queue
+    size_t write;																				///< pointer to the write position
+    size_t read;																				///< pointer to the read position
+    size_t esize;																				///< size in bytes one element
+}	squeue_t;
 //_____ M A C R O S __________________________________________________________
 //_____ V A R I A B L E   D E F I N I T I O N  _______________________________
 //_____ I N L I N E   F U N C T I O N   D E F I N I T I O N   ________________
 //_____ S T A T I C  F U N C T I O N   D E F I N I T I O N   _________________
+static squeue_t queuePool[MAX_QUEUES_IN_POOL];
+static size_t numberOfQueues = 0;
 //_____ F U N C T I O N   D E F I N I T I O N   ______________________________
+/**
+* This function used to create new queue.
+*
+* Public function defined in queue.h
+*/
+squeue_t* squeue_create(size_t capacity, size_t esize)
+{
+	squeue_t *queue = NULL;
+
+	if(numberOfQueues < MAX_QUEUES_IN_POOL)
+	{
+		queue = &queuePool[numberOfQueues++];
+
+		queue->capacity = 0;
+		queue->write = 0;
+		queue->read = 0;
+		queue->esize = esize;
+
+		for(size_t i = 0; i < QUEUE_SIZE; i++) {
+			queue->data[i] = 0;
+		}
+	}
+
+	return queue;
+}
+
+/**
+* This function used to delete queue.
+*
+* Public function defined in queue.h
+*/
+void squeue_delete(squeue_t **queue)
+{
+
+}
+
 /**
 * This function used to initialization queue.
 *

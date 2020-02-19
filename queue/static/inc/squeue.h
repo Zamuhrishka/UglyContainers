@@ -11,20 +11,12 @@
 #include <stdbool.h>
 #include <stddef.h>
 //_____ C O N F I G S__________________________________________________________________________
-#define QUEUE_SIZE                 						32U
+#define MAX_QUEUES_IN_POOL                              32U
+#define QUEUE_SIZE_IN_BYTES        						32U
 //_____ M A C R O S ___________________________________________________________________________
 //_____ D E F I N I T I O N ___________________________________________________________________
-/**
- * \brief Static queue structure
- */
-typedef struct sQueue_t
-{
-	uint8_t data[QUEUE_SIZE];																	///< array of data
-    size_t capacity;																			///< size of queue
-    size_t write;																				///< pointer to the write position
-    size_t read;																				///< pointer to the read position
-    size_t esize;																				///< size in bytes one element
-}	squeue_t;
+struct sQueue_t;
+typedef struct sQueue_t squeue_t;
 //_____ V A R I A B L E   D E C L A R A T I O N S _____________________________________________
 //_____ F U N C T I O N   D E C L A R A T I O N S _____________________________________________
 /**
