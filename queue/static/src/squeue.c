@@ -46,7 +46,7 @@
 //_____ M A C R O S __________________________________________________________
 //_____ V A R I A B L E   D E F I N I T I O N  _______________________________
 //_____ I N L I N E   F U N C T I O N   D E F I N I T I O N   ________________
-//_____ S T A T I �  F U N C T I O N   D E F I N I T I O N   _________________
+//_____ S T A T I C  F U N C T I O N   D E F I N I T I O N   _________________
 //_____ F U N C T I O N   D E F I N I T I O N   ______________________________
 /**
 * This function used to initialization queue.

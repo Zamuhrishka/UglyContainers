@@ -34,7 +34,7 @@ static void* (*mem_alloc_fn)(size_t sizemem) = NULL;
 //!Pointer to the memory free function
 static void (*mem_free_fn) (void *ptrmem) = NULL;
 //_____ I N L I N E   F U N C T I O N   D E F I N I T I O N   _________________________________
-//_____ S T A T I Ñ  F U N C T I O N   D E F I N I T I O N   __________________________________
+//_____ S T A T I C  F U N C T I O N   D E F I N I T I O N   __________________________________
 //_____ F U N C T I O N   D E F I N I T I O N   _______________________________________________
 /**
 * This function used to register function for alloc memory.
