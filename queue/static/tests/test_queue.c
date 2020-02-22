@@ -19,7 +19,7 @@
 //_____ V A R I A B L E   D E F I N I T I O N  ________________________________________________
 #define QUEUE_SIZE	32
 
-queue_t* queue = NULL;
+static queue_t* queue = NULL;
 
 typedef struct
 {
@@ -40,6 +40,7 @@ static void destroy_data(void **state)
 
 static void queue_uint8_main_test(void **state)
 {
+	size_t size = 0;
 	uint8_t outputData[QUEUE_SIZE] = {0};
 	uint8_t inputData[QUEUE_SIZE] = {0};
 
@@ -47,30 +48,33 @@ static void queue_uint8_main_test(void **state)
 		inputData[i] = i;
 	}
 
-	uqueue_reg_mem_alloc_cb(&malloc);
-	uqueue_reg_mem_free_cb(&free);
+	queue_reg_mem_alloc_cb(&malloc);
+	queue_reg_mem_free_cb(&free);
 
-	queue = queue_create(sizeof(uint8_t) * QUEUE_SIZE, sizeof(uint8_t));
+	queue = queue_create(QUEUE_SIZE, sizeof(uint8_t));
 	assert_int_not_equal(queue, NULL);
 
-	for(size_t i = 0; i < QUEUE_SIZE; i++)
+	size = queue_free_space(queue);
+
+	for(size_t i = 0; i < size; i++)
 	{
 		assert_true(queue_enqueue(queue, &inputData[i]));
 	}
 
-	assert_int_equal(queue_size(queue), QUEUE_SIZE);
+	assert_int_equal(queue_size(queue), size);
 
-	for(size_t i = 0; i < QUEUE_SIZE; i++)
+	for(size_t i = 0; i < size; i++)
 	{
 		assert_true(queue_denqueue(queue, &outputData[i]));
 	}
 
 	assert_int_equal(queue_size(queue), 0);
-	assert_memory_equal(inputData, outputData, QUEUE_SIZE);
+	assert_memory_equal(inputData, outputData, size);
 }
 
 static void queue_uint16_main_test(void **state)
 {
+	size_t size = 0;
 	uint16_t outputData[QUEUE_SIZE] = {0};
 	uint16_t inputData[QUEUE_SIZE] = {0};
 
@@ -81,27 +85,30 @@ static void queue_uint16_main_test(void **state)
 	queue_reg_mem_alloc_cb(&malloc);
 	queue_reg_mem_free_cb(&free);
 
-	queue = queue_create(sizeof(uint16_t) * QUEUE_SIZE, sizeof(uint16_t));
+	queue = queue_create(QUEUE_SIZE, sizeof(uint16_t));
 	assert_int_not_equal(queue, NULL);
 
-	for(size_t i = 0; i < QUEUE_SIZE; i++)
+	size = queue_free_space(queue);
+
+	for(size_t i = 0; i < size; i++)
 	{
 		assert_true(queue_enqueue(queue, &inputData[i]));
 	}
 
-	assert_int_equal(queue_size(queue), QUEUE_SIZE);
+	assert_int_equal(queue_size(queue), size);
 
-	for(size_t i = 0; i < QUEUE_SIZE; i++)
+	for(size_t i = 0; i < size; i++)
 	{
 		assert_true(queue_denqueue(queue, &outputData[i]));
 	}
 
 	assert_int_equal(queue_size(queue), 0);
-	assert_memory_equal(inputData, outputData, QUEUE_SIZE);
+	assert_memory_equal(inputData, outputData, size);
 }
 
 static void queue_uint32_main_test(void **state)
 {
+	size_t size = 0;
 	uint32_t outputData[QUEUE_SIZE] = {0};
 	uint32_t inputData[QUEUE_SIZE] = {0};
 
@@ -112,27 +119,30 @@ static void queue_uint32_main_test(void **state)
 	queue_reg_mem_alloc_cb(&malloc);
 	queue_reg_mem_free_cb(&free);
 
-	queue = queue_create(sizeof(uint32_t) * QUEUE_SIZE, sizeof(uint32_t));
+	queue = queue_create(QUEUE_SIZE, sizeof(uint32_t));
 	assert_int_not_equal(queue, NULL);
 
-	for(size_t i = 0; i < QUEUE_SIZE; i++)
+	size = queue_free_space(queue);
+
+	for(size_t i = 0; i < size; i++)
 	{
 		assert_true(queue_enqueue(queue, &inputData[i]));
 	}
 
-	assert_int_equal(queue_size(queue), QUEUE_SIZE);
+	assert_int_equal(queue_size(queue), size);
 
-	for(size_t i = 0; i < QUEUE_SIZE; i++)
+	for(size_t i = 0; i < size; i++)
 	{
 		assert_true(queue_denqueue(queue, &outputData[i]));
 	}
 
 	assert_int_equal(queue_size(queue), 0);
-	assert_memory_equal(inputData, outputData, QUEUE_SIZE);
+	assert_memory_equal(inputData, outputData, size);
 }
 
 static void queue_struct_main_test(void **state)
 {
+	size_t size = 0;
 	template_t outputData[QUEUE_SIZE] = {0};
 	template_t inputData[QUEUE_SIZE] = {0};
 
@@ -146,24 +156,26 @@ static void queue_struct_main_test(void **state)
 	queue_reg_mem_alloc_cb(&malloc);
 	queue_reg_mem_free_cb(&free);
 
-	queue = queue_create(sizeof(template_t) * QUEUE_SIZE, sizeof(template_t));
+	queue = queue_create(QUEUE_SIZE, sizeof(template_t));
 	assert_int_not_equal(queue, NULL);
 
-	for(size_t i = 0; i < QUEUE_SIZE; i++)
+	size = queue_free_space(queue);
+
+	for(size_t i = 0; i < size; i++)
 	{
 		assert_true(queue_enqueue(queue, &inputData[i]));
 	}
 
-	assert_int_equal(queue_size(queue), QUEUE_SIZE);
+	assert_int_equal(queue_size(queue), size);
 
-	for(size_t i = 0; i < QUEUE_SIZE; i++)
+	for(size_t i = 0; i < size; i++)
 	{
 		assert_true(queue_denqueue(queue, &outputData[i]));
 	}
 
 	assert_int_equal(queue_size(queue), 0);
 
-	for(size_t i = 0; i < QUEUE_SIZE/2; i++)
+	for(size_t i = 0; i < size; i++)
 	{
 		assert_memory_equal(&inputData[i], &outputData[i], sizeof(template_t));
 	}
@@ -185,6 +197,7 @@ static void queue_empty_denqueue_test(void **state)
 
 static void queue_full_enqueue_test(void **state)
 {
+	size_t size = 0;
 	uint8_t data[QUEUE_SIZE];
 	uint8_t inputData[QUEUE_SIZE/sizeof(uint8_t)];
 
@@ -194,11 +207,13 @@ static void queue_full_enqueue_test(void **state)
 	queue = queue_create(sizeof(inputData), sizeof(uint8_t));
 	assert_int_not_equal(queue, NULL);
 
-	for(size_t i = 0; i < QUEUE_SIZE; i++) {
+	size = queue_free_space(queue);
+
+	for(size_t i = 0; i < size; i++) {
 		data[i] = i;
 	}
 
-	for(size_t i = 0; i < QUEUE_SIZE; i++) {
+	for(size_t i = 0; i < size; i++) {
 		assert_true(queue_enqueue(queue, &data[i]));
 	}
 
@@ -207,20 +222,23 @@ static void queue_full_enqueue_test(void **state)
 
 static void queue_peek_test(void **state)
 {
+	size_t size = 0;
 	uint8_t tmpData = 0;
 	uint8_t data[QUEUE_SIZE];
 
 	queue_reg_mem_alloc_cb(&malloc);
 	queue_reg_mem_free_cb(&free);
 
-	queue = queue_create(sizeof(uint8_t) * QUEUE_SIZE, sizeof(uint8_t));
+	queue = queue_create(QUEUE_SIZE, sizeof(uint8_t));
 	assert_int_not_equal(queue, NULL);
 
-	for(size_t i = 0; i < QUEUE_SIZE; i++) {
+	size = queue_free_space(queue);
+
+	for(size_t i = 0; i < size; i++) {
 		data[i] = i;
 	}
 
-	for(size_t i = 0; i < QUEUE_SIZE; i++) {
+	for(size_t i = 0; i < size; i++) {
 		assert_true(queue_enqueue(queue, &data[i]));
 	}
 
@@ -233,24 +251,27 @@ static void queue_peek_test(void **state)
 
 static void queue_flush_test(void **state)
 {
+	size_t size = 0;
 	uint8_t tmpData = 0;
 	uint8_t data[QUEUE_SIZE];
 
 	queue_reg_mem_alloc_cb(&malloc);
 	queue_reg_mem_free_cb(&free);
 
-	queue = queue_create(sizeof(uint8_t) * QUEUE_SIZE, sizeof(uint8_t));
+	queue = queue_create(QUEUE_SIZE, sizeof(uint8_t));
 	assert_int_not_equal(queue, NULL);
 
-	for(size_t i = 0; i < QUEUE_SIZE; i++) {
+	size = queue_free_space(queue);
+
+	for(size_t i = 0; i < size; i++) {
 		data[i] = i;
 	}
 
-	for(size_t i = 0; i < QUEUE_SIZE; i++) {
+	for(size_t i = 0; i < size; i++) {
 		assert_true(queue_enqueue(queue, &data[i]));
 	}
 
-	assert_int_equal(queue_size(queue), QUEUE_SIZE);
+	assert_int_equal(queue_size(queue), size);
 
 	queue_flush(queue);
 	assert_int_equal(queue_size(queue), 0);
@@ -262,10 +283,10 @@ void queue_test(void)
 {
   const UnitTest tests[] =
   {
-		  unit_test_setup_teardown(queue_struct_main_test, preparation_data, destroy_data),
 		  unit_test_setup_teardown(queue_uint8_main_test, preparation_data, destroy_data),
 		  unit_test_setup_teardown(queue_uint16_main_test, preparation_data, destroy_data),
 		  unit_test_setup_teardown(queue_uint32_main_test, preparation_data, destroy_data),
+		  unit_test_setup_teardown(queue_struct_main_test, preparation_data, destroy_data),
 		  unit_test_setup_teardown(queue_empty_denqueue_test, preparation_data, destroy_data),
 		  unit_test_setup_teardown(queue_full_enqueue_test, preparation_data, destroy_data),
 		  unit_test_setup_teardown(queue_peek_test, preparation_data, destroy_data),

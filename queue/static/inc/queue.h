@@ -10,7 +10,11 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
-//_____ Ñ O N F I G S__________________________________________________________________________
+//_____ C O N F I G S__________________________________________________________________________
+#ifdef QUEUE_STATIC_MODE
+#define MAX_QUEUES_IN_POOL                              32U
+#define QUEUE_SIZE_IN_BYTES        						32U
+#endif
 //_____ M A C R O S ___________________________________________________________________________
 //_____ D E F I N I T I O N ___________________________________________________________________
 struct Queue_t;
@@ -59,7 +63,7 @@ void queue_reg_mem_free_cb(void (*custom_free)(void * ptrmem));
 *
 * \return 	pointer to new queue or NULL.
 */
-queue_t* queue_create(size_t capacity, size_t nodeSize);
+queue_t* queue_create(size_t capacity, size_t esize);
 
 /**
 * \brief 	Delete queue.
