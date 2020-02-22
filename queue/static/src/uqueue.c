@@ -141,12 +141,13 @@ uqueue_t* uqueue_create(size_t capacity, size_t esize, const uqueue_is_equal_fn_
 		return NULL;
 	}
 
-	queue = (uqueue_t*) mem_alloc_fn(sizeof(uqueue_t));
+//	queue = (uqueue_t*) mem_alloc_fn(sizeof(uqueue_t));
+	queue = mem_alloc_fn(sizeof(*queue));
 	if (queue == NULL) {
 		return NULL;
 	}
 
-	queue->data = (uint8_t*) mem_alloc_fn(rawSize);
+	queue->data = mem_alloc_fn(rawSize);
 	if (queue->data == NULL)
 	{
 		mem_free_fn((void*)queue);

@@ -99,12 +99,12 @@ queue_t* queue_create(size_t capacity, size_t esize)
 		return NULL;
 	}
 
-	queue = (queue_t*) mem_alloc_fn(sizeof(queue_t));
+	queue = mem_alloc_fn(sizeof(*queue));
 	if (queue == NULL) {
 		return NULL;
 	}
 
-	queue->data = (uint8_t*) mem_alloc_fn(rawSize);
+	queue->data = mem_alloc_fn(rawSize);
 	if (queue->data == NULL)
 	{
 		mem_free_fn((void*)queue);
