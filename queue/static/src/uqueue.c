@@ -77,8 +77,8 @@ static void* (*mem_alloc_fn)(size_t sizemem) = NULL;
 static void (*mem_free_fn) (void *ptrmem) = NULL;
 
 #ifdef UQUEUE_STATIC_MODE
-static uqueue_t queuePool[UQUEUE_SIZE_IN_BYTES];
-static size_t numberOfQueues = 0;
+static uqueue_t pool[MAX_UQUEUES_IN_POOL] = {0};
+static size_t counter = 0;
 #endif
 //_____ I N L I N E   F U N C T I O N   D E F I N I T I O N   _________________
 //_____ S T A T I C  F U N C T I O N   D E F I N I T I O N   __________________
@@ -125,7 +125,6 @@ void uqueue_reg_compare_cb(uqueue_t *queue, uqueue_is_equal_fn_t custom_compare)
     queue->compare_cb = custom_compare;
 }
 
-
 /**
 * This function used to create new queue.
 *
@@ -141,7 +140,6 @@ uqueue_t* uqueue_create(size_t capacity, size_t esize, const uqueue_is_equal_fn_
 		return NULL;
 	}
 
-//	queue = (uqueue_t*) mem_alloc_fn(sizeof(uqueue_t));
 	queue = mem_alloc_fn(sizeof(*queue));
 	if (queue == NULL) {
 		return NULL;
@@ -165,9 +163,9 @@ uqueue_t* uqueue_create(size_t capacity, size_t esize, const uqueue_is_equal_fn_
 		queue->data[i] = 0;
 	}
 #else
-	if(numberOfQueues < MAX_UQUEUES_IN_POOL)
+	if(counter < MAX_UQUEUES_IN_POOL)
 	{
-		queue = &queuePool[numberOfQueues++];
+		queue = &pool[counter++];
 
 		queue->write = 0;
 		queue->read = 0;
@@ -184,41 +182,6 @@ uqueue_t* uqueue_create(size_t capacity, size_t esize, const uqueue_is_equal_fn_
 #endif
 
 	return queue;
-
-
-
-//	if(custom_compare == NULL) {
-//		return NULL;
-//	}
-//
-//	if(mem_free_fn == NULL || mem_alloc_fn == NULL) {
-//		return NULL;
-//	}
-//
-//	uqueue_t * uqueue = (uqueue_t*) mem_alloc_fn(sizeof(uqueue_t));
-//	if (uqueue == NULL) {
-//		return NULL;
-//	}
-//
-//	uqueue->data = (uint8_t*) mem_alloc_fn(capacity * esize);
-//	if (uqueue->data == NULL)
-//	{
-//		mem_free_fn((void*)uqueue);
-//		return NULL;
-//	}
-//
-//	uqueue->write = 0;
-//	uqueue->read = 0;
-//	uqueue->capacity = capacity;
-//	uqueue->esize = esize;
-//	uqueue->size = 0;
-//	uqueue->compare_cb = custom_compare;
-//
-//	for(size_t i = 0; i < uqueue->capacity; i++) {
-//		uqueue->data[i] = 0;
-//	}
-//
-//	return uqueue;
 }
 
 /**
@@ -246,11 +209,6 @@ void uqueue_delete(uqueue_t **queue)
 */
 bool uqueue_is_empty(const uqueue_t *queue)
 {
-//	if(uqueue->size == 0) {
-//		return true;
-//	}
-//
-//	return (((uqueue->capacity - uqueue->size) >= uqueue->capacity)) ? true : false;
 	if(queue->size == 0) {
 		return true;
 	}
@@ -265,11 +223,6 @@ bool uqueue_is_empty(const uqueue_t *queue)
 */
 bool uqueue_is_full(const uqueue_t *queue)
 {
-//	if(uqueue->size == uqueue->capacity) {
-//		return true;
-//	}
-//
-//	return (uqueue->size + uqueue->esize > uqueue->capacity) ? true : false;
 	if(queue->size == queue->capacity) {
 		return true;
 	}
@@ -284,7 +237,6 @@ bool uqueue_is_full(const uqueue_t *queue)
 */
 size_t uqueue_size(const uqueue_t *queue)
 {
-//	return uqueue->size/uqueue->esize;
 	return queue->size;
 }
 
@@ -295,7 +247,6 @@ size_t uqueue_size(const uqueue_t *queue)
 */
 size_t uqueue_free_space(const uqueue_t *queue)
 {
-//	return uqueue->capacity - uqueue->size/uqueue->esize;
 	return queue->capacity - queue->size;
 }
 
@@ -338,8 +289,7 @@ bool uqueue_enqueue(uqueue_t *queue, const void *data)
 	for(size_t i = 0; i < queue->esize; i++)
 	{
 		queue->data[queue->write] = pData[i];
-//		uqueue->size++;
-		queue->write = (queue->write == /*uqueue->capacity*/rawSize - 1ul) ? 0ul: (queue->write + 1ul);
+		queue->write = (queue->write == rawSize - 1ul) ? 0ul: (queue->write + 1ul);
 	}
 
 	queue->size++;
@@ -376,8 +326,7 @@ bool uqueue_denqueue(uqueue_t *queue, void *data)
 	for(size_t i = 0; i < queue->esize; i++)
 	{
 		pData[i] = queue->data[queue->read];
-//		uqueue->size--;
-		queue->read = (queue->read == /*uqueue->capacity*/rawSize - 1ul) ? 0ul : (queue->read + 1ul);
+		queue->read = (queue->read == rawSize - 1ul) ? 0ul : (queue->read + 1ul);
 	}
 
 	queue->size--;
@@ -431,7 +380,7 @@ void uqueue_flush(uqueue_t *queue)
 	queue->read = 0;
 	queue->size = 0;
 
-	for(size_t i = 0; i < /*uqueue->capacity*/rawSize; i++) {
+	for(size_t i = 0; i < rawSize; i++) {
 		queue->data[i] = 0;
 	}
 }

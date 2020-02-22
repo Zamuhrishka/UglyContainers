@@ -50,8 +50,8 @@ static void* (*mem_alloc_fn)(size_t sizemem) = NULL;
 static void (*mem_free_fn) (void *ptrmem) = NULL;
 
 #ifdef QUEUE_STATIC_MODE
-static queue_t queuePool[MAX_QUEUES_IN_POOL];
-static size_t numberOfQueues = 0;
+static queue_t pool[MAX_QUEUES_IN_POOL] = {0};
+static size_t counter = 0;
 #endif
 //_____ I N L I N E   F U N C T I O N   D E F I N I T I O N   _________________________________
 //_____ S T A T I C  F U N C T I O N   D E F I N I T I O N   __________________________________
@@ -121,10 +121,9 @@ queue_t* queue_create(size_t capacity, size_t esize)
 		queue->data[i] = 0;
 	}
 #else
-	if(numberOfQueues < MAX_QUEUES_IN_POOL)
+	if(counter < MAX_QUEUES_IN_POOL)
 	{
-		queue = &queuePool[numberOfQueues++];
-
+		queue = &pool[counter++];
 		queue->write = 0;
 		queue->read = 0;
 		queue->capacity = (rawSize > QUEUE_SIZE_IN_BYTES) ? QUEUE_SIZE_IN_BYTES : capacity;
