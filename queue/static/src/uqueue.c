@@ -39,6 +39,21 @@
 #include <stddef.h>
 //_____ C O N F I G S  ________________________________________________________
 //_____ D E F I N I T I O N ___________________________________________________
+#ifdef UQUEUE_STATIC_MODE
+/**
+ * \brief Static queue structure
+ */
+struct UQueue_t
+{
+	uint8_t data[UQUEUE_SIZE_IN_BYTES];															///< array of data
+    size_t write;																				///< pointer to the write position
+    size_t read;																				///< pointer to the read position
+    size_t size;																				///< size of queue
+    size_t capacity;																			///< max size of queue
+    size_t esize;																				///< size in bytes one element
+    uqueue_is_equal_fn_t compare_cb;
+};
+#else
 /**
  * \brief queue structure
  */
@@ -52,6 +67,7 @@ struct UQueue_t
     size_t esize;																				///< size in bytes one element
     uqueue_is_equal_fn_t compare_cb;
 };
+#endif
 //_____ M A C R O S ___________________________________________________________
 //_____ V A R I A B L E   D E F I N I T I O N  ________________________________
 //!Pointer to the memory allocation function
@@ -59,6 +75,11 @@ static void* (*mem_alloc_fn)(size_t sizemem) = NULL;
 
 //!Pointer to the memory free function
 static void (*mem_free_fn) (void *ptrmem) = NULL;
+
+#ifdef UQUEUE_STATIC_MODE
+static uqueue_t queuePool[UQUEUE_SIZE_IN_BYTES];
+static size_t numberOfQueues = 0;
+#endif
 //_____ I N L I N E   F U N C T I O N   D E F I N I T I O N   _________________
 //_____ S T A T I C  F U N C T I O N   D E F I N I T I O N   __________________
 //_____ F U N C T I O N   D E F I N I T I O N   _______________________________
@@ -95,13 +116,13 @@ void uqueue_reg_mem_free_cb(void (*custom_free)(void * ptrmem))
 *
 * Public function defined in uqueue.h
 */
-void uqueue_reg_compare_cb(uqueue_t *uqueue, uqueue_is_equal_fn_t custom_compare)
+void uqueue_reg_compare_cb(uqueue_t *queue, uqueue_is_equal_fn_t custom_compare)
 {
     if(custom_compare == NULL) {
         return;
     }
 
-    uqueue->compare_cb = custom_compare;
+    queue->compare_cb = custom_compare;
 }
 
 
@@ -112,38 +133,91 @@ void uqueue_reg_compare_cb(uqueue_t *uqueue, uqueue_is_equal_fn_t custom_compare
 */
 uqueue_t* uqueue_create(size_t capacity, size_t esize, const uqueue_is_equal_fn_t custom_compare)
 {
-	if(custom_compare == NULL) {
+	uqueue_t *queue = NULL;
+	size_t rawSize = capacity * esize;
+
+#ifndef UQUEUE_STATIC_MODE
+	if((mem_alloc_fn == NULL) || (mem_free_fn == NULL)) {
 		return NULL;
 	}
 
-	if(mem_free_fn == NULL || mem_alloc_fn == NULL) {
+	queue = (uqueue_t*) mem_alloc_fn(sizeof(uqueue_t));
+	if (queue == NULL) {
 		return NULL;
 	}
 
-	uqueue_t * uqueue = (uqueue_t*) mem_alloc_fn(sizeof(uqueue_t));
-	if (uqueue == NULL) {
-		return NULL;
-	}
-
-	uqueue->data = (uint8_t*) mem_alloc_fn(capacity * esize);
-	if (uqueue->data == NULL)
+	queue->data = (uint8_t*) mem_alloc_fn(rawSize);
+	if (queue->data == NULL)
 	{
-		mem_free_fn((void*)uqueue);
+		mem_free_fn((void*)queue);
 		return NULL;
 	}
 
-	uqueue->write = 0;
-	uqueue->read = 0;
-	uqueue->capacity = capacity;
-	uqueue->esize = esize;
-	uqueue->size = 0;
-	uqueue->compare_cb = custom_compare;
+	queue->write = 0;
+	queue->read = 0;
+	queue->capacity = capacity;
+	queue->esize = esize;
+	queue->size = 0;
+	queue->compare_cb = custom_compare;
 
-	for(size_t i = 0; i < uqueue->capacity; i++) {
-		uqueue->data[i] = 0;
+	for(size_t i = 0; i < rawSize; i++) {
+		queue->data[i] = 0;
+	}
+#else
+	if(numberOfQueues < MAX_UQUEUES_IN_POOL)
+	{
+		queue = &queuePool[numberOfQueues++];
+
+		queue->write = 0;
+		queue->read = 0;
+		queue->capacity = (rawSize > UQUEUE_SIZE_IN_BYTES) ? UQUEUE_SIZE_IN_BYTES : capacity;
+		queue->esize = esize;
+		queue->size = 0;
+		queue->compare_cb = custom_compare;
+
+		for(size_t i = 0; i < rawSize; i++) {
+			queue->data[i] = 0;
+		}
 	}
 
-	return uqueue;
+#endif
+
+	return queue;
+
+
+
+//	if(custom_compare == NULL) {
+//		return NULL;
+//	}
+//
+//	if(mem_free_fn == NULL || mem_alloc_fn == NULL) {
+//		return NULL;
+//	}
+//
+//	uqueue_t * uqueue = (uqueue_t*) mem_alloc_fn(sizeof(uqueue_t));
+//	if (uqueue == NULL) {
+//		return NULL;
+//	}
+//
+//	uqueue->data = (uint8_t*) mem_alloc_fn(capacity * esize);
+//	if (uqueue->data == NULL)
+//	{
+//		mem_free_fn((void*)uqueue);
+//		return NULL;
+//	}
+//
+//	uqueue->write = 0;
+//	uqueue->read = 0;
+//	uqueue->capacity = capacity;
+//	uqueue->esize = esize;
+//	uqueue->size = 0;
+//	uqueue->compare_cb = custom_compare;
+//
+//	for(size_t i = 0; i < uqueue->capacity; i++) {
+//		uqueue->data[i] = 0;
+//	}
+//
+//	return uqueue;
 }
 
 /**
@@ -151,15 +225,17 @@ uqueue_t* uqueue_create(size_t capacity, size_t esize, const uqueue_is_equal_fn_
 *
 * Public function defined in uqueue.h
 */
-void uqueue_delete(uqueue_t **uqueue)
+void uqueue_delete(uqueue_t **queue)
 {
-	if(*uqueue == NULL) {
+#ifndef UQUEUE_STATIC_MODE
+	if(*queue == NULL) {
 		return;
 	}
 
-	mem_free_fn((*uqueue)->data);
-	mem_free_fn(*uqueue);
-	*uqueue = NULL;
+	mem_free_fn((*queue)->data);
+	mem_free_fn(*queue);
+	*queue = NULL;
+#endif
 }
 
 /**
@@ -167,13 +243,18 @@ void uqueue_delete(uqueue_t **uqueue)
 *
 * Public function defined in uqueue.h
 */
-bool uqueue_is_empty(const uqueue_t *uqueue)
+bool uqueue_is_empty(const uqueue_t *queue)
 {
-	if(uqueue->size == 0) {
+//	if(uqueue->size == 0) {
+//		return true;
+//	}
+//
+//	return (((uqueue->capacity - uqueue->size) >= uqueue->capacity)) ? true : false;
+	if(queue->size == 0) {
 		return true;
 	}
 
-	return (((uqueue->capacity - uqueue->size) >= uqueue->capacity)) ? true : false;
+	return false;
 }
 
 /**
@@ -181,13 +262,18 @@ bool uqueue_is_empty(const uqueue_t *uqueue)
 *
 * Public function defined in uqueue.h
 */
-bool uqueue_is_full(const uqueue_t *uqueue)
+bool uqueue_is_full(const uqueue_t *queue)
 {
-	if(uqueue->size == uqueue->capacity) {
+//	if(uqueue->size == uqueue->capacity) {
+//		return true;
+//	}
+//
+//	return (uqueue->size + uqueue->esize > uqueue->capacity) ? true : false;
+	if(queue->size == queue->capacity) {
 		return true;
 	}
 
-	return (uqueue->size + uqueue->esize > uqueue->capacity) ? true : false;
+	return false;
 }
 
 /**
@@ -195,9 +281,10 @@ bool uqueue_is_full(const uqueue_t *uqueue)
 *
 * Public function defined in uqueue.h
 */
-size_t uqueue_size(const uqueue_t *uqueue)
+size_t uqueue_size(const uqueue_t *queue)
 {
-	return uqueue->size/uqueue->esize;
+//	return uqueue->size/uqueue->esize;
+	return queue->size;
 }
 
 /**
@@ -205,9 +292,10 @@ size_t uqueue_size(const uqueue_t *uqueue)
 *
 * Public function defined in uqueue.h
 */
-size_t uqueue_free_space(const uqueue_t *uqueue)
+size_t uqueue_free_space(const uqueue_t *queue)
 {
-	return uqueue->capacity - uqueue->size/uqueue->esize;
+//	return uqueue->capacity - uqueue->size/uqueue->esize;
+	return queue->capacity - queue->size;
 }
 
 /**
@@ -215,12 +303,13 @@ size_t uqueue_free_space(const uqueue_t *uqueue)
 *
 * Public function defined in uqueue.h
 */
-bool uqueue_enqueue(uqueue_t *uqueue, const void *data)
+bool uqueue_enqueue(uqueue_t *queue, const void *data)
 {
 	size_t size = 0;
 	uint8_t* pData = (uint8_t*)data;
+	size_t rawSize = queue->capacity * queue->esize;
 
-	if(uqueue == NULL || data == NULL) {
+	if(queue == NULL || data == NULL) {
 		return false;
 	}
 
@@ -228,29 +317,31 @@ bool uqueue_enqueue(uqueue_t *uqueue, const void *data)
 		return false;
 	}
 
-	if(uqueue->compare_cb == NULL) {
+	if(queue->compare_cb == NULL) {
 		return false;
 	}
 
-	if(uqueue_is_full(uqueue)) {
+	if(uqueue_is_full(queue)) {
 		return false;
 	}
 
-	size = uqueue_size(uqueue);
+	size = uqueue_size(queue);
 
 	for(size_t i = 0; i < size; i++)
 	{
-		if(uqueue->compare_cb((void*)&uqueue->data[i * uqueue->esize], data)) {
+		if(queue->compare_cb((void*)&queue->data[i * queue->esize], data)) {
 			return true;
 		}
 	}
 
-	for(size_t i = 0; i < uqueue->esize; i++)
+	for(size_t i = 0; i < queue->esize; i++)
 	{
-		uqueue->data[uqueue->write] = pData[i];
-		uqueue->size++;
-		uqueue->write = (uqueue->write == uqueue->capacity - 1ul) ? 0ul: (uqueue->write + 1ul);
+		queue->data[queue->write] = pData[i];
+//		uqueue->size++;
+		queue->write = (queue->write == /*uqueue->capacity*/rawSize - 1ul) ? 0ul: (queue->write + 1ul);
 	}
+
+	queue->size++;
 
 	return true;
 }
@@ -260,11 +351,12 @@ bool uqueue_enqueue(uqueue_t *uqueue, const void *data)
 *
 * Public function defined in uqueue.h
 */
-bool uqueue_denqueue(uqueue_t *uqueue, void *data)
+bool uqueue_denqueue(uqueue_t *queue, void *data)
 {
 	uint8_t* pData = (uint8_t*)data;
+	size_t rawSize = queue->capacity * queue->esize;
 
-	if(uqueue == NULL || data == NULL) {
+	if(queue == NULL || data == NULL) {
 		return false;
 	}
 
@@ -272,20 +364,22 @@ bool uqueue_denqueue(uqueue_t *uqueue, void *data)
 		return false;
 	}
 
-	if(uqueue->compare_cb == NULL) {
+	if(queue->compare_cb == NULL) {
 		return false;
 	}
 
-	if(uqueue_is_empty(uqueue)) {
+	if(uqueue_is_empty(queue)) {
 		return false;
 	}
 
-	for(size_t i = 0; i < uqueue->esize; i++)
+	for(size_t i = 0; i < queue->esize; i++)
 	{
-		pData[i] = uqueue->data[uqueue->read];
-		uqueue->size--;
-		uqueue->read = (uqueue->read == uqueue->capacity - 1ul) ? 0ul : (uqueue->read + 1ul);
+		pData[i] = queue->data[queue->read];
+//		uqueue->size--;
+		queue->read = (queue->read == /*uqueue->capacity*/rawSize - 1ul) ? 0ul : (queue->read + 1ul);
 	}
+
+	queue->size--;
 
 	return true;
 }
@@ -295,11 +389,11 @@ bool uqueue_denqueue(uqueue_t *uqueue, void *data)
 *
 * Public function defined in uqueue.h
 */
-bool uqueue_peek(uqueue_t *uqueue, void *data)
+bool uqueue_peek(uqueue_t *queue, void *data)
 {
 	uint8_t* pData = (uint8_t*)data;
 
-	if(uqueue == NULL || data == NULL) {
+	if(queue == NULL || data == NULL) {
 		return false;
 	}
 
@@ -307,17 +401,17 @@ bool uqueue_peek(uqueue_t *uqueue, void *data)
 		return false;
 	}
 
-	if(uqueue->compare_cb == NULL) {
+	if(queue->compare_cb == NULL) {
 		return false;
 	}
 
-	if(uqueue_is_empty(uqueue)) {
+	if(uqueue_is_empty(queue)) {
 		return false;
 	}
 
-	for(size_t i = 0; i < uqueue->esize; i++)
+	for(size_t i = 0; i < queue->esize; i++)
 	{
-		pData[i] = uqueue->data[i];
+		pData[i] = queue->data[i];
 	}
 
 	return true;
@@ -328,13 +422,15 @@ bool uqueue_peek(uqueue_t *uqueue, void *data)
 *
 * Public function defined in uqueue.h
 */
-void uqueue_flush(uqueue_t *uqueue)
+void uqueue_flush(uqueue_t *queue)
 {
-	uqueue->write = 0;
-	uqueue->read = 0;
-	uqueue->size = 0;
+	size_t rawSize = queue->capacity * queue->esize;
 
-	for(size_t i = 0; i < uqueue->capacity; i++) {
-		uqueue->data[i] = 0;
+	queue->write = 0;
+	queue->read = 0;
+	queue->size = 0;
+
+	for(size_t i = 0; i < /*uqueue->capacity*/rawSize; i++) {
+		queue->data[i] = 0;
 	}
 }

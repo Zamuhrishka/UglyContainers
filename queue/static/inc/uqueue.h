@@ -44,6 +44,10 @@
 #include <stdbool.h>
 #include <stddef.h>
 //_____ C O N F I G S  ________________________________________________________
+#ifdef UQUEUE_STATIC_MODE
+#define MAX_UQUEUES_IN_POOL                             32U
+#define UQUEUE_SIZE_IN_BYTES        					32U
+#endif
 //_____ D E F I N I T I O N ___________________________________________________
 struct UQueue_t;
 typedef struct UQueue_t uqueue_t;
