@@ -37,6 +37,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <assert.h>
 //_____ C O N F I G S  ________________________________________________________
 //_____ D E F I N I T I O N ___________________________________________________
 #ifdef UQUEUE_STATIC_MODE
@@ -90,10 +91,7 @@ static size_t counter = 0;
 */
 void uqueue_reg_mem_alloc_cb(void* (*custom_malloc)(size_t sizemem))
 {
-	if(custom_malloc == NULL) {
-		return;
-	}
-
+	assert(custom_malloc);
 	mem_alloc_fn = custom_malloc;
 }
 
@@ -104,10 +102,7 @@ void uqueue_reg_mem_alloc_cb(void* (*custom_malloc)(size_t sizemem))
 */
 void uqueue_reg_mem_free_cb(void (*custom_free)(void * ptrmem))
 {
-	if(custom_free == NULL) {
-		return;
-	}
-
+	assert(custom_free);
 	mem_free_fn = custom_free;
 }
 
@@ -118,10 +113,8 @@ void uqueue_reg_mem_free_cb(void (*custom_free)(void * ptrmem))
 */
 void uqueue_reg_compare_cb(uqueue_t *queue, uqueue_is_equal_fn_t custom_compare)
 {
-    if(custom_compare == NULL) {
-        return;
-    }
-
+	assert(queue);
+	assert(custom_compare);
     queue->compare_cb = custom_compare;
 }
 
@@ -192,9 +185,7 @@ uqueue_t* uqueue_create(size_t capacity, size_t esize, const uqueue_is_equal_fn_
 void uqueue_delete(uqueue_t **queue)
 {
 #ifndef UQUEUE_STATIC_MODE
-	if(*queue == NULL) {
-		return;
-	}
+	assert(*queue);
 
 	mem_free_fn((*queue)->data);
 	mem_free_fn(*queue);
@@ -209,6 +200,8 @@ void uqueue_delete(uqueue_t **queue)
 */
 bool uqueue_is_empty(const uqueue_t *queue)
 {
+	assert(queue);
+
 	if(queue->size == 0) {
 		return true;
 	}
@@ -223,6 +216,8 @@ bool uqueue_is_empty(const uqueue_t *queue)
 */
 bool uqueue_is_full(const uqueue_t *queue)
 {
+	assert(queue);
+
 	if(queue->size == queue->capacity) {
 		return true;
 	}
@@ -237,6 +232,7 @@ bool uqueue_is_full(const uqueue_t *queue)
 */
 size_t uqueue_size(const uqueue_t *queue)
 {
+	assert(queue);
 	return queue->size;
 }
 
@@ -247,6 +243,7 @@ size_t uqueue_size(const uqueue_t *queue)
 */
 size_t uqueue_free_space(const uqueue_t *queue)
 {
+	assert(queue);
 	return queue->capacity - queue->size;
 }
 
@@ -257,13 +254,12 @@ size_t uqueue_free_space(const uqueue_t *queue)
 */
 bool uqueue_enqueue(uqueue_t *queue, const void *data)
 {
+	assert(queue);
+	assert(data);
+
 	size_t size = 0;
 	uint8_t* pData = (uint8_t*)data;
 	size_t rawSize = queue->capacity * queue->esize;
-
-	if(queue == NULL || data == NULL) {
-		return false;
-	}
 
 	if(mem_free_fn == NULL || mem_alloc_fn == NULL) {
 		return false;
@@ -304,12 +300,11 @@ bool uqueue_enqueue(uqueue_t *queue, const void *data)
 */
 bool uqueue_denqueue(uqueue_t *queue, void *data)
 {
+	assert(queue);
+	assert(data);
+
 	uint8_t* pData = (uint8_t*)data;
 	size_t rawSize = queue->capacity * queue->esize;
-
-	if(queue == NULL || data == NULL) {
-		return false;
-	}
 
 	if(mem_free_fn == NULL || mem_alloc_fn == NULL) {
 		return false;
@@ -341,11 +336,10 @@ bool uqueue_denqueue(uqueue_t *queue, void *data)
 */
 bool uqueue_peek(uqueue_t *queue, void *data)
 {
-	uint8_t* pData = (uint8_t*)data;
+	assert(queue);
+	assert(data);
 
-	if(queue == NULL || data == NULL) {
-		return false;
-	}
+	uint8_t* pData = (uint8_t*)data;
 
 	if(mem_free_fn == NULL || mem_alloc_fn == NULL) {
 		return false;
@@ -374,6 +368,8 @@ bool uqueue_peek(uqueue_t *queue, void *data)
 */
 void uqueue_flush(uqueue_t *queue)
 {
+	assert(queue);
+
 	size_t rawSize = queue->capacity * queue->esize;
 
 	queue->write = 0;
