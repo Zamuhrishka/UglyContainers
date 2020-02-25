@@ -12,10 +12,31 @@
 #include "stdbool.h"
 #include "stdlib.h"
 #include "string.h"
+#include <assert.h>
 #include "cmockery.h"
 #ifdef DEBUG
 	#include "debug.h"
 #endif
+
+
+// If unit testing is enabled override assert with mock_assert().
+#if UNIT_TESTING
+extern void mock_assert(const int result, const char* const expression, 
+                        const char * const file, const int line);
+#undef assert
+#define assert(expression) \
+    mock_assert((int)(expression), #expression, __FILE__, __LINE__);
+
+extern void* _test_malloc(const size_t size, const char* file, const int line);
+extern void* _test_calloc(const size_t number_of_elements, const size_t size, 
+                          const char* file, const int line);
+extern void _test_free(void* const ptr, const char* file, const int line);
+
+#define malloc(size) _test_malloc(size, __FILE__, __LINE__)
+#define calloc(num, size) _test_calloc(num, size, __FILE__, __LINE__)
+#define free(ptr) _test_free(ptr, __FILE__, __LINE__)
+#endif // UNIT_TESTING
+
 //_____ V A R I A B L E   D E F I N I T I O N  ________________________________________________
 #define QUEUE_SIZE			32
 #define BUFFER_SIZE			22
@@ -29,7 +50,7 @@ typedef struct
 	uint32_t c;
 }	template_t;
 //_____ I N L I N E   F U N C T I O N   D E F I N I T I O N   _________________________________
-//_____ S T A T I Ñ  F U N C T I O N   D E F I N I T I O N   __________________________________
+//_____ S T A T I ï¿½  F U N C T I O N   D E F I N I T I O N   __________________________________
 static bool compare_uint8(const void* cmp1, const void* cmp2)
 {
 	uint8_t* pCmp1 = (uint8_t*)cmp1;
