@@ -82,6 +82,10 @@ static uqueue_t pool[MAX_UQUEUES_IN_POOL] = {0};
 static size_t counter = 0;
 #endif
 //_____ I N L I N E   F U N C T I O N   D E F I N I T I O N   _________________
+inline static bool is_callbacks_valid(void)
+{
+	return ((mem_free_fn != NULL) && (mem_alloc_fn != NULL)) ? true : false;
+}
 //_____ S T A T I C  F U N C T I O N   D E F I N I T I O N   __________________
 //_____ F U N C T I O N   D E F I N I T I O N   _______________________________
 /**
@@ -129,8 +133,8 @@ uqueue_t* uqueue_create(size_t capacity, size_t esize, const uqueue_is_equal_fn_
 	size_t rawSize = capacity * esize;
 
 #ifndef UQUEUE_STATIC_MODE
-	if((mem_alloc_fn == NULL) || (mem_free_fn == NULL)) {
-		return NULL;
+	if(!is_callbacks_valid()) {
+		return false;
 	}
 
 	queue = mem_alloc_fn(sizeof(*queue));
@@ -261,10 +265,6 @@ bool uqueue_enqueue(uqueue_t *queue, const void *data)
 	uint8_t* pData = (uint8_t*)data;
 	size_t rawSize = queue->capacity * queue->esize;
 
-	if(mem_free_fn == NULL || mem_alloc_fn == NULL) {
-		return false;
-	}
-
 	if(queue->compare_cb == NULL) {
 		return false;
 	}
@@ -306,10 +306,6 @@ bool uqueue_denqueue(uqueue_t *queue, void *data)
 	uint8_t* pData = (uint8_t*)data;
 	size_t rawSize = queue->capacity * queue->esize;
 
-	if(mem_free_fn == NULL || mem_alloc_fn == NULL) {
-		return false;
-	}
-
 	if(queue->compare_cb == NULL) {
 		return false;
 	}
@@ -340,10 +336,6 @@ bool uqueue_peek(uqueue_t *queue, void *data)
 	assert(data);
 
 	uint8_t* pData = (uint8_t*)data;
-
-	if(mem_free_fn == NULL || mem_alloc_fn == NULL) {
-		return false;
-	}
 
 	if(queue->compare_cb == NULL) {
 		return false;
