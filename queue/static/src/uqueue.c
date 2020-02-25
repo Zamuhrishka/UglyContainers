@@ -306,10 +306,6 @@ bool uqueue_denqueue(uqueue_t *queue, void *data)
 	uint8_t* pData = (uint8_t*)data;
 	size_t rawSize = queue->capacity * queue->esize;
 
-	if(queue->compare_cb == NULL) {
-		return false;
-	}
-
 	if(uqueue_is_empty(queue)) {
 		return false;
 	}
