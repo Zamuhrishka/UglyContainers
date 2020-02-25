@@ -276,6 +276,7 @@ bool queue_peek(queue_t *queue, void *data)
 	assert(data);
 
 	uint8_t* pData = (uint8_t*)data;
+	uint8_t* pBuffer = &queue->data[queue->read];
 
 	if(queue_is_empty(queue)) {
 		return false;
@@ -283,7 +284,7 @@ bool queue_peek(queue_t *queue, void *data)
 
 	for(size_t i = 0; i < queue->esize; i++)
 	{
-		pData[i] = queue->data[i];
+		pData[i] = *pBuffer++;
 	}
 
 	return true;
