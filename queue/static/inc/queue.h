@@ -19,6 +19,8 @@
 //_____ D E F I N I T I O N ___________________________________________________________________
 struct Queue_t;
 typedef struct Queue_t queue_t;
+
+typedef bool (*is_equal_fn_t)(const void*, const void*);
 //_____ V A R I A B L E   D E C L A R A T I O N S _____________________________________________
 //_____ F U N C T I O N   D E C L A R A T I O N S _____________________________________________
 /**
@@ -138,7 +140,9 @@ bool queue_denqueue(queue_t *queue, void *data);
 *
 * \return 	true/false.
 */
-bool queue_peek(queue_t *queue, void *data);
+bool queue_peek(const queue_t *queue, void *data);
+
+bool queue_find(queue_t *queue, const void *data, is_equal_fn_t is_equal_cb);
 
 /**
 * \brief 	This function used to reset queue.

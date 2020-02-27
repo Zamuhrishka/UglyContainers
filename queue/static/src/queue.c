@@ -15,40 +15,36 @@
 #include <assert.h>
 //_____ C O N F I G S  ________________________________________________________________________
 //_____ D E F I N I T I O N ___________________________________________________________________
+/**
+ * \brief Static queue structure
+ */
+struct Queue_t
+{
 #ifdef QUEUE_STATIC_MODE
-/**
- * \brief Static queue structure
- */
-struct Queue_t
-{
 	uint8_t data[QUEUE_SIZE_IN_BYTES];															///< array of data
-    size_t write;																				///< pointer to the write position
-    size_t read;																				///< pointer to the read position
-    size_t size;																				///< size of queue
-    size_t capacity;																			///< max size of queue
-    size_t esize;																				///< size in bytes one element
-};
 #else
-/**
- * \brief Static queue structure
- */
-struct Queue_t
-{
 	uint8_t* data;																				///< array of data
+#endif
     size_t write;																				///< pointer to the write position
     size_t read;																				///< pointer to the read position
     size_t size;																				///< current size of queue
     size_t capacity;																			///< max size of queue
     size_t esize;																				///< size in bytes one element
 };
-#endif
 //_____ M A C R O S ___________________________________________________________________________
 //_____ V A R I A B L E   D E F I N I T I O N  ________________________________________________
-//!Pointer to the memory allocation function
-static void* (*mem_alloc_fn)(size_t sizemem) = NULL;
+#ifdef QUEUE_STATIC_MODE
+	void* custom_malloc(size_t sizemem);
+	void custom_free(void * ptrmem);
 
-//!Pointer to the memory free function
-static void (*mem_free_fn) (void *ptrmem) = NULL;
+	static void* (*mem_alloc_fn)(size_t sizemem) = custom_malloc;
+	static void (*mem_free_fn) (void *ptrmem) = custom_free;
+#else
+	//!Pointer to the memory allocation function
+	static void* (*mem_alloc_fn)(size_t sizemem) = NULL;
+	//!Pointer to the memory free function
+	static void (*mem_free_fn) (void *ptrmem) = NULL;
+#endif
 
 #ifdef QUEUE_STATIC_MODE
 static queue_t pool[MAX_QUEUES_IN_POOL] = {0};
@@ -59,6 +55,25 @@ inline static bool is_callbacks_valid(void)
 {
 	return ((mem_free_fn != NULL) && (mem_alloc_fn != NULL)) ? true : false;
 }
+
+#ifdef QUEUE_STATIC_MODE
+void* custom_malloc(size_t sizemem)
+{
+	void* queue = NULL;
+
+	if(counter < MAX_QUEUES_IN_POOL)
+	{
+		queue = &pool[counter++];
+	}
+
+	return queue;
+}
+
+void custom_free(void * ptrmem)
+{
+
+}
+#endif
 //_____ S T A T I C  F U N C T I O N   D E F I N I T I O N   __________________________________
 //_____ F U N C T I O N   D E F I N I T I O N   _______________________________________________
 /**
@@ -90,10 +105,9 @@ void queue_reg_mem_free_cb(void (*custom_free)(void * ptrmem))
 */
 queue_t* queue_create(size_t capacity, size_t esize)
 {
-	queue_t *queue = NULL;
+	queue_t* queue = NULL;
 	size_t rawSize = capacity * esize;
 
-#ifndef QUEUE_STATIC_MODE
 	if(!is_callbacks_valid()) {
 		return false;
 	}
@@ -103,38 +117,28 @@ queue_t* queue_create(size_t capacity, size_t esize)
 		return NULL;
 	}
 
+#ifndef QUEUE_STATIC_MODE
 	queue->data = mem_alloc_fn(rawSize);
 	if (queue->data == NULL)
 	{
 		mem_free_fn((void*)queue);
 		return NULL;
 	}
+#endif
 
 	queue->write = 0;
 	queue->read = 0;
+#ifndef QUEUE_STATIC_MODE
 	queue->capacity = capacity;
+#else
+	queue->capacity = (rawSize > QUEUE_SIZE_IN_BYTES) ? QUEUE_SIZE_IN_BYTES : capacity;
+#endif
 	queue->esize = esize;
 	queue->size = 0;
 
 	for(size_t i = 0; i < rawSize; i++) {
 		queue->data[i] = 0;
 	}
-#else
-	if(counter < MAX_QUEUES_IN_POOL)
-	{
-		queue = &pool[counter++];
-		queue->write = 0;
-		queue->read = 0;
-		queue->capacity = (rawSize > QUEUE_SIZE_IN_BYTES) ? QUEUE_SIZE_IN_BYTES : capacity;
-		queue->esize = esize;
-		queue->size = 0;
-
-		for(size_t i = 0; i < rawSize; i++) {
-			queue->data[i] = 0;
-		}
-	}
-
-#endif
 
 	return queue;
 }
@@ -270,7 +274,7 @@ bool queue_denqueue(queue_t *queue, void *data)
 *
 * Public function defined in queue.h
 */
-bool queue_peek(queue_t *queue, void *data)
+bool queue_peek(const queue_t *queue, void *data)
 {
 	assert(queue);
 	assert(data);
@@ -289,6 +293,31 @@ bool queue_peek(queue_t *queue, void *data)
 
 	return true;
 }
+
+/**
+* This function ....
+*
+* Public function defined in queue.h
+*/
+bool queue_find(queue_t *queue, const void *data, is_equal_fn_t is_equal_cb)
+{
+	assert(queue);
+	assert(data);
+	assert(is_equal_cb);
+
+	size_t size = queue_size(queue);
+
+	for(size_t i = 0; i < size; i++)
+	{
+		if(is_equal_cb((void*)&queue->data[i * queue->esize], data)) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+
 
 /**
 * This function used to reset queue.
