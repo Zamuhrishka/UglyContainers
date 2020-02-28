@@ -295,29 +295,27 @@ bool queue_peek(const queue_t *queue, void *data)
 }
 
 /**
-* This function ....
+* This function search data in the queue.
 *
 * Public function defined in queue.h
 */
-bool queue_find(queue_t *queue, const void *data, is_equal_fn_t is_equal_cb)
+bool queue_find(queue_t *queue, const void *data, bool (*is_equal)(const void*, const void*))
 {
 	assert(queue);
 	assert(data);
-	assert(is_equal_cb);
+	assert(is_equal);
 
 	size_t size = queue_size(queue);
 
 	for(size_t i = 0; i < size; i++)
 	{
-		if(is_equal_cb((void*)&queue->data[i * queue->esize], data)) {
+		if(is_equal((void*)&queue->data[i * queue->esize], data)) {
 			return true;
 		}
 	}
 
 	return false;
 }
-
-
 
 /**
 * This function used to reset queue.

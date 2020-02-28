@@ -19,8 +19,6 @@
 //_____ D E F I N I T I O N ___________________________________________________________________
 struct Queue_t;
 typedef struct Queue_t queue_t;
-
-typedef bool (*is_equal_fn_t)(const void*, const void*);
 //_____ V A R I A B L E   D E C L A R A T I O N S _____________________________________________
 //_____ F U N C T I O N   D E C L A R A T I O N S _____________________________________________
 /**
@@ -142,7 +140,17 @@ bool queue_denqueue(queue_t *queue, void *data);
 */
 bool queue_peek(const queue_t *queue, void *data);
 
-bool queue_find(queue_t *queue, const void *data, is_equal_fn_t is_equal_cb);
+/**
+* \brief 	This function search data in the queue.
+*
+* \param[in] queue: pointer to queue.
+* \param[in] data: pointer to retrieve data from queue.
+* \param[in] is_equal: callback function for compare data.
+*
+* \return 	true - if data find;
+* 			false - if data not find.
+*/
+bool queue_find(queue_t *queue, const void *data, bool (*is_equal)(const void*, const void*));
 
 /**
 * \brief 	This function used to reset queue.
