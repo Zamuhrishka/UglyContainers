@@ -320,6 +320,27 @@ static void queue_size_test(void **state)
 }
 
 
+static void queue_size_uint16_test(void **state)
+{
+	size_t size = 0;
+	size_t cap = 0;
+
+	queue_reg_mem_alloc_cb(&malloc);
+	queue_reg_mem_free_cb(&free);
+	queue = queue_create(QUEUE_SIZE, sizeof(uint16_t));
+	cap = queue_free_space(queue);
+
+	for(uint16_t i = 0; i < cap; i++)
+	{
+		size = queue_size(queue);
+		assert_int_equal(size, i);
+		queue_enqueue(queue, &i);
+	}
+
+	queue_delete(&queue);
+}
+
+
 static void queue_free_space_test(void **state)
 {
 	size_t size = 0;
@@ -396,19 +417,25 @@ static void queue_uint8_find_test(void **state)
 static void queue_uint16_find_test(void **state)
 {
 	uint16_t data = 0;
+	size_t size = 0;
+	size_t fsize = 0;
 
 	queue_reg_mem_alloc_cb(&malloc);
 	queue_reg_mem_free_cb(&free);
 	queue = queue_create(QUEUE_SIZE, sizeof(uint16_t));
 
-	for(uint16_t i = 0; i < QUEUE_SIZE; i++)
+	fsize = queue_free_space(queue);
+
+	for(uint16_t i = 0; i < fsize; i++)
 	{
 		queue_enqueue(queue, &i);
 	}
 
+	size = queue_size(queue);
+
 	assert_true(queue_find(queue, &data, compare_uint16));
 
-	data = QUEUE_SIZE - 1;
+	data = size - 1;
 	assert_true(queue_find(queue, &data, compare_uint16));
 
 	queue_delete(&queue);
@@ -417,19 +444,21 @@ static void queue_uint16_find_test(void **state)
 static void queue_uint32_find_test(void **state)
 {
 	uint32_t data = 0;
+	size_t size = 0;
 
 	queue_reg_mem_alloc_cb(&malloc);
 	queue_reg_mem_free_cb(&free);
 	queue = queue_create(QUEUE_SIZE, sizeof(uint32_t));
 
-	for(uint32_t i = 0; i < QUEUE_SIZE; i++)
+	size = queue_free_space(queue);
+	for(uint32_t i = 0; i < size; i++)
 	{
 		queue_enqueue(queue, &i);
 	}
 
 	assert_true(queue_find(queue, &data, compare_uint32));
 
-	data = QUEUE_SIZE - 1;
+	data = size - 1;
 	assert_true(queue_find(queue, &data, compare_uint32));
 
 	queue_delete(&queue);
@@ -488,6 +517,7 @@ void queue_test(void)
 		  unit_test(queue_empty_test),
 		  unit_test(queue_full_test),
 		  unit_test(queue_size_test),
+		  unit_test(queue_size_uint16_test),
 		  unit_test(queue_free_space_test),
 		  unit_test_setup_teardown(queue_peek_test, preparation_uint8, destroy),
 		  unit_test_setup_teardown(queue_flush_test, preparation_uint8, destroy),
