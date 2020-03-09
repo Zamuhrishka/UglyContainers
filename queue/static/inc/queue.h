@@ -179,7 +179,7 @@ bool queue_peek(const queue_t *queue, void *data);
 * \return 	true - if data find;
 * 			false - if data not find.
 */
-bool queue_find(queue_t *queue, const void *data, bool (*is_equal)(const void*, const void*));
+bool queue_find(const queue_t *queue, const void *data, bool (*is_equal)(const void*, const void*));
 
 /**
 * \brief 	This function used to reset queue.

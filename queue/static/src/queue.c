@@ -56,8 +56,9 @@ extern void mock_assert(const int result, const char* const expression,
  */
 struct Queue_t
 {
-#ifdef QUEUE_STATIC_MODE
+#if defined(QUEUE_STATIC_MODE)
 	uint8_t data[QUEUE_SIZE_IN_BYTES];															///< array of data
+	uint8_t id;
 #else
 	uint8_t* data;																				///< array of data
 #endif
@@ -69,22 +70,20 @@ struct Queue_t
 };
 //_____ M A C R O S ___________________________________________________________________________
 //_____ V A R I A B L E   D E F I N I T I O N  ________________________________________________
-#ifdef QUEUE_STATIC_MODE
-	void* custom_malloc(size_t sizemem);
-	void custom_free(void * ptrmem);
+#if defined(QUEUE_STATIC_MODE)
+	void* queue_static_malloc(size_t sizemem);
+	void queue_static_free(void * ptrmem);
 
-	static void* (*mem_alloc_fn)(size_t sizemem) = custom_malloc;
-	static void (*mem_free_fn) (void *ptrmem) = custom_free;
+	static void* (*mem_alloc_fn)(size_t sizemem) = queue_static_malloc;
+	static void (*mem_free_fn) (void *ptrmem) = queue_static_free;
+
+	static queue_t pool[MAX_QUEUES_IN_POOL] = {0};
+	static size_t counter = 0;
 #else
 	//!Pointer to the memory allocation function
 	static void* (*mem_alloc_fn)(size_t sizemem) = NULL;
 	//!Pointer to the memory free function
 	static void (*mem_free_fn) (void *ptrmem) = NULL;
-#endif
-
-#ifdef QUEUE_STATIC_MODE
-static queue_t pool[MAX_QUEUES_IN_POOL] = {0};
-static size_t counter = 0;
 #endif
 //_____ I N L I N E   F U N C T I O N   D E F I N I T I O N   _________________________________
 inline static bool is_callbacks_valid(void)
@@ -92,8 +91,8 @@ inline static bool is_callbacks_valid(void)
 	return ((mem_free_fn != NULL) && (mem_alloc_fn != NULL)) ? true : false;
 }
 
-#ifdef QUEUE_STATIC_MODE
-void* custom_malloc(size_t sizemem)
+#if defined(QUEUE_STATIC_MODE)
+void* queue_static_malloc(size_t sizemem)
 {
 	void* queue = NULL;
 
@@ -105,9 +104,8 @@ void* custom_malloc(size_t sizemem)
 	return queue;
 }
 
-void custom_free(void * ptrmem)
+void queue_static_free(void * ptrmem)
 {
-
 }
 #endif
 //_____ S T A T I C  F U N C T I O N   D E F I N I T I O N   __________________________________
@@ -120,7 +118,11 @@ void custom_free(void * ptrmem)
 void queue_reg_mem_alloc_cb(void* (*custom_malloc)(size_t sizemem))
 {
 	assert(custom_malloc);
+#if defined(QUEUE_STATIC_MODE)
+	mem_alloc_fn = queue_static_malloc;
+#else
 	mem_alloc_fn = custom_malloc;
+#endif
 }
 
 /**
@@ -131,7 +133,11 @@ void queue_reg_mem_alloc_cb(void* (*custom_malloc)(size_t sizemem))
 void queue_reg_mem_free_cb(void (*custom_free)(void * ptrmem))
 {
 	assert(custom_free);
+#if defined(QUEUE_STATIC_MODE)
+	mem_free_fn = queue_static_free;
+#else
 	mem_free_fn = custom_free;
+#endif
 }
 
 /**
@@ -142,7 +148,12 @@ void queue_reg_mem_free_cb(void (*custom_free)(void * ptrmem))
 queue_t* queue_create(size_t capacity, size_t esize)
 {
 	queue_t* queue = NULL;
+
+#if defined(QUEUE_STATIC_MODE)
+	size_t rawSize = QUEUE_SIZE_IN_BYTES;
+#else
 	size_t rawSize = capacity * esize;
+#endif
 
 	if(!is_callbacks_valid()) {
 		return false;
@@ -153,7 +164,7 @@ queue_t* queue_create(size_t capacity, size_t esize)
 		return NULL;
 	}
 
-#ifndef QUEUE_STATIC_MODE
+#if !defined(QUEUE_STATIC_MODE)
 	queue->data = mem_alloc_fn(rawSize);
 	if (queue->data == NULL)
 	{
@@ -162,13 +173,13 @@ queue_t* queue_create(size_t capacity, size_t esize)
 	}
 #endif
 
+#if defined(QUEUE_STATIC_MODE)
+	queue->capacity = /*(rawSize > QUEUE_SIZE_IN_BYTES) ? QUEUE_SIZE_IN_BYTES : capacity*/rawSize/esize;
+#else
+	queue->capacity = capacity;
+#endif
 	queue->write = 0;
 	queue->read = 0;
-#ifndef QUEUE_STATIC_MODE
-	queue->capacity = capacity;
-#else
-	queue->capacity = (rawSize > QUEUE_SIZE_IN_BYTES) ? QUEUE_SIZE_IN_BYTES : capacity;
-#endif
 	queue->esize = esize;
 	queue->size = 0;
 
@@ -186,7 +197,7 @@ queue_t* queue_create(size_t capacity, size_t esize)
 */
 void queue_delete(queue_t **queue)
 {
-#ifndef QUEUE_STATIC_MODE
+#if !defined(QUEUE_STATIC_MODE)
 	assert(*queue);
 
 	mem_free_fn((*queue)->data);
@@ -335,7 +346,7 @@ bool queue_peek(const queue_t *queue, void *data)
 *
 * Public function defined in queue.h
 */
-bool queue_find(queue_t *queue, const void *data, bool (*is_equal)(const void*, const void*))
+bool queue_find(const queue_t *queue, const void *data, bool (*is_equal)(const void*, const void*))
 {
 	assert(queue);
 	assert(data);
