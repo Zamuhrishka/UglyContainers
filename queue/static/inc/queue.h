@@ -5,6 +5,35 @@
 *
 * \warning 		This data structure is not thread-safe!
 */
+
+/*
+ * Copyright (c) year Alexander KOVALCHUK
+ *
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge,
+ * publish, distribute, sublicense, and/or sell copies of the Software,
+ * and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+ * AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * This file is part of library_name.
+ *
+ * Author: Alexander KOVALCHUK <roux@yandex.ru>
+ */
+
 #pragma once
 //_____ I N C L U D E S _______________________________________________________________________
 #include <stdint.h>
@@ -138,7 +167,19 @@ bool queue_denqueue(queue_t *queue, void *data);
 *
 * \return 	true/false.
 */
-bool queue_peek(queue_t *queue, void *data);
+bool queue_peek(const queue_t *queue, void *data);
+
+/**
+* \brief 	This function search data in the queue.
+*
+* \param[in] queue: pointer to queue.
+* \param[in] data: pointer to retrieve data from queue.
+* \param[in] is_equal: callback function for compare data.
+*
+* \return 	true - if data find;
+* 			false - if data not find.
+*/
+bool queue_find(const queue_t *queue, const void *data, bool (*is_equal)(const void*, const void*));
 
 /**
 * \brief 	This function used to reset queue.
