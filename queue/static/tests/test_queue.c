@@ -108,7 +108,7 @@ static void preparation_uint8(void **state)
 	queue_reg_mem_alloc_cb(&malloc);
 	queue_reg_mem_free_cb(&free);
 
-	queue = queue_create(QUEUE_SIZE, sizeof(uint8_t));
+	queue = queue_create(QUEUE_SIZE, sizeof(uint8_t), NULL);
 }
 
 static void preparation_uint16(void **state)
@@ -116,7 +116,7 @@ static void preparation_uint16(void **state)
 	queue_reg_mem_alloc_cb(&malloc);
 	queue_reg_mem_free_cb(&free);
 
-	queue = queue_create(QUEUE_SIZE, sizeof(uint16_t));
+	queue = queue_create(QUEUE_SIZE, sizeof(uint16_t), NULL);
 }
 
 static void preparation_uint32(void **state)
@@ -124,7 +124,7 @@ static void preparation_uint32(void **state)
 	queue_reg_mem_alloc_cb(&malloc);
 	queue_reg_mem_free_cb(&free);
 
-	queue = queue_create(QUEUE_SIZE, sizeof(uint32_t));
+	queue = queue_create(QUEUE_SIZE, sizeof(uint32_t), NULL);
 }
 
 static void preparation_struct(void **state)
@@ -132,7 +132,7 @@ static void preparation_struct(void **state)
 	queue_reg_mem_alloc_cb(&malloc);
 	queue_reg_mem_free_cb(&free);
 
-	queue = queue_create(QUEUE_SIZE, sizeof(template_t));
+	queue = queue_create(QUEUE_SIZE, sizeof(template_t), NULL);
 }
 
 
@@ -141,16 +141,12 @@ static void destroy(void **state)
 	queue_delete(&queue);
 }
 
-
-
-
-
 static void queue_creation_test(void **state)
 {
 	queue_reg_mem_alloc_cb(&malloc);
 	queue_reg_mem_free_cb(&free);
 
-	queue = queue_create(QUEUE_SIZE, sizeof(uint8_t));
+	queue = queue_create(QUEUE_SIZE, sizeof(uint8_t), NULL);
 	assert_int_not_equal(queue, NULL);
 
 	queue_delete(&queue);
@@ -159,7 +155,7 @@ static void queue_creation_test(void **state)
 static void queue_setup_cb_fail_test(void **state)
 {
 	expect_assert_failure(queue_reg_mem_alloc_cb(NULL));
-	expect_assert_failure(queue_reg_mem_free_cb(NULL));	
+	expect_assert_failure(queue_reg_mem_free_cb(NULL));
 }
 
 static void queue_enqueue_fail_test(void **state)
@@ -188,13 +184,11 @@ static void queue_uint32_enqueue_test(void **state)
 	assert_true(queue_enqueue(queue, &data));
 }
 
-
 static void queue_struct_enqueue_test(void **state)
 {
 	template_t data = {.a = 10, .b = 100, .c = 1000};
 	assert_true(queue_enqueue(queue, &data));
 }
-
 
 
 static void queue_denqueue_fail_test(void **state)
@@ -235,7 +229,6 @@ static void queue_uint32_denqueue_test(void **state)
 	assert_int_equal(readed_data, expected_data);
 }
 
-
 static void queue_struct_denqueue_test(void **state)
 {
 	template_t expected_data = {.a = 10, .b = 100, .c = 1000};
@@ -246,14 +239,13 @@ static void queue_struct_denqueue_test(void **state)
 	assert_memory_equal(&expected_data, &readed_data, sizeof(template_t));
 }
 
-
 static void queue_low_border_test(void **state)
 {
 	uint8_t data = 0;
 
 	queue_reg_mem_alloc_cb(&malloc);
 	queue_reg_mem_free_cb(&free);
-	queue = queue_create(QUEUE_SIZE, sizeof(uint8_t));
+	queue = queue_create(QUEUE_SIZE, sizeof(uint8_t), NULL);
 	assert_false(queue_denqueue(queue, &data));
 	queue_delete(&queue);
 }
@@ -264,7 +256,7 @@ static void queue_high_border_test(void **state)
 
 	queue_reg_mem_alloc_cb(&malloc);
 	queue_reg_mem_free_cb(&free);
-	queue = queue_create(QUEUE_SIZE, sizeof(uint8_t));
+	queue = queue_create(QUEUE_SIZE, sizeof(uint8_t), NULL);
 
 	for(uint8_t i = 0; i < QUEUE_SIZE; i++)
 	{
@@ -280,7 +272,7 @@ static void queue_empty_test(void **state)
 {
 	queue_reg_mem_alloc_cb(&malloc);
 	queue_reg_mem_free_cb(&free);
-	queue = queue_create(QUEUE_SIZE, sizeof(uint8_t));
+	queue = queue_create(QUEUE_SIZE, sizeof(uint8_t), NULL);
 	assert_true(queue_is_empty(queue));
 	queue_delete(&queue);
 }
@@ -289,7 +281,7 @@ static void queue_full_test(void **state)
 {
 	queue_reg_mem_alloc_cb(&malloc);
 	queue_reg_mem_free_cb(&free);
-	queue = queue_create(QUEUE_SIZE, sizeof(uint8_t));
+	queue = queue_create(QUEUE_SIZE, sizeof(uint8_t), NULL);
 
 	for(uint8_t i = 0; i < QUEUE_SIZE; i++)
 	{
@@ -307,7 +299,7 @@ static void queue_size_test(void **state)
 
 	queue_reg_mem_alloc_cb(&malloc);
 	queue_reg_mem_free_cb(&free);
-	queue = queue_create(QUEUE_SIZE, sizeof(uint8_t));
+	queue = queue_create(QUEUE_SIZE, sizeof(uint8_t), NULL);
 
 	for(uint8_t i = 0; i < QUEUE_SIZE; i++)
 	{
@@ -319,7 +311,6 @@ static void queue_size_test(void **state)
 	queue_delete(&queue);
 }
 
-
 static void queue_size_uint16_test(void **state)
 {
 	size_t size = 0;
@@ -327,7 +318,7 @@ static void queue_size_uint16_test(void **state)
 
 	queue_reg_mem_alloc_cb(&malloc);
 	queue_reg_mem_free_cb(&free);
-	queue = queue_create(QUEUE_SIZE, sizeof(uint16_t));
+	queue = queue_create(QUEUE_SIZE, sizeof(uint16_t), NULL);
 	cap = queue_free_space(queue);
 
 	for(uint16_t i = 0; i < cap; i++)
@@ -340,7 +331,6 @@ static void queue_size_uint16_test(void **state)
 	queue_delete(&queue);
 }
 
-
 static void queue_free_space_test(void **state)
 {
 	size_t size = 0;
@@ -348,7 +338,7 @@ static void queue_free_space_test(void **state)
 
 	queue_reg_mem_alloc_cb(&malloc);
 	queue_reg_mem_free_cb(&free);
-	queue = queue_create(QUEUE_SIZE, sizeof(uint8_t));
+	queue = queue_create(QUEUE_SIZE, sizeof(uint8_t), NULL);
 
 	for(uint8_t i = 0; i < QUEUE_SIZE; i++)
 	{
@@ -361,8 +351,6 @@ static void queue_free_space_test(void **state)
 	queue_delete(&queue);
 }
 
-
-
 static void queue_peek_test(void **state)
 {
 	size_t size = 0;
@@ -372,7 +360,7 @@ static void queue_peek_test(void **state)
 	queue_reg_mem_alloc_cb(&malloc);
 	queue_reg_mem_free_cb(&free);
 
-	queue = queue_create(QUEUE_SIZE, sizeof(uint8_t));
+	queue = queue_create(QUEUE_SIZE, sizeof(uint8_t), NULL);
 	assert_int_not_equal(queue, NULL);
 
 	size = queue_free_space(queue);
@@ -399,7 +387,7 @@ static void queue_uint8_find_test(void **state)
 
 	queue_reg_mem_alloc_cb(&malloc);
 	queue_reg_mem_free_cb(&free);
-	queue = queue_create(QUEUE_SIZE, sizeof(uint8_t));
+	queue = queue_create(QUEUE_SIZE, sizeof(uint8_t), NULL);
 
 	for(uint8_t i = 0; i < QUEUE_SIZE; i++)
 	{
@@ -422,7 +410,7 @@ static void queue_uint16_find_test(void **state)
 
 	queue_reg_mem_alloc_cb(&malloc);
 	queue_reg_mem_free_cb(&free);
-	queue = queue_create(QUEUE_SIZE, sizeof(uint16_t));
+	queue = queue_create(QUEUE_SIZE, sizeof(uint16_t), NULL);
 
 	fsize = queue_free_space(queue);
 
@@ -448,7 +436,7 @@ static void queue_uint32_find_test(void **state)
 
 	queue_reg_mem_alloc_cb(&malloc);
 	queue_reg_mem_free_cb(&free);
-	queue = queue_create(QUEUE_SIZE, sizeof(uint32_t));
+	queue = queue_create(QUEUE_SIZE, sizeof(uint32_t), NULL);
 
 	size = queue_free_space(queue);
 	for(uint32_t i = 0; i < size; i++)
@@ -475,7 +463,7 @@ static void queue_flush_test(void **state)
 	queue_reg_mem_alloc_cb(&malloc);
 	queue_reg_mem_free_cb(&free);
 
-	queue = queue_create(QUEUE_SIZE, sizeof(uint8_t));
+	queue = queue_create(QUEUE_SIZE, sizeof(uint8_t), NULL);
 	assert_int_not_equal(queue, NULL);
 
 	size = queue_free_space(queue);
