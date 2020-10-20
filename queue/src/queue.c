@@ -60,7 +60,6 @@ struct Queue_t
 	uint8_t id;
 #endif
 	uint8_t* data;																				///< array of data
-// #endif
     size_t write;																				///< pointer to the write position
     size_t read;																				///< pointer to the read position
     size_t size;																				///< current size of queue
@@ -150,7 +149,6 @@ queue_t* queue_create(size_t nbm, size_t esize, uint8_t* pBuf)
 
 #if defined(QUEUE_STATIC_MODE)
 	assert(pBuf);
-	queue->data = pBuf;
 #endif
 
 	size_t rawSize = nbm * esize;
@@ -171,6 +169,8 @@ queue_t* queue_create(size_t nbm, size_t esize, uint8_t* pBuf)
 		mem_free_fn((void*)queue);
 		return NULL;
 	}
+#else
+	queue->data = pBuf;
 #endif
 
 	queue->capacity = nbm;
