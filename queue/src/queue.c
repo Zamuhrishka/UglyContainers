@@ -57,11 +57,9 @@ extern void mock_assert(const int result, const char* const expression,
 struct Queue_t
 {
 #if defined(QUEUE_STATIC_MODE)
-	uint8_t data[QUEUE_SIZE_IN_BYTES];															///< array of data
 	uint8_t id;
-#else
-	uint8_t* data;																				///< array of data
 #endif
+	uint8_t* data;																				///< array of data
     size_t write;																				///< pointer to the write position
     size_t read;																				///< pointer to the read position
     size_t size;																				///< current size of queue
@@ -145,15 +143,15 @@ void queue_reg_mem_free_cb(void (*custom_free)(void * ptrmem))
 *
 * Public function defined in queue.h
 */
-queue_t* queue_create(size_t capacity, size_t esize)
+queue_t* queue_create(size_t nbm, size_t esize, uint8_t* pBuf)
 {
 	queue_t* queue = NULL;
 
 #if defined(QUEUE_STATIC_MODE)
-	size_t rawSize = QUEUE_SIZE_IN_BYTES;
-#else
-	size_t rawSize = capacity * esize;
+	assert(pBuf);
 #endif
+
+	size_t rawSize = nbm * esize;
 
 	if(!is_callbacks_valid()) {
 		return false;
@@ -171,13 +169,11 @@ queue_t* queue_create(size_t capacity, size_t esize)
 		mem_free_fn((void*)queue);
 		return NULL;
 	}
+#else
+	queue->data = pBuf;
 #endif
 
-#if defined(QUEUE_STATIC_MODE)
-	queue->capacity = /*(rawSize > QUEUE_SIZE_IN_BYTES) ? QUEUE_SIZE_IN_BYTES : capacity*/rawSize/esize;
-#else
-	queue->capacity = capacity;
-#endif
+	queue->capacity = nbm;
 	queue->write = 0;
 	queue->read = 0;
 	queue->esize = esize;

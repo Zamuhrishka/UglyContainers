@@ -42,7 +42,6 @@
 //_____ C O N F I G S__________________________________________________________________________
 #ifdef QUEUE_STATIC_MODE
 #define MAX_QUEUES_IN_POOL                              32U
-#define QUEUE_SIZE_IN_BYTES        						32U
 #endif
 //_____ M A C R O S ___________________________________________________________________________
 //_____ D E F I N I T I O N ___________________________________________________________________
@@ -87,12 +86,16 @@ void queue_reg_mem_free_cb(void (*custom_free)(void * ptrmem));
 /**
 * \brief 	Create new queue.
 *
-* \param[in] capacity: size of queue.
-* \param[in] nodeSize: size of element of queue.
+* \param[in] nbm: number of elements in queue.
+* \param[in] esize: size of one element of queue.
+* \param[in] pBuf: external buffer which will be used by queue for
+*            storing elements.
+*
+* \note \param pBuf must be NULL when you do not use QUEUE_STATIC_MODE.
 *
 * \return 	pointer to new queue or NULL.
 */
-queue_t* queue_create(size_t capacity, size_t esize);
+queue_t* queue_create(size_t nbm, size_t esize, uint8_t* pBuf);
 
 /**
 * \brief 	Delete queue.
