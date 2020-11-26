@@ -40,8 +40,8 @@
 #include <stdbool.h>
 #include <stddef.h>
 //_____ C O N F I G S__________________________________________________________________________
-#ifdef QUEUE_STATIC_MODE
-#define MAX_QUEUES_IN_POOL                              32U
+#if defined(QUEUE_STATIC_MODE)
+#define MAX_QUEUES                                        32U                                   //!Max count of available queues
 #endif
 //_____ M A C R O S ___________________________________________________________________________
 //_____ D E F I N I T I O N ___________________________________________________________________

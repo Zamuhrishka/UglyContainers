@@ -75,7 +75,7 @@ struct Queue_t
 	static void* (*mem_alloc_fn)(size_t sizemem) = queue_static_malloc;
 	static void (*mem_free_fn) (void *ptrmem) = queue_static_free;
 
-	static queue_t pool[MAX_QUEUES_IN_POOL] = {0};
+	static queue_t pool[MAX_QUEUES] = {0};
 	static size_t counter = 0;
 #else
 	//!Pointer to the memory allocation function
@@ -94,7 +94,7 @@ void* queue_static_malloc(size_t sizemem)
 {
 	void* queue = NULL;
 
-	if(counter < MAX_QUEUES_IN_POOL)
+	if(counter < MAX_QUEUES)
 	{
 		queue = &pool[counter++];
 	}
