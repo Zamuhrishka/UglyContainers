@@ -143,12 +143,12 @@ void queue_reg_mem_free_cb(void (*custom_free)(void * ptrmem))
 *
 * Public function defined in queue.h
 */
-queue_t* queue_create(size_t nbm, size_t esize, uint8_t* pBuf)
+queue_t* queue_create(size_t nbm, size_t esize, uint8_t* pool)
 {
 	queue_t* queue = NULL;
 
 #if defined(QUEUE_STATIC_MODE)
-	assert(pBuf);
+	assert(pool);
 #endif
 
 	size_t rawSize = nbm * esize;
@@ -170,7 +170,7 @@ queue_t* queue_create(size_t nbm, size_t esize, uint8_t* pBuf)
 		return NULL;
 	}
 #else
-	queue->data = pBuf;
+	queue->data = pool;
 #endif
 
 	queue->capacity = nbm;

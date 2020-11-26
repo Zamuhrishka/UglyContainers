@@ -88,14 +88,14 @@ void queue_reg_mem_free_cb(void (*custom_free)(void * ptrmem));
 *
 * \param[in] nbm: number of elements in queue.
 * \param[in] esize: size of one element of queue.
-* \param[in] pBuf: external buffer which will be used by queue for
+* \param[in] pool: external buffer which will be used by queue for
 *            storing elements.
 *
-* \note \param pBuf must be NULL when you do not use QUEUE_STATIC_MODE.
+* \note \param pool must be NULL when you do not use QUEUE_STATIC_MODE.
 *
 * \return 	pointer to new queue or NULL.
 */
-queue_t* queue_create(size_t nbm, size_t esize, uint8_t* pBuf);
+queue_t* queue_create(size_t nbm, size_t esize, uint8_t* pool);
 
 /**
 * \brief 	Delete queue.
