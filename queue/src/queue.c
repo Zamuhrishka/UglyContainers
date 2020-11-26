@@ -199,6 +199,8 @@ void queue_delete(queue_t **queue)
 	mem_free_fn((*queue)->data);
 	mem_free_fn(*queue);
 	*queue = NULL;
+#else
+	counter = 0;
 #endif
 }
 
