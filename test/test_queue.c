@@ -1,15 +1,11 @@
 #include "unity.h"
-
 #include "queue.h"
-
 #include <stdlib.h>
 
-#define QUEUE_SIZE					32
 #define POOL_SIZE_IN_BYTES			100
 
 queue_t* queue = NULL;
 uint8_t pool[POOL_SIZE_IN_BYTES] = {0};
-
 
 void setUp(void)
 {
@@ -98,7 +94,8 @@ void test_low_border(void)
 {
 	uint8_t data = 0;    
 
-	TEST_ASSERT_FALSE(queue_denqueue(queue, &data));}
+	TEST_ASSERT_FALSE(queue_denqueue(queue, &data));
+}
 
 void test_high_border(void)
 {
