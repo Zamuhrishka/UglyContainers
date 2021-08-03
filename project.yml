@@ -23,10 +23,8 @@
     - -:test/support
   :source:
     - src/queue/*
-    - src/vector/*
   :include:
     - src/queue/
-    - src/vector/
   :support:
     - test/support
   :libraries: []
