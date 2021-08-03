@@ -1,11 +1,18 @@
-//_____ I N C L U D E S _______________________________________________________________________
+/**
+* \file         queue.c
+* \author       Kovalchuk Alexander (roux@yandex.ru)
+* \brief        This file contains the prototypes functions which use for...
+*/
+//_____ I N C L U D E S _______________________________________________________
 #include "queue.h"
+
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <assert.h>
-//_____ C O N F I G S  ________________________________________________________________________
-//_____ D E F I N I T I O N ___________________________________________________________________
+//_____ C O N F I G S 
+//_____ C O N F I G S  ________________________________________________________
+//_____ D E F I N I T I O N S _________________________________________________
 /**
  * \brief Static queue structure
  */
@@ -14,15 +21,15 @@ struct Queue_t
 #if defined(QUEUE_STATIC_MODE)
 	uint8_t id;
 #endif
-	uint8_t* data;																				///< array of data
-    size_t write;																				///< pointer to the write position
-    size_t read;																				///< pointer to the read position
-    size_t size;																				///< current size of queue
-    size_t capacity;																			///< max size of queue
-    size_t esize;																				///< size in bytes one element
+	uint8_t* data;																///< array of data
+    size_t write;																///< counter of the write position
+    size_t read;																///< counter of the read position
+    size_t size;																///< current size of queue
+    size_t capacity;															///< max size of queue
+    size_t esize;																///< size in bytes for one element
 };
-//_____ M A C R O S ___________________________________________________________________________
-//_____ V A R I A B L E   D E F I N I T I O N  ________________________________________________
+//_____ M A C R O S ___________________________________________________________
+//_____ V A R I A B L E S _____________________________________________________
 #if defined(QUEUE_STATIC_MODE)
 	void* queue_static_malloc(size_t sizemem);
 	void queue_static_free(void * ptrmem);
@@ -33,12 +40,13 @@ struct Queue_t
 	static queue_t pool[MAX_QUEUES] = {0};
 	static size_t counter = 0;
 #else
-	//!Pointer to the memory allocation function
+	//< Pointer to the memory allocation function
 	static void* (*mem_alloc_fn)(size_t sizemem) = NULL;
-	//!Pointer to the memory free function
+
+	//< Pointer to the memory free function
 	static void (*mem_free_fn) (void *ptrmem) = NULL;
 #endif
-//_____ I N L I N E   F U N C T I O N   D E F I N I T I O N   _________________________________
+//_____ P R I V A T E  F U N C T I O N S_______________________________________
 inline static bool is_callbacks_valid(void)
 {
 	return ((mem_free_fn != NULL) && (mem_alloc_fn != NULL)) ? true : false;
@@ -61,8 +69,7 @@ void queue_static_free(void * ptrmem)
 {
 }
 #endif
-//_____ S T A T I C  F U N C T I O N   D E F I N I T I O N   __________________________________
-//_____ F U N C T I O N   D E F I N I T I O N   _______________________________________________
+//_____ P U B L I C  F U N C T I O N S_________________________________________
 /**
 * This function used to register function for alloc memory.
 *
@@ -106,7 +113,7 @@ queue_t* queue_create(size_t nbm, size_t esize, uint8_t* pool)
 	assert(pool);
 #endif
 
-	size_t rawSize = nbm * esize;
+	size_t size_in_bytes = nbm * esize;
 
 	if(!is_callbacks_valid()) {
 		return false;
@@ -118,7 +125,7 @@ queue_t* queue_create(size_t nbm, size_t esize, uint8_t* pool)
 	}
 
 #if !defined(QUEUE_STATIC_MODE)
-	queue->data = mem_alloc_fn(rawSize);
+	queue->data = mem_alloc_fn(size_in_bytes);
 	if (queue->data == NULL)
 	{
 		mem_free_fn((void*)queue);
@@ -134,7 +141,7 @@ queue_t* queue_create(size_t nbm, size_t esize, uint8_t* pool)
 	queue->esize = esize;
 	queue->size = 0;
 
-	for(size_t i = 0; i < rawSize; i++) {
+	for(size_t i = 0; i < size_in_bytes; i++) {
 		queue->data[i] = 0;
 	}
 
@@ -167,12 +174,7 @@ void queue_delete(queue_t **queue)
 bool queue_is_empty(const queue_t *queue)
 {
 	assert(queue);
-
-	if(queue->size == 0) {
-		return true;
-	}
-
-	return false;
+	return (queue->size == 0) ? true : false;
 }
 
 /**
@@ -183,12 +185,7 @@ bool queue_is_empty(const queue_t *queue)
 bool queue_is_full(const queue_t *queue)
 {
 	assert(queue);
-
-	if(queue->size == queue->capacity) {
-		return true;
-	}
-
-	return false;
+	return (queue->size == queue->capacity) ? true : false;
 }
 
 /**
@@ -322,7 +319,7 @@ bool queue_find(const queue_t *queue, const void *data, bool (*is_equal)(const v
 *
 * Public function defined in queue.h
 */
-void queue_flush(queue_t *queue)
+void queue_reset(queue_t *queue)
 {
 	assert(queue);
 
