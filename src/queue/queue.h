@@ -1,20 +1,29 @@
-#ifndef QUEUE_H
-#define QUEUE_H
+/**
+* \file         queue.h
+* \author       Kovalchuk Alexander (roux@yandex.ru)
+* \brief        This file contains the prototypes functions which use for...
+*/
 
-//_____ I N C L U D E S _______________________________________________________________________
+#pragma once
+
+/* C++ detection */
+#ifdef __cplusplus
+    extern "C" {
+#endif
+//_____ I N C L U D E S _______________________________________________________
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
-//_____ C O N F I G S__________________________________________________________________________
+//_____ C O N F I G S  ________________________________________________________
 #if defined(QUEUE_STATIC_MODE)
-#define MAX_QUEUES                                        32U                                   //!Max count of available queues
+#define MAX_QUEUES                                        32U                  //< Max count of available queues
 #endif
-//_____ M A C R O S ___________________________________________________________________________
-//_____ D E F I N I T I O N ___________________________________________________________________
+//_____ D E F I N I T I O N S _________________________________________________
 struct Queue_t;
 typedef struct Queue_t queue_t;
-//_____ V A R I A B L E   D E C L A R A T I O N S _____________________________________________
-//_____ F U N C T I O N   D E C L A R A T I O N S _____________________________________________
+//_____ M A C R O S ___________________________________________________________
+//_____ V A R I A B L E S _____________________________________________________
+//_____ P U B L I C  F U N C T I O N S_________________________________________
 /**
 * \brief 	This function register memory allocation function.
 *
@@ -157,6 +166,9 @@ bool queue_find(const queue_t *queue, const void *data, bool (*is_equal)(const v
 *
 * \return 	true/false.
 */
-void queue_flush(queue_t *queue);
+void queue_reset(queue_t *queue);
 
-#endif // QUEUE_H
+/* C++ detection */
+#ifdef __cplusplus
+}
+#endif
