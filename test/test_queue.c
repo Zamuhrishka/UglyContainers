@@ -1,16 +1,22 @@
 #include "unity.h"
 #include "queue.h"
+#include "custom_allocator.h"
 #include <stdlib.h>
 
 #define POOL_SIZE_IN_BYTES			100
 
 static queue_t* queue = NULL;
-static uint8_t pool[POOL_SIZE_IN_BYTES] = {0};
 
 void setUp(void)
 {
+#if 1
     queue_reg_mem_alloc_cb(malloc);
 	queue_reg_mem_free_cb(free); 
+#else
+
+	queue_reg_mem_alloc_cb(static_malloc);
+	queue_reg_mem_free_cb(static_free); 
+#endif
 }
 
 void tearDown(void)
@@ -19,7 +25,7 @@ void tearDown(void)
 
 void test_create(void)
 {    
-	queue = queue_create(POOL_SIZE_IN_BYTES, sizeof(uint8_t), pool);   
+	queue = queue_create(POOL_SIZE_IN_BYTES, sizeof(uint8_t));   
 	TEST_ASSERT_NOT_NULL(queue);
 
 	queue_delete(&queue);
@@ -29,7 +35,7 @@ void test_enqueue(void)
 {
 	uint8_t data = 0x55;
 
-	queue = queue_create(POOL_SIZE_IN_BYTES, sizeof(uint8_t), pool); 
+	queue = queue_create(POOL_SIZE_IN_BYTES, sizeof(uint8_t)); 
 	TEST_ASSERT_TRUE(queue_enqueue(queue, &data));
 
 	queue_delete(&queue);
@@ -38,9 +44,8 @@ void test_enqueue(void)
 void test_enqueue16(void)
 {
 	uint16_t data = 0x5555;
-	// uint8_t pool[POOL_SIZE_IN_BYTES] = {0};
 
-	queue_t* queue = queue_create(POOL_SIZE_IN_BYTES, sizeof(uint16_t), pool);
+	queue_t* queue = queue_create(POOL_SIZE_IN_BYTES, sizeof(uint16_t));
 	TEST_ASSERT_TRUE(queue_enqueue(queue, &data));
 
 	queue_delete(&queue);
@@ -49,9 +54,8 @@ void test_enqueue16(void)
 void test_enqueue32(void)
 {
 	uint32_t data = 0x55555555;
-	// uint8_t pool[POOL_SIZE_IN_BYTES] = {0};
 
-	queue_t* queue = queue_create(POOL_SIZE_IN_BYTES, sizeof(uint32_t), pool);
+	queue_t* queue = queue_create(POOL_SIZE_IN_BYTES, sizeof(uint32_t));
 	TEST_ASSERT_TRUE(queue_enqueue(queue, &data));
 
 	queue_delete(&queue);
@@ -62,7 +66,7 @@ void test_denqueue(void)
 	uint8_t expected_data = 0x55;
 	uint8_t readed_data = 0;
 
-	queue = queue_create(POOL_SIZE_IN_BYTES, sizeof(uint8_t), pool); 
+	queue = queue_create(POOL_SIZE_IN_BYTES, sizeof(uint8_t)); 
 
 	queue_enqueue(queue, &expected_data);
 	TEST_ASSERT_TRUE(queue_denqueue(queue, &readed_data));
@@ -75,9 +79,8 @@ void test_denqueue16(void)
 {
 	uint16_t expected_data = 0x5555;
 	uint16_t readed_data = 0;
-	uint8_t pool[POOL_SIZE_IN_BYTES] = {0};
 
-	queue_t* queue = queue_create(POOL_SIZE_IN_BYTES, sizeof(uint16_t), pool);
+	queue_t* queue = queue_create(POOL_SIZE_IN_BYTES, sizeof(uint16_t));
 
 	queue_enqueue(queue, &expected_data);
 	TEST_ASSERT_TRUE(queue_denqueue(queue, &readed_data));
@@ -90,9 +93,8 @@ void test_denqueue32(void)
 {
 	uint32_t expected_data = 0x55555555;
 	uint32_t readed_data = 0;
-	uint8_t pool[POOL_SIZE_IN_BYTES] = {0};
 
-	queue_t* queue = queue_create(POOL_SIZE_IN_BYTES, sizeof(uint32_t), pool);
+	queue_t* queue = queue_create(POOL_SIZE_IN_BYTES, sizeof(uint32_t));
 
 	queue_enqueue(queue, &expected_data);
 	TEST_ASSERT_TRUE(queue_denqueue(queue, &readed_data));
@@ -105,7 +107,7 @@ void test_low_border(void)
 {
 	uint8_t data = 0;    
 
-	queue = queue_create(POOL_SIZE_IN_BYTES, sizeof(uint8_t), pool); 
+	queue = queue_create(POOL_SIZE_IN_BYTES, sizeof(uint8_t)); 
 	TEST_ASSERT_FALSE(queue_denqueue(queue, &data));
 
 	queue_delete(&queue);
@@ -116,7 +118,7 @@ void test_high_border(void)
 	uint8_t data = 0;
     size_t i = 0;
 
-	queue = queue_create(POOL_SIZE_IN_BYTES, sizeof(uint8_t), pool); 
+	queue = queue_create(POOL_SIZE_IN_BYTES, sizeof(uint8_t)); 
 
 	for(i = 0; i < POOL_SIZE_IN_BYTES/sizeof(uint8_t); i++) {
 		TEST_ASSERT_TRUE(queue_enqueue(queue, (uint8_t*)&i));
@@ -129,7 +131,7 @@ void test_high_border(void)
 
 void test_empty(void)
 {
-	queue = queue_create(POOL_SIZE_IN_BYTES, sizeof(uint8_t), pool); 	
+	queue = queue_create(POOL_SIZE_IN_BYTES, sizeof(uint8_t)); 	
 	TEST_ASSERT_TRUE(queue_is_empty(queue));
 
 	queue_delete(&queue);
@@ -139,7 +141,7 @@ void test_full(void)
 {
     size_t i = 0;
 
-	queue = queue_create(POOL_SIZE_IN_BYTES, sizeof(uint8_t), pool); 
+	queue = queue_create(POOL_SIZE_IN_BYTES, sizeof(uint8_t)); 
 
 	for(i = 0; i < POOL_SIZE_IN_BYTES/sizeof(uint8_t); i++) {
 		TEST_ASSERT_TRUE(queue_enqueue(queue, (uint8_t*)&i));
@@ -155,7 +157,7 @@ void test_size(void)
 	size_t size = 0;
     size_t i = 0;
 
-	queue = queue_create(POOL_SIZE_IN_BYTES, sizeof(uint8_t), pool); 
+	queue = queue_create(POOL_SIZE_IN_BYTES, sizeof(uint8_t)); 
 
 	for(i = 0; i < POOL_SIZE_IN_BYTES/sizeof(uint8_t); i++)
 	{
@@ -173,7 +175,7 @@ void test_queue_free_space(void)
 	size_t fspace = POOL_SIZE_IN_BYTES/sizeof(uint8_t);
     size_t i = 0;
 
-	queue = queue_create(POOL_SIZE_IN_BYTES, sizeof(uint8_t), pool); 
+	queue = queue_create(POOL_SIZE_IN_BYTES, sizeof(uint8_t)); 
 
 	for(i = 0; i < POOL_SIZE_IN_BYTES/sizeof(uint8_t); i++)
 	{
@@ -193,7 +195,7 @@ void test_peek(void)
 	uint8_t data[POOL_SIZE_IN_BYTES/sizeof(uint8_t)];
     size_t i = 0;
 
-	queue = queue_create(POOL_SIZE_IN_BYTES, sizeof(uint8_t), pool); 
+	queue = queue_create(POOL_SIZE_IN_BYTES, sizeof(uint8_t)); 
 
 	size = queue_free_space(queue);
 
@@ -221,7 +223,7 @@ void test_reset(void)
 	uint8_t data[POOL_SIZE_IN_BYTES/sizeof(uint8_t)];
     size_t i = 0;
 
-	queue = queue_create(POOL_SIZE_IN_BYTES, sizeof(uint8_t), pool); 
+	queue = queue_create(POOL_SIZE_IN_BYTES, sizeof(uint8_t)); 
     
 	size = queue_free_space(queue);
 
