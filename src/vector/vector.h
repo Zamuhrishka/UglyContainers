@@ -1,30 +1,28 @@
-/**********************************************************************************************
-* @file    		vector.h
-* @author  		Kovalchuk Alexander aka mz4
-* @email 		roux@yandex.ru
-* @brief		Vectors are sequence containers representing arrays that can change in size.
-* 				Internally, vectors use a dynamically allocated array to store their elements.
-* 				This array may need to be reallocated in order to grow in size when new elements
-* 				are inserted, which implies allocating a new array and moving all elements to it.
-* 				This is a relatively expensive task in terms of processing time, and thus, vectors
-* 				do not reallocate each time an element is added to the container.
+/**
+* \file         vector.h
+* \author       Kovalchuk Alexander (roux@yandex.ru)
+* \brief        This file contains the prototypes functions which use for...
 *
-* @warning 		This data structure is not thread-safe!
-***********************************************************************************************/
+* \warning 		This data structure is not thread-safe!
+*/
+
 #pragma once
-//_____ I N C L U D E S _______________________________________________________________________
+
+/* C++ detection */
+#ifdef __cplusplus
+    extern "C" {
+#endif
+//_____ I N C L U D E S _______________________________________________________
 #include "stdint.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
-//_____ Ñ O N F I G S__________________________________________________________________________
-#define RESIZE_KOEFF 								(32ul)
-typedef uint8_t 									vDataType_t;
-//_____ M A C R O S ___________________________________________________________________________
-//_____ D E F I N I T I O N ___________________________________________________________________
-//_____ V A R I A B L E   D E C L A R A T I O N S _____________________________________________
-typedef struct _vector 						vector_t;
-//_____ F U N C T I O N   D E C L A R A T I O N S _____________________________________________
+//_____ C O N F I G S  ________________________________________________________
+//_____ D E F I N I T I O N S _________________________________________________
+typedef struct _vector 	                    vector_t;
+//_____ M A C R O S ___________________________________________________________
+//_____ V A R I A B L E S _____________________________________________________
+//_____ P U B L I C  F U N C T I O N S_________________________________________
 /**
 * @brief 	This function register memory allocation function.
 *
@@ -34,13 +32,13 @@ typedef struct _vector 						vector_t;
 * 			@warning You must register allocation function before call any
 * 			function this library.
 *
-* 			@example ector_alloc_callback_reg(&malloc);
+* 			@example vector_alloc_callback_reg(&malloc);
 *
 * @param  	*custom_malloc[in] - pointer to the memory allocation function.
 *
 * @return 	none.
 */
-void vector_alloc_callback_reg(void* (*custom_malloc)(size_t sizemem));
+void vector_reg_mem_alloc_cb(void* (*custom_malloc)(size_t sizemem));
 
 /**
 * @brief 	This function register memory free function.
@@ -57,17 +55,18 @@ void vector_alloc_callback_reg(void* (*custom_malloc)(size_t sizemem));
 *
 * @return 	none.
 */
-void vector_free_callback_reg(void (*custom_free)(void * ptrmem));
+void vector_reg_mem_free_cb(void (*custom_free)(void * ptrmem));
 
 /**
 * @brief 	Create new vector.
 *
-* @param  	size[in] - size of vector.
+* \param[in] nbm: number of elements.
+* \param[in] esize: size of one element.
 *
 * @return 	pointer to  the creating vector - if ok.
 * 		  	NULL - if error occur.
 */
-vector_t* vector_create(size_t size);
+vector_t* vector_create(size_t nbm, size_t esize);
 
 /**
 * @brief 	Delete vector.
@@ -85,7 +84,16 @@ void vector_delete(vector_t **vector);
 *
 * @return 	true - if vector empty and false - if no.
 */
-bool vector_empty(const vector_t *vector);
+bool vector_is_empty(const vector_t *vector);
+
+/**
+* \brief 	This function check the vector for full.
+*
+* \param[in] vector: pointer to vector.
+*
+* \return 	true/false.
+*/
+bool vector_is_full(const vector_t *vector);
 
 /**
 * @brief 	Return size of vector.
@@ -95,6 +103,15 @@ bool vector_empty(const vector_t *vector);
 * @return 	size of vector.
 */
 size_t vector_size(const vector_t *vector);
+
+/**
+* \brief 	This function return free size of vector.
+*
+* \param[in] vector: pointer to vector.
+*
+* \return 	true/false.
+*/
+size_t vector_free_space(const vector_t *vector);
 
 /**
 * @brief 	Return capacity of vector.
@@ -112,7 +129,7 @@ size_t vector_capacity(const vector_t *vector);
 *
 * @return 	true/false.
 */
-bool vector_clear(vector_t *vector);
+bool vector_reset(vector_t *vector);
 
 /**
 * @brief 	This function read data from index position.
@@ -123,7 +140,7 @@ bool vector_clear(vector_t *vector);
 *
 * @return 	true/false.
 */
-bool vector_at(const vector_t *vector, vDataType_t *data, size_t index);
+bool vector_at(const vector_t *vector, void *data, size_t index);
 
 /**
 * @brief 	This function read and delete data from back of vector.
@@ -133,7 +150,7 @@ bool vector_at(const vector_t *vector, vDataType_t *data, size_t index);
 *
 * @return 	true/false.
 */
-bool vector_pop_back(vector_t *vector, vDataType_t *data);
+bool vector_pop_back(vector_t *vector, void *data);
 
 /**
 * @brief 	This function read and delete data from index position of vector.
@@ -144,7 +161,7 @@ bool vector_pop_back(vector_t *vector, vDataType_t *data);
 *
 * @return 	true/false.
 */
-bool vector_extract(vector_t *vector, vDataType_t *data, size_t index);
+bool vector_extract(vector_t *vector, void *data, size_t index);
 
 /**
 * @brief 	This function read and delete data from front of vector.
@@ -154,7 +171,7 @@ bool vector_extract(vector_t *vector, vDataType_t *data, size_t index);
 *
 * @return 	true/false.
 */
-bool vector_pop_front(vector_t *vector, vDataType_t *data);
+bool vector_pop_front(vector_t *vector, void *data);
 
 /**
 * @brief 	This function delete data from index position.
@@ -174,7 +191,7 @@ bool vector_erase(vector_t *vector, size_t index);
 *
 * @return 	true/false.
 */
-bool vector_append(vector_t *vector, vDataType_t data);
+bool vector_append(vector_t *vector, void *data);
 
 /**
 * @brief 	This function added data into index position into vector.
@@ -185,4 +202,10 @@ bool vector_append(vector_t *vector, vDataType_t data);
 *
 * @return 	true/false.
 */
-bool vector_insert(vector_t *vector, vDataType_t data, size_t index);
+bool vector_insert(vector_t *vector, void *data, size_t index);
+
+
+/* C++ detection */
+#ifdef __cplusplus
+}
+#endif
