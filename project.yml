@@ -23,8 +23,10 @@
     - -:test/support
   :source:
     - src/queue/*
+    - src/support/allocator/*
   :include:
     - src/queue/
+    - src/support/allocator/
   :support:
     - test/support
   :libraries: []
