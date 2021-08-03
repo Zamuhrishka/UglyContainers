@@ -15,9 +15,6 @@
 #include <stdbool.h>
 #include <stddef.h>
 //_____ C O N F I G S  ________________________________________________________
-#if defined(QUEUE_STATIC_MODE)
-#define MAX_QUEUES                                        32U                  //< Max count of available queues
-#endif
 //_____ D E F I N I T I O N S _________________________________________________
 struct Queue_t;
 typedef struct Queue_t queue_t;
@@ -63,14 +60,10 @@ void queue_reg_mem_free_cb(void (*custom_free)(void * ptrmem));
 *
 * \param[in] nbm: number of elements in queue.
 * \param[in] esize: size of one element of queue.
-* \param[in] pool: external buffer which will be used by queue for
-*            storing elements.
-*
-* \note \param pool must be NULL when you do not use QUEUE_STATIC_MODE.
 *
 * \return 	pointer to new queue or NULL.
 */
-queue_t* queue_create(size_t nbm, size_t esize, uint8_t* pool);
+queue_t* queue_create(size_t nbm, size_t esize);
 
 /**
 * \brief 	Delete queue.

@@ -18,9 +18,6 @@
  */
 struct Queue_t
 {
-#if defined(QUEUE_STATIC_MODE)
-	uint8_t id;
-#endif
 	uint8_t* data;																///< array of data
     size_t write;																///< counter of the write position
     size_t read;																///< counter of the read position
@@ -30,45 +27,16 @@ struct Queue_t
 };
 //_____ M A C R O S ___________________________________________________________
 //_____ V A R I A B L E S _____________________________________________________
-#if defined(QUEUE_STATIC_MODE)
-	void* queue_static_malloc(size_t sizemem);
-	void queue_static_free(void * ptrmem);
+//< Pointer to the memory allocation function
+static void* (*mem_alloc_fn)(size_t sizemem) = NULL;
 
-	static void* (*mem_alloc_fn)(size_t sizemem) = queue_static_malloc;
-	static void (*mem_free_fn) (void *ptrmem) = queue_static_free;
-
-	static queue_t pool[MAX_QUEUES] = {0};
-	static size_t counter = 0;
-#else
-	//< Pointer to the memory allocation function
-	static void* (*mem_alloc_fn)(size_t sizemem) = NULL;
-
-	//< Pointer to the memory free function
-	static void (*mem_free_fn) (void *ptrmem) = NULL;
-#endif
+//< Pointer to the memory free function
+static void (*mem_free_fn) (void *ptrmem) = NULL;
 //_____ P R I V A T E  F U N C T I O N S_______________________________________
 inline static bool is_callbacks_valid(void)
 {
 	return ((mem_free_fn != NULL) && (mem_alloc_fn != NULL)) ? true : false;
 }
-
-#if defined(QUEUE_STATIC_MODE)
-void* queue_static_malloc(size_t sizemem)
-{
-	void* queue = NULL;
-
-	if(counter < MAX_QUEUES)
-	{
-		queue = &pool[counter++];
-	}
-
-	return queue;
-}
-
-void queue_static_free(void * ptrmem)
-{
-}
-#endif
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 /**
 * This function used to register function for alloc memory.
@@ -77,12 +45,8 @@ void queue_static_free(void * ptrmem)
 */
 void queue_reg_mem_alloc_cb(void* (*custom_malloc)(size_t sizemem))
 {
-#if defined(QUEUE_STATIC_MODE)
-	mem_alloc_fn = queue_static_malloc;
-#else
 	assert(custom_malloc);
 	mem_alloc_fn = custom_malloc;
-#endif
 }
 
 /**
@@ -92,12 +56,8 @@ void queue_reg_mem_alloc_cb(void* (*custom_malloc)(size_t sizemem))
 */
 void queue_reg_mem_free_cb(void (*custom_free)(void * ptrmem))
 {	
-#if defined(QUEUE_STATIC_MODE)
-	mem_free_fn = queue_static_free;
-#else
 	assert(custom_free);
 	mem_free_fn = custom_free;
-#endif
 }
 
 /**
@@ -105,13 +65,9 @@ void queue_reg_mem_free_cb(void (*custom_free)(void * ptrmem))
 *
 * Public function defined in queue.h
 */
-queue_t* queue_create(size_t nbm, size_t esize, uint8_t* pool)
+queue_t* queue_create(size_t nbm, size_t esize)
 {
 	queue_t* queue = NULL;
-
-#if defined(QUEUE_STATIC_MODE)
-	assert(pool);
-#endif
 
 	size_t size_in_bytes = nbm * esize;
 
@@ -124,16 +80,12 @@ queue_t* queue_create(size_t nbm, size_t esize, uint8_t* pool)
 		return NULL;
 	}
 
-#if !defined(QUEUE_STATIC_MODE)
 	queue->data = mem_alloc_fn(size_in_bytes);
 	if (queue->data == NULL)
 	{
 		mem_free_fn((void*)queue);
 		return NULL;
 	}
-#else
-	queue->data = pool;
-#endif
 
 	queue->capacity = nbm;
 	queue->write = 0;
@@ -155,15 +107,11 @@ queue_t* queue_create(size_t nbm, size_t esize, uint8_t* pool)
 */
 void queue_delete(queue_t **queue)
 {
-#if !defined(QUEUE_STATIC_MODE)
 	assert(*queue);
 
 	mem_free_fn((*queue)->data);
 	mem_free_fn(*queue);
 	*queue = NULL;
-#else
-	counter = 0;
-#endif
 }
 
 /**
