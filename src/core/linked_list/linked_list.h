@@ -16,8 +16,8 @@
 //_____ C O N F I G S  ________________________________________________________
 
 //_____ D E F I N I T I O N S _________________________________________________
-struct linked_list_tag;
-typedef struct linked_list_tag 				linked_list_t;
+struct ll_tag;
+typedef struct ll_tag 				linked_list_t;
 //_____ M A C R O S ___________________________________________________________
 //_____ V A R I A B L E S _____________________________________________________
 //_____ P U B L I C  F U N C T I O N S_________________________________________
