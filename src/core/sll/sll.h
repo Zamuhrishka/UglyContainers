@@ -1,5 +1,5 @@
 /**
- * @file sll.h
+ * @file
  * @author Aleksander Kovalchuk (aliaksander.kavalchuk@gmail.com)
  * @brief 
  * @date 2023-01-12
@@ -17,6 +17,19 @@
 //_____ D E F I N I T I O N S _________________________________________________
 struct Sll_tag;
 typedef struct Sll_tag  				sll_t;
+
+
+typedef enum LINKED_LIST_ERRORS {
+    MEMORY_EXHAUST,
+    LIST_UNDERFLOW,
+    BAD_ELEMENT_NUMBER
+}   LINKED_LIST_ERRORS;
+
+static char *LINKED_LIST_ERRORS_STR[3] = {
+    "Memory Exhaust: can't allocate memory",
+    "List Underflow: can't pop more elements",
+    "Bad Element Number: no such element in list"
+};
 //_____ M A C R O S ___________________________________________________________
 
 //_____ V A R I A B L E S _____________________________________________________
@@ -73,8 +86,6 @@ sll_t* sll_create(size_t data_size);
 * @return 	true/false.
 */
 bool sll_delete(sll_t **list);
-
-
 
 bool sll_push_front(sll_t* ll, const void* data);
 bool sll_pop_front(sll_t* ll, void* data);
