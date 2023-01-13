@@ -31,18 +31,30 @@ typedef struct _Node_tag
 
 struct linked_list_tag
 {
-	size_t elem_size;
-	size_t list_size;
-	node_t* head;
+    struct {
+        void* this;
+        size_t elem_size;
+        size_t list_size;
+        node_t* head;
+    }   member;
 
-    void (*create)(size_t data_size);
-    void (*delete)(void);
-    bool (*push_front)(const void* data);
-    bool (*pop_front)(void* data);
-    bool (*push_back)(const void* data);
-    bool (*pop_back)(void* data);
-    bool (*insert)(const void* data, size_t position);
-    bool (*erase)(size_t position);
+    struct magic
+    {
+        void (*str)(void* value, char* str);
+        void (*compare)(void* value1, void* value2);
+    };
+    
+
+
+    struct
+    {
+        bool (*push_front)(void* this, const void* data);
+        bool (*pop_front)(void* this, void* data);
+        bool (*push_back)(void* this, const void* data);
+        bool (*pop_back)(void* this, void* data);
+        bool (*insert)(void* this, const void* data, size_t position);
+        bool (*erase)(void* this, size_t position);
+    }   methods;    
 };
 //_____ M A C R O S ___________________________________________________________
 
@@ -53,14 +65,37 @@ static void* (*mem_allocate)(size_t size) = NULL;
 /// Pointer to the memory free function
 static void (*mem_free) (void *pointer) = NULL;
 //_____ P R I V A T E  F U N C T I O N S_______________________________________
+static inline bool compare_u8()
+{
+
+}
+
+static inline bool compare_u16()
+{
+    
+}
+
+static inline bool compare_u32()
+{
+    
+}
+
+static inline bool compare_u64()
+{
+    
+}
+
+
+//TODO: Macros as template
+
 static inline bool callbacks_is_valid(void)
 {
     return (mem_allocate != NULL && mem_free != NULL);
 }
 
-static inline bool is_empty(sll_t* ll)
+static inline bool is_empty(linked_list_t* ll)
 {
-    return (NULL != ll->head);
+    return (NULL != ll->member.head);
 }
 
 
@@ -106,12 +141,12 @@ static inline node_t* get_last_but_one(node_t* head)
 }
 
 
-
-
-bool sll_push_front(sll_t* ll, const void* data)
+static bool sll_push_front(void* list, const void* data)
 {
-    assert(NULL != ll);
+    assert(NULL != list);
     assert(NULL != data);
+
+    linked_list_t* ll  = (linked_list_t*)list;
 
     //TODO: Add some align checking?
     node_t* tmp = (node_t*) mem_allocate(sizeof(node_t));
@@ -120,28 +155,30 @@ bool sll_push_front(sll_t* ll, const void* data)
     }
 
     //TODO: Add some align checking?
-    tmp->data = mem_allocate(ll->elem_size);
+    tmp->data = mem_allocate(ll->member.elem_size);
     if(NULL == tmp->data) {
 		return false;
 	}
 
-    memcpy(tmp->data, data, ll->elem_size);
-    tmp->next = ll->head;
-    ll->head = tmp;
+    memcpy(tmp->data, data, ll->member.elem_size);
+    tmp->next = ll->member.head;
+    ll->member.head = tmp;
 }
 
-bool sll_pop_front(sll_t* ll, void* data)
+static bool sll_pop_front(void* list, void* data)
 {
-    assert(NULL != ll);
+    assert(NULL != list);
     assert(NULL != data);
+
+    linked_list_t* ll  = (linked_list_t*)list;
 
     if (is_empty(ll)) {
         return false;
     }
 
-    node_t* prev = ll->head;
-    memcpy(data, ll->head->data, ll->elem_size);
-    ll->head = ll->head->next;
+    node_t* prev = ll->member.head;
+    memcpy(data, ll->member.head->data, ll->member.elem_size);
+    ll->member.head = ll->member.head->next;
 
     mem_free(prev);
 
@@ -149,15 +186,17 @@ bool sll_pop_front(sll_t* ll, void* data)
 }
 
 
-bool sll_push_back(sll_t* ll, const void* data)
+static bool sll_push_back(void* list, const void* data)
 {
-    assert(NULL != ll);
+    assert(NULL != list);
     assert(NULL != data);
 
-    node_t *last = get_last(ll->head);
+    linked_list_t* ll  = (linked_list_t*)list;
+
+    node_t *last = get_last(ll->member.head);
     node_t *tmp = (node_t*) mem_allocate(sizeof(node_t));
 
-    memcpy(tmp->data, data, ll->elem_size);
+    memcpy(tmp->data, data, ll->member.elem_size);
     tmp->next = NULL;
 
     last->next = tmp;
@@ -165,34 +204,39 @@ bool sll_push_back(sll_t* ll, const void* data)
     return true;
 }
 
-bool sll_pop_back(sll_t* ll, void* data)
+static bool sll_pop_back(void* list, void* data)
 {
-    assert(NULL != ll);
+    assert(NULL != list);
     assert(NULL != data);
+
+    linked_list_t* ll  = (linked_list_t*)list;
 
     if (is_empty(ll)) {
         return false;
     }
      
-    node_t* lastbn = get_last_but_one(ll->head);
-    void* pData = (NULL == lastbn) ? ll->head->data : lastbn->next->data;
-    node_t* active_node = (NULL == lastbn) ? ll->head : lastbn->next;
+    node_t* lastbn = get_last_but_one(ll->member.head);
+    void* pData = (NULL == lastbn) ? ll->member.head->data : lastbn->next->data;
+    node_t* active_node = (NULL == lastbn) ? ll->member.head : lastbn->next;
 
-    memcpy(data, pData, ll->elem_size);
+    memcpy(data, pData, ll->member.elem_size);
     mem_free(active_node);
     active_node = NULL;
 
     return true;
 }
 
-
-
-bool sll_insert(sll_t* ll, const void* data, size_t position)
+static bool sll_insert(void* list, const void* data, size_t position)
 {
     size_t i = 0;
 
-    while (i < position && ll->head->next) {
-        ll->head = ll->head->next;
+    assert(NULL != list);
+    assert(NULL != data);
+
+    linked_list_t* ll  = (linked_list_t*)list;
+
+    while (i < position && ll->member.head->next) {
+        ll->member.head = ll->member.head->next;
         i++;
     }
 
@@ -201,9 +245,9 @@ bool sll_insert(sll_t* ll, const void* data, size_t position)
         return false;
     }
 
-    memcpy(tmp->data, data, ll->elem_size);
-    tmp->next = (NULL == ll->head->next) ? ll->head->next : NULL;
-    ll->head->next = tmp;
+    memcpy(tmp->data, data, ll->member.elem_size);
+    tmp->next = (NULL == ll->member.head->next) ? ll->member.head->next : NULL;
+    ll->member.head->next = tmp;
 }
 
 // bool sll_erase(sll_t* ll, size_t position)
@@ -276,9 +320,29 @@ linked_list_t* ll_create(size_t data_size)
 		return NULL;
 	}
 
-	ll->head = NULL;
-	ll->list_size = 0;
-	ll->elem_size = data_size;
+    ll->member.this = ll;
+	ll->member.head = NULL;
+	ll->member.list_size = 0;
+	ll->member.elem_size = data_size;
+
+    ll->methods.push_front = sll_push_front;
+    ll->methods.pop_front = sll_pop_front;
+    ll->methods.push_back = sll_push_back;
+    ll->methods.pop_back = sll_pop_back;
+    ll->methods.insert = sll_insert;
+    ll->methods.erase = NULL;
 
 	return ll;
 }
+
+bool ll_delete(linked_list_t **list)
+{
+    return false;
+}
+
+
+
+linked_list_t* list = ll_create(sizeof(uint32_t));
+
+uint32_t data = 0x55555555;
+list->push_front((void*)list, &data);

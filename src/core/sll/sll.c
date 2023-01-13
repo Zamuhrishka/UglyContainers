@@ -1,5 +1,5 @@
 /**
- * @file sll.c
+ * @file
  * @author Aleksander Kovalchuk (aliaksander.kavalchuk@gmail.com)
  * @brief 
  * @date 2023-01-12
@@ -27,7 +27,7 @@ typedef struct _Node_tag
 {
 	void* data;
 	struct _Node_tag* next;
-} node_t;
+}   node_t;
 
 /**
 * @brief  	This structure describe the doubly-linked list.
@@ -41,6 +41,7 @@ struct Sll_tag
 	size_t elem_size;
 	size_t list_size;
 	node_t* head;
+	node_t* tail;
 };
 
 //_____ M A C R O S ___________________________________________________________
@@ -63,7 +64,7 @@ static inline bool is_empty(sll_t* ll)
 }
 
 
-static inline node_t* get_nth(node_t* head, size_t n) 
+static inline node_t* get_nth(const node_t* head, size_t n) 
 {
     assert(head);
 
@@ -77,7 +78,7 @@ static inline node_t* get_nth(node_t* head, size_t n)
     return head;
 }
 
-static inline node_t* get_last(node_t *head) 
+static inline node_t* get_last(const node_t *head) 
 {
     if (head == NULL) {
         return NULL;
@@ -90,7 +91,7 @@ static inline node_t* get_last(node_t *head)
     return head;
 }
 
-static inline node_t* get_last_but_one(node_t* head) 
+static inline node_t* get_last_but_one(const node_t* head) 
 {
     //Only one node in list
     if (head->next == NULL) {
@@ -164,7 +165,7 @@ sll_t* sll_create(size_t data_size)
 		return NULL;
 	}
 
-	ll->head = NULL;
+	tmp->head = tmp->tail = NULL;
 	ll->list_size = 0;
 	ll->elem_size = data_size;
 
@@ -225,7 +226,9 @@ bool sll_push_front(sll_t* ll, const void* data)
 
     //TODO: Add some align checking?
     tmp->data = mem_allocate(ll->elem_size);
-    if(NULL == tmp->data) {
+    if(NULL == tmp->data) 
+    {
+        mem_free(tmp);
 		return false;
 	}
 
