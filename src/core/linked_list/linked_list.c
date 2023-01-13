@@ -12,6 +12,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+
+#include "contants.h"
 //_____ C O N F I G S  ________________________________________________________
 
 //_____ D E F I N I T I O N S _________________________________________________
@@ -29,24 +31,22 @@ typedef struct _Node_tag
 } node_t;
 
 
-struct linked_list_tag
+struct ll_tag
 {
-    struct {
+    struct member {
         void* this;
         size_t elem_size;
         size_t list_size;
         node_t* head;
-    }   member;
+    };
 
-    struct magic
+    struct magic_methods
     {
         void (*str)(void* value, char* str);
-        void (*compare)(void* value1, void* value2);
+        cmp_t (*compare)(void* value1, void* value2);
     };
     
-
-
-    struct
+    struct interface
     {
         bool (*push_front)(void* this, const void* data);
         bool (*pop_front)(void* this, void* data);
@@ -54,10 +54,13 @@ struct linked_list_tag
         bool (*pop_back)(void* this, void* data);
         bool (*insert)(void* this, const void* data, size_t position);
         bool (*erase)(void* this, size_t position);
-    }   methods;    
+    };    
 };
 //_____ M A C R O S ___________________________________________________________
+//TODO: Macros as template
 
+
+//PUSH_FRONT(list, data)        (list##->push_front((void*)list, &data))
 //_____ V A R I A B L E S _____________________________________________________
 /// Pointer to the memory allocation function
 static void* (*mem_allocate)(size_t size) = NULL;
@@ -65,28 +68,30 @@ static void* (*mem_allocate)(size_t size) = NULL;
 /// Pointer to the memory free function
 static void (*mem_free) (void *pointer) = NULL;
 //_____ P R I V A T E  F U N C T I O N S_______________________________________
-static inline bool compare_u8()
-{
-
-}
-
-static inline bool compare_u16()
+static inline cmp_t compare_u8(void* value1, void* value2)
 {
     
 }
 
-static inline bool compare_u32()
-{
+// static inline cmp_t compare_u8(void* value1, void* value2)
+// {
     
-}
+// }
 
-static inline bool compare_u64()
-{
+// static inline cmp_t compare_u16()
+// {
     
-}
+// }
 
+// static inline cmp_t compare_u32()
+// {
+    
+// }
 
-//TODO: Macros as template
+// static inline cmp_t compare_u64()
+// {
+    
+// }
 
 static inline bool callbacks_is_valid(void)
 {
@@ -155,14 +160,14 @@ static bool sll_push_front(void* list, const void* data)
     }
 
     //TODO: Add some align checking?
-    tmp->data = mem_allocate(ll->member.elem_size);
+    tmp->data = mem_allocate(ll->elem_size);
     if(NULL == tmp->data) {
 		return false;
 	}
 
-    memcpy(tmp->data, data, ll->member.elem_size);
-    tmp->next = ll->member.head;
-    ll->member.head = tmp;
+    memcpy(tmp->data, data, ll->elem_size);
+    tmp->next = ll->head;
+    ll->head = tmp;
 }
 
 static bool sll_pop_front(void* list, void* data)
@@ -176,9 +181,9 @@ static bool sll_pop_front(void* list, void* data)
         return false;
     }
 
-    node_t* prev = ll->member.head;
-    memcpy(data, ll->member.head->data, ll->member.elem_size);
-    ll->member.head = ll->member.head->next;
+    node_t* prev = ll->head;
+    memcpy(data, ll->head->data, ll->elem_size);
+    ll->head = ll->head->next;
 
     mem_free(prev);
 
@@ -193,10 +198,10 @@ static bool sll_push_back(void* list, const void* data)
 
     linked_list_t* ll  = (linked_list_t*)list;
 
-    node_t *last = get_last(ll->member.head);
+    node_t *last = get_last(ll->head);
     node_t *tmp = (node_t*) mem_allocate(sizeof(node_t));
 
-    memcpy(tmp->data, data, ll->member.elem_size);
+    memcpy(tmp->data, data, ll->elem_size);
     tmp->next = NULL;
 
     last->next = tmp;
@@ -215,11 +220,11 @@ static bool sll_pop_back(void* list, void* data)
         return false;
     }
      
-    node_t* lastbn = get_last_but_one(ll->member.head);
-    void* pData = (NULL == lastbn) ? ll->member.head->data : lastbn->next->data;
-    node_t* active_node = (NULL == lastbn) ? ll->member.head : lastbn->next;
+    node_t* lastbn = get_last_but_one(ll->head);
+    void* pData = (NULL == lastbn) ? ll->head->data : lastbn->next->data;
+    node_t* active_node = (NULL == lastbn) ? ll->head : lastbn->next;
 
-    memcpy(data, pData, ll->member.elem_size);
+    memcpy(data, pData, ll->elem_size);
     mem_free(active_node);
     active_node = NULL;
 
@@ -235,8 +240,8 @@ static bool sll_insert(void* list, const void* data, size_t position)
 
     linked_list_t* ll  = (linked_list_t*)list;
 
-    while (i < position && ll->member.head->next) {
-        ll->member.head = ll->member.head->next;
+    while (i < position && ll->head->next) {
+        ll->head = ll->head->next;
         i++;
     }
 
@@ -245,9 +250,9 @@ static bool sll_insert(void* list, const void* data, size_t position)
         return false;
     }
 
-    memcpy(tmp->data, data, ll->member.elem_size);
-    tmp->next = (NULL == ll->member.head->next) ? ll->member.head->next : NULL;
-    ll->member.head->next = tmp;
+    memcpy(tmp->data, data, ll->elem_size);
+    tmp->next = (NULL == ll->head->next) ? ll->head->next : NULL;
+    ll->head->next = tmp;
 }
 
 // bool sll_erase(sll_t* ll, size_t position)
@@ -308,6 +313,14 @@ void ll_free_callback_reg(void (*custom_free)(void * ptrmem))
 	mem_free = custom_free;
 }
 
+
+void compare_callback_register(linked_list_t* list, cmp_t (*compare)(void* value1, void* value2))
+{
+
+}
+
+
+
 linked_list_t* ll_create(size_t data_size)
 {
 	if(!callbacks_is_valid()) {
@@ -320,17 +333,17 @@ linked_list_t* ll_create(size_t data_size)
 		return NULL;
 	}
 
-    ll->member.this = ll;
-	ll->member.head = NULL;
-	ll->member.list_size = 0;
-	ll->member.elem_size = data_size;
+    ll->this = ll;
+	ll->head = NULL;
+	ll->list_size = 0;
+	ll->elem_size = data_size;
 
-    ll->methods.push_front = sll_push_front;
-    ll->methods.pop_front = sll_pop_front;
-    ll->methods.push_back = sll_push_back;
-    ll->methods.pop_back = sll_pop_back;
-    ll->methods.insert = sll_insert;
-    ll->methods.erase = NULL;
+    ll->push_front = sll_push_front;
+    ll->pop_front = sll_pop_front;
+    ll->push_back = sll_push_back;
+    ll->pop_back = sll_pop_back;
+    ll->insert = sll_insert;
+    ll->erase = NULL;
 
 	return ll;
 }
@@ -342,7 +355,9 @@ bool ll_delete(linked_list_t **list)
 
 
 
-linked_list_t* list = ll_create(sizeof(uint32_t));
+// linked_list_t* list = ll_create(sizeof(uint32_t));
 
-uint32_t data = 0x55555555;
-list->push_front((void*)list, &data);
+// uint32_t data = 0x55555555;
+// list->push_front((void*)list, &data);
+
+//PUSH_FRONT(list, data);
