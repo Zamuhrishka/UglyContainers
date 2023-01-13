@@ -22,68 +22,207 @@
 * @element	*next - pointer to the next node;
 * @element	*prev - pointer to the prev node;
 */
-typedef struct node_tag
+typedef struct _Node_tag
 {
-	lldata_t value;
-	struct _Node *next;
-	struct _Node *prev;
+	void* data;
+	struct _Node_tag* next;
 } node_t;
 
-/**
-* @brief  	This structure describe the doubly-linked list.
-*
-* @element	size - size of list;
-* @element	*head - up limit;
-* @element	*tail - low limit;
-*/
-struct linked_list_tag {
-	size_t size;
-	struct _Node *head;
-	struct _Node *tail;
+
+struct linked_list_tag
+{
+	size_t elem_size;
+	size_t list_size;
+	node_t* head;
+
+    void (*create)(size_t data_size);
+    void (*delete)(void);
+    bool (*push_front)(const void* data);
+    bool (*pop_front)(void* data);
+    bool (*push_back)(const void* data);
+    bool (*pop_back)(void* data);
+    bool (*insert)(const void* data, size_t position);
+    bool (*erase)(size_t position);
 };
 //_____ M A C R O S ___________________________________________________________
 
 //_____ V A R I A B L E S _____________________________________________________
-//!Pointer to the memory allocation function
-static void* (*ll_mem_alloc)(size_t sizemem) = NULL;
+/// Pointer to the memory allocation function
+static void* (*mem_allocate)(size_t size) = NULL;
 
-//!Pointer to the memory free function
-static void (*ll_mem_free) (void *ptrmem) = NULL;
+/// Pointer to the memory free function
+static void (*mem_free) (void *pointer) = NULL;
 //_____ P R I V A T E  F U N C T I O N S_______________________________________
-/**
-* @brief 	This function is checking list for empty state.
-*
-* @param  	*list[in] - pointer to doubly-linked list.
-*
-* @return 	Pointer to the nth node of list or NULL.
-*/
-inline static bool ll_is_empty(linked_list_t* list)
+static inline bool callbacks_is_valid(void)
 {
-	return ((list->size == 0) && ((list->head->prev == NULL) && (list->tail->next == NULL))) ? true : false;
+    return (mem_allocate != NULL && mem_free != NULL);
 }
 
-/**
-* @brief 	Return pointer to the nth node of list.
-*
-* @param  	*list[in] - pointer to list.
-* @param  	index[in] - number of searching node.
-*
-* @return 	Pointer to the nth node of list or NULL.
-*/
-static node_t* ll_get_nth(linked_list_t* list, size_t index)
+static inline bool is_empty(sll_t* ll)
 {
-	node_t *tmp = list->head->next;
-
-	if((list == NULL) || (index > list->size)) {
-		return NULL;
-	}
-
-	for(size_t i = 0; i < index; i++) {
-		tmp = tmp->next;
-	}
-
-	return tmp;
+    return (NULL != ll->head);
 }
+
+
+static inline node_t* get_nth(node_t* head, size_t n) 
+{
+    assert(head);
+
+    size_t counter = 0;
+    while (counter < n && head) 
+    {
+        head = head->next;
+        counter++;
+    }
+
+    return head;
+}
+
+static inline node_t* get_last(node_t *head) 
+{
+    if (head == NULL) {
+        return NULL;
+    }
+
+    while (head->next) {
+        head = head->next;
+    }
+
+    return head;
+}
+
+static inline node_t* get_last_but_one(node_t* head) 
+{
+    //Only one node in list
+    if (head->next == NULL) {
+        return NULL;
+    }
+
+    while (head->next->next) {
+        head = head->next;
+    }
+
+    return head;
+}
+
+
+
+
+bool sll_push_front(sll_t* ll, const void* data)
+{
+    assert(NULL != ll);
+    assert(NULL != data);
+
+    //TODO: Add some align checking?
+    node_t* tmp = (node_t*) mem_allocate(sizeof(node_t));
+    if(NULL == tmp) {
+        return false;
+    }
+
+    //TODO: Add some align checking?
+    tmp->data = mem_allocate(ll->elem_size);
+    if(NULL == tmp->data) {
+		return false;
+	}
+
+    memcpy(tmp->data, data, ll->elem_size);
+    tmp->next = ll->head;
+    ll->head = tmp;
+}
+
+bool sll_pop_front(sll_t* ll, void* data)
+{
+    assert(NULL != ll);
+    assert(NULL != data);
+
+    if (is_empty(ll)) {
+        return false;
+    }
+
+    node_t* prev = ll->head;
+    memcpy(data, ll->head->data, ll->elem_size);
+    ll->head = ll->head->next;
+
+    mem_free(prev);
+
+    return true;
+}
+
+
+bool sll_push_back(sll_t* ll, const void* data)
+{
+    assert(NULL != ll);
+    assert(NULL != data);
+
+    node_t *last = get_last(ll->head);
+    node_t *tmp = (node_t*) mem_allocate(sizeof(node_t));
+
+    memcpy(tmp->data, data, ll->elem_size);
+    tmp->next = NULL;
+
+    last->next = tmp;
+
+    return true;
+}
+
+bool sll_pop_back(sll_t* ll, void* data)
+{
+    assert(NULL != ll);
+    assert(NULL != data);
+
+    if (is_empty(ll)) {
+        return false;
+    }
+     
+    node_t* lastbn = get_last_but_one(ll->head);
+    void* pData = (NULL == lastbn) ? ll->head->data : lastbn->next->data;
+    node_t* active_node = (NULL == lastbn) ? ll->head : lastbn->next;
+
+    memcpy(data, pData, ll->elem_size);
+    mem_free(active_node);
+    active_node = NULL;
+
+    return true;
+}
+
+
+
+bool sll_insert(sll_t* ll, const void* data, size_t position)
+{
+    size_t i = 0;
+
+    while (i < position && ll->head->next) {
+        ll->head = ll->head->next;
+        i++;
+    }
+
+    node_t* tmp = (node_t*) malloc(sizeof(node_t));
+    if(NULL == tmp) {
+        return false;
+    }
+
+    memcpy(tmp->data, data, ll->elem_size);
+    tmp->next = (NULL == ll->head->next) ? ll->head->next : NULL;
+    ll->head->next = tmp;
+}
+
+// bool sll_erase(sll_t* ll, size_t position)
+// {
+//     if (position == 0) 
+//     {
+//         return sll_pop_front(ll, void* data);
+//     } 
+//     else 
+//     {
+//         Node *prev = getNth(*head, n-1);
+//         Node *elm  = prev->next;
+//         int val = elm->value;
+ 
+//         prev->next = elm->next;
+//         free(elm);
+//         return val;
+//     }
+// }
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 /**
 * @brief 	This function register memory allocation function.
@@ -102,7 +241,7 @@ static node_t* ll_get_nth(linked_list_t* list, size_t index)
 */
 void ll_alloc_callback_reg(void* (*custom_malloc)(size_t sizemem))
 {
-	ll_mem_alloc = custom_malloc;
+	mem_allocate = custom_malloc;
 }
 
 /**
@@ -122,355 +261,24 @@ void ll_alloc_callback_reg(void* (*custom_malloc)(size_t sizemem))
 */
 void ll_free_callback_reg(void (*custom_free)(void * ptrmem))
 {
-	ll_mem_free = custom_free;
+	mem_free = custom_free;
 }
 
-/**
-* @brief 	Create new linked list.
-*
-* @param  	none.
-*
-* @return 	pointer to new list.
-*/
-linked_list_t* ll_create(void)
+linked_list_t* ll_create(size_t data_size)
 {
-	if(ll_mem_alloc == NULL || ll_mem_free == NULL) {
+	if(!callbacks_is_valid()) {
 		return NULL;
 	}
 
-	linked_list_t *tmp = (linked_list_t*) ll_mem_alloc(sizeof(linked_list_t));
-	if(tmp == NULL) {
+    //TODO: Add some align checking?
+	linked_list_t *ll = (linked_list_t*)mem_allocate(sizeof(linked_list_t));
+	if(NULL == ll) {
 		return NULL;
 	}
 
-	node_t *head = (node_t*) ll_mem_alloc(sizeof(node_t));
-	if(head == NULL)
-	{
-		ll_mem_free(tmp);
-		return NULL;
-	}
+	ll->head = NULL;
+	ll->list_size = 0;
+	ll->elem_size = data_size;
 
-	node_t *tail = (node_t*) ll_mem_alloc(sizeof(node_t));
-	if(tail == NULL)
-	{
-		ll_mem_free(tmp);
-		ll_mem_free(head);
-		return NULL;
-	}
-
-	head->next = tail;
-	head->prev = NULL;
-	head->value = 0;
-
-	tail->next = NULL;
-	tail->prev = head;
-	tail->value = 0;
-
-	tmp->head = head;
-	tmp->tail = tail;
-	tmp->size = 0;
-
-	return tmp;
+	return ll;
 }
-
-/**
-* @brief 	Create linked list from array.
-*
-* @param  	*list[in] - pointer to list.
-* @param  	*arr[in] - pointer to source array.
-* @param  	size[in] - size of array.
-*
-* @return 	true/false.
-*/
-// bool ll_from_array(linked_list_t *list, const lldata_t *arr, size_t size)
-// {
-// 	if (arr == NULL || size == 0 || list == NULL) {
-// 		return false;
-// 	}
-
-//     do {
-//         ll_push(list, arr[--size]);
-//     } while(size);
-
-//     return true;
-// }
-
-/**
-* @brief 	Create array from linked list.
-*
-* @param  	*list[in] - pointer to list.
-* @param  	*arr[out] - pointer to out array.
-* @param  	size[in] - size of array.
-*
-* @return 	true/false.
-*/
-// bool ll_to_array(linked_list_t *list, lldata_t* arr, size_t size)
-// {
-// 	size_t length = 0;
-
-// 	if(size == 0 || arr == NULL || list == NULL) {
-// 		return false;
-// 	}
-
-// 	length = ll_length(list);
-// 	if(length > size || length == 0) {
-// 		return false;
-// 	}
-
-// 	for(size_t i = 0; i < length; i++) {
-// 		if(ll_pop(list, &arr[i]) == false) {
-// 			return false;
-// 		}
-// 	}
-
-// 	return true;
-// }
-
-/**
-* @brief 	Delete list.
-*
-* @param  	**list[in] - pointer to list.
-*
-* @return 	true/false.
-*/
-bool ll_delete(linked_list_t **list)
-{
-	node_t *tmp = (*list)->head->next;
-	node_t *next = NULL;
-	while (tmp) {
-		next = tmp->next;
-		ll_mem_free(tmp);
-		tmp = next;
-	}
-
-	ll_mem_free((*list)->tail);
-	ll_mem_free((*list)->head);
-	ll_mem_free(*list);
-	(*list) = NULL;
-
-    return true;
-}
-
-/**
-* @brief 	Add new node on top of list.
-*
-* @param  	*list[in] - pointer to list.
-* @param  	data[in] - data for new node of list.
-*
-* @return 	true/false.
-*/
-bool ll_push(linked_list_t *list, lldata_t data)
-{
-	node_t *tmp = NULL;
-
-	if ((list == NULL)) {
-		return false;
-	}
-
-	tmp = (node_t*) ll_mem_alloc(sizeof(node_t));
-	if (tmp == NULL) {
-		return false;
-	}
-
-	tmp->value = data;
-	tmp->next = list->head->next;
-	tmp->prev = list->head;
-
-	if(list->head->next != NULL) {
-		list->head->next->prev = tmp;
-	}
-	list->head->next = tmp;
-
-	if (list->tail->prev == NULL) {
-		list->tail->prev = tmp;
-	}
-
-	list->size++;
-
-    return true;
-}
-
-/**
-* @brief 	Delete node on top and return it value.
-*
-* @param  	*list[in] - pointer to list.
-* @param  	*data[out] - value of deleted HEAD node.
-*
-* @return 	true/false.
-*/
-bool ll_pop(linked_list_t *list, lldata_t *data)
-{
-	node_t* prev = NULL;
-
-	if ((list == NULL) || (ll_is_empty(list))) {
-		return false;
-	}
-
-	prev = list->head->next;
-	list->head->next = prev->next;
-
-	prev->next->prev = list->head;
-	if (prev == list->tail->prev) {
-		list->tail->prev = NULL;
-	}
-
-	*data = prev->value;
-	ll_mem_free(prev);
-
-	list->size--;
-	return true;
-}
-
-/**
-* @brief 	Add new node to the end of list.
-*
-* @param  	*list[in] - pointer to list.
-* @param  	data[in] - value of new node.
-*
-* @return 	true/false.
-*/
-bool ll_enqueue(linked_list_t *list, lldata_t data)
-{
-	node_t *tmp = NULL;
-
-	if ((list == NULL)) {
-		return false;
-	}
-
-	tmp = (node_t*) ll_mem_alloc(sizeof(node_t));
-	if (tmp == NULL) {
-		return false;
-	}
-
-	tmp->value = data;
-	tmp->next = list->tail;
-	tmp->prev = list->tail->prev;
-
-	list->tail->prev->next = tmp;
-	list->tail->prev = tmp;
-
-	if (list->head->next == NULL) {
-		list->head->next = tmp;
-	}
-	list->size++;
-
-	return true;
-}
-
-/**
-* @brief 	Delete the last node of list.
-*
-* @param  	*list[in] - pointer to list.
-* @param  	*data[out] - value of new node.
-*
-* @return 	true/false.
-*/
-bool ll_dequeue(linked_list_t *list, lldata_t *data)
-{
-	node_t *next;
-
-	if ((list == NULL) || (ll_is_empty(list))) {
-		return false;
-	}
-
-	next = list->tail->prev;
-	list->tail->prev = next->prev;
-
-	next->prev->next = list->tail;
-	if (next == list->head->next) {
-		list->head->next = NULL;
-	}
-
-	*data = next->value;
-	ll_mem_free(next);
-
-	list->size--;
-	return true;
-}
-
-/**
-* @brief 	Insert node with value in to list on position index.
-*
-* @param  	*list[in] - pointer to list.
-* @param  	value[in] - value of new node.
-* @param  	index[in] - position in list.
-*
-* @return 	true/false.
-*/
-bool ll_insert(linked_list_t *list, size_t index, lldata_t value)
-{
-	node_t *elm = NULL;
-	node_t *tmp = NULL;
-	size_t len = ll_length(list);
-
-	if(list == NULL || index > len) {
-		return false;
-	}
-
-	elm = ll_get_nth(list, index);
-	if (elm == NULL) {
-		return false;
-	}
-
-	tmp = (node_t*) ll_mem_alloc(sizeof(node_t));
-	if(tmp == NULL) {
-		return false;
-	}
-
-	tmp->value = value;
-	tmp->next = elm;
-	tmp->prev = elm->prev;
-
-	elm->prev->next = tmp;
-	elm->prev = tmp;
-
-	list->size++;
-
-    return true;
-}
-
-/**
-* @brief 	Delete node with n position from list. And return it value.
-*
-* @param  	*list[in] - pointer to list.
-* @param  	*value[out] - value of deleted node.
-* @param  	index[in] - position in list.
-*
-* @return 	true/false.
-*/
-bool ll_extract(linked_list_t *list, size_t index, lldata_t* value)
-{
-	node_t *elm = NULL;
-	size_t len = ll_length(list);
-
-	if(list == NULL || index > len) 	{
-		return false;
-	}
-
-	elm = ll_get_nth(list, index);
-	if (elm == NULL) {
-		return false;
-	}
-
-	*value = elm->value;
-	elm->prev->next = elm->next;
-	elm->next->prev = elm->prev;
-
-	ll_mem_free(elm);
-	list->size--;
-
-    return true;
-}
-
-/**
-* @brief 	Calculate size of list.
-*
-* @param  	*list[in] - pointer to list.
-*
-* @return 	size of list.
-*/
-size_t ll_length(const linked_list_t *list)
-{
-	return list->size;
-}
-
