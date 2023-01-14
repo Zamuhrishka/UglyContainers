@@ -1,20 +1,21 @@
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
 /**
- * @file
+ * @file stack.c
  * @author Aleksander Kovalchuk (aliaksander.kavalchuk@gmail.com)
  * @brief
  * @date 2023-01-14
  */
 
 //_____ I N C L U D E S _______________________________________________________
-#include "queue.h"
+#include "stack.h"
 
 #include <assert.h>
 #include <stdbool.h>
-#include <stddef.h>
 #include <stdint.h>
-#include <string.h>
 
 #include "allocator_if.h"
+
 //_____ C O N F I G S  ________________________________________________________
 
 //_____ D E F I N I T I O N S _________________________________________________
@@ -26,7 +27,7 @@
 //_____ P R I V A T E  F U N C T I O N S_______________________________________
 
 //_____ P U B L I C  F U N C T I O N S_________________________________________
-queue_t* queue_create(size_t esize)
+stack_t* stack_create(size_t esize)
 {
     assert(0 != esize);
 
@@ -38,44 +39,46 @@ queue_t* queue_create(size_t esize)
     allocate_fn_t mem_allocate = get_allocator();
     free_fn_t mem_free = get_free();
 
-    queue_t* queue = container_create(esize);
-    if (NULL == queue)
+    stack_t* stack = container_create(esize);
+    if (NULL == stack)
     {
         return NULL;
     }
 
-    return queue;
+    return stack;
 }
 
-void queue_delete(queue_t** queue)
+void stack_delete(stack_t** stack)
 {
 }
 
-bool queue_get(queue_t* queue, const void* data)
+bool stack_push(stack_t* stack, const void* data)
 {
-    assert(queue);
-    assert(data);
-
-    return container_push_front((container_t*)queue, data);
-}
-
-bool queue_add(queue_t* queue, void* data)
-{
-    assert(NULL != queue);
+    assert(NULL != stack);
     assert(NULL != data);
 
-    return container_pop_back((container_t*)queue, data);
+    return container_push_front((container_t*)stack, data);
 }
 
-bool queue_peek(const queue_t* queue, void* data)
+bool stack_pop(stack_t* stack, void* data)
 {
-    assert(NULL != queue);
+    assert(NULL != stack);
     assert(NULL != data);
 
-    return container_at((container_t*)queue, data, 0);
+    return container_pop_front((container_t*)stack, data);
 }
 
-bool queue_size(const queue_t* queue)
+bool stack_peek(const stack_t* stack, void* data)
 {
-    return container_size((container_t*)queue);
+    assert(NULL != stack);
+    assert(NULL != data);
+
+    return container_at((container_t*)stack, data, 0);
+}
+
+bool stack_size(const stack_t* stack)
+{
+    assert(NULL != stack);
+
+    return container_size((container_t*)stack);
 }

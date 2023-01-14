@@ -16,15 +16,15 @@
 //_____ C O N F I G S  ________________________________________________________
 
 //_____ D E F I N I T I O N S _________________________________________________
-typedef container_t queue_t;
+typedef container_t stack_t;
 //_____ M A C R O S ___________________________________________________________
 
 //_____ V A R I A B L E S _____________________________________________________
 
 //_____ P U B L I C  F U N C T I O N S_________________________________________
-queue_t* queue_create(size_t esize);
-void queue_delete(queue_t** queue);
-bool queue_get(queue_t* queue, const void* data);
-bool queue_add(queue_t* queue, void* data);
-bool queue_peek(const queue_t* queue, void* data);
-bool queue_size(const queue_t* queue);
+stack_t* stack_create(size_t esize);
+void stack_delete(stack_t** stack);
+bool stack_push(stack_t* stack, const void* data);
+bool stack_pop(stack_t* stack, void* data);
+bool stack_peek(const stack_t* stack, void* data);
+bool stack_size(const stack_t* stack);
