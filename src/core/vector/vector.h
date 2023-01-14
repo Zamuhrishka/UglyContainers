@@ -1,9 +1,8 @@
 /**
- * @file
- * @author learnc.info@gmail.com (https://learnc.info/adt/linked_list.html)
- *          Aleksander Kovalchuk (aliaksander.kavalchuk@gmail.com)
- * @brief  Double-linked list
- * @date 2023-01-01
+ * @file vector.h
+ * @author Aleksander Kovalchuk (aliaksander.kavalchuk@gmail.com)
+ * @brief
+ * @date 2023-01-14
  */
 
 #pragma once
@@ -32,24 +31,11 @@ typedef struct
         bool (*erase)(void* this, size_t position);
         size_t (*size)(const void* this);
     };
-} linked_list_t;
+} vector_t;
 //_____ M A C R O S ___________________________________________________________
-//_____ V A R I A B L E S _____________________________________________________
-//_____ P U B L I C  F U N C T I O N S_________________________________________
-/**
- * @brief 	Create new linked list.
- *
- * @param  	none.
- *
- * @return 	pointer to new list.
- */
-linked_list_t* linked_list_create(size_t esize);
 
-/**
- * @brief 	Delete list.
- *
- * @param  	**list[in] - pointer to list.
- *
- * @return 	true/false.
- */
-void linked_list_delete(linked_list_t** list);
+//_____ V A R I A B L E S _____________________________________________________
+
+//_____ P U B L I C  F U N C T I O N S_________________________________________
+vector_t* vector_create(size_t esize);
+bool vector_delete(vector_t** vector);

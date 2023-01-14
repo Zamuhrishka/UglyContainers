@@ -15,7 +15,7 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "allocator_if.h"
+#include "core/allocator_if.h"
 //_____ C O N F I G S  ________________________________________________________
 
 //_____ D E F I N I T I O N S _________________________________________________
@@ -148,18 +148,18 @@ static bool push_back_cb(void* list, const void* data)
     assert(list);
     assert(data);
 
-    allocate_fn_t mem_allocate = get_allocator();
-    assert(mem_allocate);
+    // allocate_fn_t mem_allocate = get_allocator();
+    // assert(mem_allocate);
 
-    linked_list_t* ll = (linked_list_t*)list;
-    node_t* last = get_last(ll->private->head);
-    node_t* tmp = (node_t*)mem_allocate(sizeof(node_t));
+    // linked_list_t* ll = (linked_list_t*)list;
+    // node_t* last = get_last(ll->private->head);
+    // node_t* tmp = (node_t*)mem_allocate(sizeof(node_t));
 
-    memcpy(tmp->data, data, ll->private->esize);
-    tmp->next = NULL;
-    last->next = tmp;
+    // memcpy(tmp->data, data, ll->private->esize);
+    // tmp->next = NULL;
+    // last->next = tmp;
 
-    ll->private->size++;
+    // ll->private->size++;
 
     return true;
 }
@@ -178,15 +178,15 @@ static bool pop_back_cb(void* list, void* data)
         return false;
     }
 
-    node_t* lastbn = get_last_but_one(ll->private->head);
-    void* pData = (NULL == lastbn) ? ll->private->head->data : lastbn->next->data;
-    node_t* active_node = (NULL == lastbn) ? ll->private->head : lastbn->next;
+    // node_t* lastbn = get_last_but_one(ll->private->head);
+    // void* pData = (NULL == lastbn) ? ll->private->head->data : lastbn->next->data;
+    // node_t* active_node = (NULL == lastbn) ? ll->private->head : lastbn->next;
 
-    memcpy(data, pData, ll->private->esize);
-    mem_free(active_node);
-    active_node = NULL;
+    // memcpy(data, pData, ll->private->esize);
+    // mem_free(active_node);
+    // active_node = NULL;
 
-    ll->private->size--;
+    // ll->private->size--;
 
     return true;
 }
@@ -198,30 +198,30 @@ static bool insert_cb(void* list, const void* data, size_t position)
     assert(list);
     assert(data);
 
-    allocate_fn_t mem_allocate = get_allocator();
-    assert(mem_allocate);
+    // allocate_fn_t mem_allocate = get_allocator();
+    // assert(mem_allocate);
 
-    linked_list_t* ll = (linked_list_t*)list;
-    if (position > ll->private->size)
-    {
-        return false;
-    }
+    // linked_list_t* ll = (linked_list_t*)list;
+    // if (position > ll->private->size)
+    // {
+    //     return false;
+    // }
 
-    while (i < position && ll->private->head->next)
-    {
-        ll->private->head = ll->private->head->next;
-        i++;
-    }
+    // while (i < position && ll->private->head->next)
+    // {
+    //     ll->private->head = ll->private->head->next;
+    //     i++;
+    // }
 
-    node_t* tmp = (node_t*)mem_allocate(sizeof(node_t));
-    if (NULL == tmp)
-    {
-        return false;
-    }
+    // node_t* tmp = (node_t*)mem_allocate(sizeof(node_t));
+    // if (NULL == tmp)
+    // {
+    //     return false;
+    // }
 
-    memcpy(tmp->data, data, ll->private->esize);
-    tmp->next = (NULL == ll->private->head->next) ? ll->private->head->next : NULL;
-    ll->private->head->next = tmp;
+    // memcpy(tmp->data, data, ll->private->esize);
+    // tmp->next = (NULL == ll->private->head->next) ? ll->private->head->next : NULL;
+    // ll->private->head->next = tmp;
 
     return true;
 }
@@ -233,22 +233,22 @@ static bool at_cb(const void* list, void* data, size_t position)
     assert(list);
     assert(data);
 
-    allocate_fn_t mem_allocate = get_allocator();
-    assert(mem_allocate);
+    // allocate_fn_t mem_allocate = get_allocator();
+    // assert(mem_allocate);
 
-    linked_list_t* ll = (linked_list_t*)list;
-    if (position > ll->private->size)
-    {
-        return false;
-    }
+    // linked_list_t* ll = (linked_list_t*)list;
+    // if (position > ll->private->size)
+    // {
+    //     return false;
+    // }
 
-    while (i < position && ll->private->head->next)
-    {
-        ll->private->head = ll->private->head->next;
-        i++;
-    }
+    // while (i < position && ll->private->head->next)
+    // {
+    //     ll->private->head = ll->private->head->next;
+    //     i++;
+    // }
 
-    memcpy(data, ll->private->head->data, ll->private->esize);
+    // memcpy(data, ll->private->head->data, ll->private->esize);
 
     return true;
 }
@@ -311,7 +311,7 @@ linked_list_t* linked_list_create(size_t esize)
     return ll;
 }
 
-bool linked_list_delete(linked_list_t** list)
+void linked_list_delete(linked_list_t** list)
 {
     return false;
 }
