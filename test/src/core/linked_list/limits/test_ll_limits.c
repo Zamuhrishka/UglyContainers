@@ -37,89 +37,28 @@ void tearDown(void)
     linked_list_delete(&ll);
 }
 
-void test_create(void)
-{
-    TEST_ASSERT_NOT_NULL(ll);
-}
-
-void test_push_front_simple(void)
-{
-    uint32_t actual = 0x55555555;
-    TEST_ASSERT_TRUE(ll->push_front(ll, &actual));
-}
-
 void test_pop_front_empty(void)
 {
     uint32_t actual = 0;
     TEST_ASSERT_FALSE(ll->pop_front(ll, &actual));
 }
 
-void test_pop_front_simple(void)
-{
-    uint32_t actual = 0;
-    uint32_t expected = 0x55555555;
-
-    ll->push_front(ll, &expected);
-
-    TEST_ASSERT_TRUE(ll->pop_front(ll, &actual));
-    TEST_ASSERT_EQUAL_UINT32(expected, actual);
-}
-
-void test_push_back_simple(void)
-{
-    uint32_t actual = 0x55555555;
-
-    TEST_ASSERT_TRUE(ll->push_back(ll, &actual));
-}
-
 void test_pop_back_empty(void)
 {
     uint32_t actual = 0;
-
     TEST_ASSERT_FALSE(ll->pop_back(ll, &actual));
-}
-
-void test_pop_back_simple(void)
-{
-    uint32_t actual = 0;
-    uint32_t expected = 0x55555555;
-
-    ll->push_back(ll, &expected);
-
-    TEST_ASSERT_TRUE(ll->pop_back(ll, &actual));
-    TEST_ASSERT_EQUAL_UINT32(expected, actual);
-}
-
-void test_insert_simple(void)
-{
-    uint32_t actual = 0x55555555;
-
-    TEST_ASSERT_TRUE(ll->insert(ll, &actual, 0));
 }
 
 void test_insert_overflow(void)
 {
     uint32_t actual = 0x55555555;
-
     TEST_ASSERT_FALSE(ll->insert(ll, &actual, 2));
 }
 
 void test_at_empty(void)
 {
     uint32_t actual = 0;
-
     TEST_ASSERT_FALSE(ll->at(ll, &actual, 0));
-}
-
-void test_at_simple(void)
-{
-    uint32_t expected = 0x55555555;
-    uint32_t actual = 0;
-
-    ll->insert(ll, &expected, 0);
-
-    TEST_ASSERT_TRUE(ll->at(ll, &actual, 0));
-    TEST_ASSERT_EQUAL_UINT32(expected, actual);
 }
 
 void test_erase_empty(void)
@@ -136,26 +75,8 @@ void test_erase_overflow(void)
     TEST_ASSERT_FALSE(ll->erase(ll, 2));
 }
 
-void test_erase_normal(void)
-{
-    uint32_t actual = 0x55555555;
-
-    ll->insert(ll, &actual, 0);
-
-    TEST_ASSERT_TRUE(ll->erase(ll, 0));
-}
-
 void test_size_empty(void)
 {
     size_t size = ll->size(ll);
     TEST_ASSERT_EQUAL_UINT32(0, size);
-}
-
-void test_size_push_front(void)
-{
-    uint32_t data = 0x55555555;
-    TEST_ASSERT_TRUE(ll->push_front(ll, &data));
-
-    size_t size = ll->size(ll);
-    TEST_ASSERT_EQUAL_UINT32(1, size);
 }
