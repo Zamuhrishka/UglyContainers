@@ -35,11 +35,15 @@ struct Private_tag
 };
 
 //_____ M A C R O S ___________________________________________________________
+#define IS_NODE_LAST(node) (NULL == node->next)
+#define IS_NODE_FIRST(node) (NULL == node->prev)
+#define IS_NODE_NOT_LAST(node) (NULL != node->next)
+#define IS_NODE_NOT_FIRST(node) (NULL != node->prev)
 //_____ V A R I A B L E S _____________________________________________________
 //_____ P R I V A T E  F U N C T I O N S_______________________________________
-static inline bool is_empty(linked_list_t* ll)
+static inline bool is_empty(linked_list_t* linked_list)
 {
-    return (0 == ll->private->size);
+    return (0 == linked_list->private->size);
 }
 
 static inline node_t* node_allocate(size_t data_size)
@@ -76,6 +80,43 @@ static inline void node_free(node_t* node)
     mem_free(node);
 }
 
+static inline void list_free(linked_list_t* linked_list)
+{
+    assert(linked_list);
+
+    free_fn_t mem_free = get_free();
+    assert(mem_free);
+
+    mem_free(linked_list);
+}
+
+static inline linked_list_t* list_allocate(void)
+{
+    if (!is_allocator_valid())
+    {
+        return NULL;
+    }
+
+    allocate_fn_t mem_allocate = get_allocator();
+    free_fn_t mem_free = get_free();
+
+    // TODO: Add some align checking?
+    linked_list_t* linked_list = (linked_list_t*)mem_allocate(sizeof(linked_list_t));
+    if (NULL == linked_list)
+    {
+        return NULL;
+    }
+
+    linked_list->private = (private_t*)mem_allocate(sizeof(private_t));
+    if (NULL == linked_list->private)
+    {
+        mem_free(linked_list);
+        return NULL;
+    }
+
+    return linked_list;
+}
+
 static inline node_t* get_nth(node_t* head, size_t index)
 {
     size_t counter = 0;
@@ -93,50 +134,36 @@ static bool push_front_cb(void* list, const void* data)
     assert(list);
     assert(data);
 
-    linked_list_t* ll = (linked_list_t*)list;
-
-    // allocate_fn_t mem_allocate = get_allocator();
-    // assert(mem_allocate);
+    linked_list_t* linked_list = (linked_list_t*)list;
 
     // TODO: Add some align checking?
-    // node_t* tmp = (node_t*)mem_allocate(sizeof(node_t));
-    // if (NULL == tmp)
-    // {
-    //     return false;
-    // }
-    node_t* tmp = node_allocate(ll->private->esize);
+    node_t* tmp = node_allocate(linked_list->private->esize);
     if (NULL == tmp)
     {
         return false;
     }
 
-    // linked_list_t* ll = (linked_list_t*)list;
-
-    // tmp->data = mem_allocate(ll->private->esize);
-    // if (NULL == tmp->data)
-    // {
-    //     free_fn_t mem_free = get_free();
-    //     assert(mem_free);
-    //     mem_free(tmp);
-    //     return false;
-    // }
-
-    memcpy(tmp->data, data, ll->private->esize);
-    tmp->next = ll->private->head;
+    // Fill fields of new node
+    memcpy(tmp->data, data, linked_list->private->esize);
+    tmp->next = linked_list->private->head;
     tmp->prev = NULL;
 
-    if (ll->private->head)
+    // If list wasn`t empty then put prev pointer of first node to the new node
+    if (linked_list->private->head)
     {
-        ll->private->head->prev = tmp;
+        linked_list->private->head->prev = tmp;
     }
 
-    ll->private->head = tmp;
-    if (ll->private->tail == NULL)
+    // Put HEAD pointer to new node
+    linked_list->private->head = tmp;
+
+    // If list was empty then put TAIL pointer to new node
+    if (linked_list->private->tail == NULL)
     {
-        ll->private->tail = tmp;
+        linked_list->private->tail = tmp;
     }
 
-    ll->private->size++;
+    linked_list->private->size++;
 
     return true;
 }
@@ -146,32 +173,36 @@ static bool pop_front_cb(void* list, void* data)
     assert(list);
     assert(data);
 
-    linked_list_t* ll = (linked_list_t*)list;
-    if (is_empty(ll))
+    linked_list_t* linked_list = (linked_list_t*)list;
+
+    if (is_empty(linked_list))
     {
         return false;
     }
 
-    node_t* tmp = ll->private->head;
-    memcpy(data, ll->private->head->data, ll->private->esize);
+    // Save HEAD pointer
+    node_t* prev_head = linked_list->private->head;
 
-    ll->private->head = ll->private->head->next;
+    memcpy(data, linked_list->private->head->data, linked_list->private->esize);
 
-    if (ll->private->head)
+    // Move HEAD pointer to the second node
+    linked_list->private->head = linked_list->private->head->next;
+
+    // If list wasn`t empty then put prev pointer of first node to NULL
+    if (linked_list->private->head)
     {
-        ll->private->head->prev = NULL;
+        linked_list->private->head->prev = NULL;
     }
 
-    if (tmp == ll->private->tail)
+    // If list became empty then put TAIL to NULL
+    if (prev_head == linked_list->private->tail)
     {
-        ll->private->tail = NULL;
+        linked_list->private->tail = NULL;
     }
 
-    free_fn_t mem_free = get_free();
-    assert(mem_free);
-    mem_free(tmp);
+    node_free(prev_head);
 
-    ll->private->size--;
+    linked_list->private->size--;
 
     return true;
 }
@@ -181,44 +212,36 @@ static bool push_back_cb(void* list, const void* data)
     assert(list);
     assert(data);
 
-    allocate_fn_t mem_allocate = get_allocator();
-    assert(mem_allocate);
+    linked_list_t* linked_list = (linked_list_t*)list;
 
     // TODO: Add some align checking?
-    node_t* tmp = (node_t*)mem_allocate(sizeof(node_t));
+    node_t* tmp = node_allocate(linked_list->private->esize);
     if (NULL == tmp)
     {
         return false;
     }
 
-    linked_list_t* ll = (linked_list_t*)list;
-
-    tmp->data = mem_allocate(ll->private->esize);
-    if (NULL == tmp->data)
-    {
-        free_fn_t mem_free = get_free();
-        assert(mem_free);
-        mem_free(tmp);
-        return false;
-    }
-
-    memcpy(tmp->data, data, ll->private->esize);
+    // Fill fields of new node
+    memcpy(tmp->data, data, linked_list->private->esize);
     tmp->next = NULL;
-    tmp->prev = ll->private->tail;
+    tmp->prev = linked_list->private->tail;
 
-    if (ll->private->tail)
+    // If list wasn`t empty then put next pointer of last node to the new node
+    if (linked_list->private->tail)
     {
-        ll->private->tail->next = tmp;
+        linked_list->private->tail->next = tmp;
     }
 
-    ll->private->tail = tmp;
+    // Put TAIL pointer to new node
+    linked_list->private->tail = tmp;
 
-    if (ll->private->head == NULL)
+    // If list was empty then put HEAD pointer to new node
+    if (linked_list->private->head == NULL)
     {
-        ll->private->head = tmp;
+        linked_list->private->head = tmp;
     }
 
-    ll->private->size++;
+    linked_list->private->size++;
 
     return true;
 }
@@ -228,32 +251,36 @@ static bool pop_back_cb(void* list, void* data)
     assert(list);
     assert(data);
 
-    linked_list_t* ll = (linked_list_t*)list;
-    if (is_empty(ll))
+    linked_list_t* linked_list = (linked_list_t*)list;
+
+    if (is_empty(linked_list))
     {
         return false;
     }
 
-    node_t* tmp = ll->private->tail;
+    // Save TAIL pointer
+    node_t* prev_tail = linked_list->private->tail;
 
-    memcpy(data, tmp->data, ll->private->esize);
-    ll->private->tail = ll->private->tail->prev;
+    memcpy(data, prev_tail->data, linked_list->private->esize);
 
-    if (ll->private->tail)
+    // Move TAIL pointer to the penultimate node
+    linked_list->private->tail = linked_list->private->tail->prev;
+
+    // If list wasn`t empty then put next pointer of last node to NULL
+    if (linked_list->private->tail)
     {
-        ll->private->tail->next = NULL;
+        linked_list->private->tail->next = NULL;
     }
 
-    if (tmp == ll->private->head)
+    // If list became empty then put HEAD to NULL
+    if (prev_tail == linked_list->private->head)
     {
-        ll->private->head = NULL;
+        linked_list->private->head = NULL;
     }
 
-    free_fn_t mem_free = get_free();
-    assert(mem_free);
-    mem_free(tmp);
+    node_free(prev_tail);
 
-    ll->private->size--;
+    linked_list->private->size--;
 
     return true;
 }
@@ -263,70 +290,78 @@ static bool insert_cb(void* list, const void* data, size_t index)
     assert(list);
     assert(data);
 
-    linked_list_t* ll = (linked_list_t*)list;
-    if (index > ll->private->size)
+    linked_list_t* linked_list = (linked_list_t*)list;
+
+    if (index > linked_list->private->size)
     {
         return false;
     }
 
-    node_t* tmp = node_allocate(ll->private->esize);
-    if (NULL == tmp)
+    if (is_empty(linked_list))
     {
-        return false;
-    }
-
-    node_t* elm = get_nth(ll->private->head, index);
-    if (NULL == elm)
-    {
-        ll->push_front(ll, data);
+        linked_list->push_front(linked_list, data);
     }
     else
     {
-        memcpy(tmp->data, data, ll->private->esize);
+        node_t* tmp = node_allocate(linked_list->private->esize);
+        if (NULL == tmp)
+        {
+            return false;
+        }
+
+        node_t* elm = get_nth(linked_list->private->head, index);
+
+        // Fill fields of new node
+        memcpy(tmp->data, data, linked_list->private->esize);
         tmp->prev = elm;
         tmp->next = elm->next;
 
+        // If elm is not last node then put PREV pointer for next node to new node
         if (elm->next)
         {
             elm->next->prev = tmp;
         }
+
+        // Put NEXT pointer for previous node to new node
         elm->next = tmp;
 
-        if (!elm->prev)
+        // If now new node is first then change HEAD
+        if (NULL == elm->prev)
         {
-            ll->private->head = elm;
+            linked_list->private->head = elm;
         }
-        if (!elm->next)
+
+        // If now new node is last then change TAIL
+        if (NULL == elm->next)
         {
-            ll->private->tail = elm;
+            linked_list->private->tail = elm;
         }
     }
 
-    ll->private->size++;
+    linked_list->private->size++;
 
     return true;
 }
 
 static bool at_cb(const void* list, void* data, size_t index)
 {
-    size_t i = 0;
-
     assert(list);
     assert(data);
 
-    linked_list_t* ll = (linked_list_t*)list;
-    if (index > ll->private->size)
+    linked_list_t* linked_list = (linked_list_t*)list;
+
+    if (index > linked_list->private->size)
     {
         return false;
     }
 
-    node_t* elm = get_nth(ll->private->head, index);
+    node_t* elm = get_nth(linked_list->private->head, index);
     if (NULL == elm)
     {
         return false;
     }
 
-    memcpy(data, elm->data, ll->private->esize);
+    memcpy(data, elm->data, linked_list->private->esize);
 
     return true;
 }
@@ -335,40 +370,46 @@ static bool erase_cb(void* list, size_t index)
 {
     assert(list);
 
-    linked_list_t* ll = (linked_list_t*)list;
-    if (is_empty(ll))
+    linked_list_t* linked_list = (linked_list_t*)list;
+
+    if (is_empty(linked_list) || index > linked_list->private->size)
     {
         return false;
     }
 
-    node_t* elm = get_nth(ll->private->head, index);
+    node_t* elm = get_nth(linked_list->private->head, index);
     if (NULL == elm)
     {
         return false;
     }
 
-    if (elm->prev)
+    //If erase not first node then move NEXT for previous node
+    if (IS_NODE_NOT_FIRST(elm))
     {
         elm->prev->next = elm->next;
     }
-    if (elm->next)
+
+    //If erase not last node then move PREV for previous node
+    if (IS_NODE_NOT_LAST(elm))
     {
         elm->next->prev = elm->prev;
     }
-    // node_t* tmp = elm->value;
 
-    if (!elm->prev)
+    //If erase first node then move HEAD
+    if (IS_NODE_FIRST(elm))
     {
-        ll->private->head = elm->next;
+        linked_list->private->head = elm->next;
     }
-    if (!elm->next)
+
+    //If erase last node then move TAIL
+    if (IS_NODE_LAST(elm))
     {
-        ll->private->tail = elm->prev;
+        linked_list->private->tail = elm->prev;
     }
 
     node_free(elm);
 
-    ll->private->size--;
+    linked_list->private->size--;
 
     return true;
 }
@@ -377,8 +418,7 @@ static size_t size_cb(const void* list)
 {
     assert(list);
 
-    linked_list_t* ll = (linked_list_t*)list;
-    return ll->private->size;
+    return ((linked_list_t*)list)->private->size;
 }
 
 //_____ P U B L I C  F U N C T I O N S_________________________________________
@@ -386,46 +426,41 @@ linked_list_t* linked_list_create(size_t esize)
 {
     assert(0 != esize);
 
-    if (!is_allocator_valid())
-    {
-        return false;
-    }
-
-    allocate_fn_t mem_allocate = get_allocator();
-    free_fn_t mem_free = get_free();
-
-    // TODO: Add some align checking?
-    linked_list_t* ll = (linked_list_t*)mem_allocate(sizeof(linked_list_t));
-    if (NULL == ll)
+    linked_list_t* linked_list = list_allocate();
+    if(NULL == linked_list)
     {
         return NULL;
     }
 
-    private_t* member = (private_t*)mem_allocate(sizeof(private_t));
-    if (NULL == member)
-    {
-        mem_free(ll);
-        return NULL;
-    }
+    linked_list->private->head = linked_list->private->tail = NULL;
+    linked_list->private->size = 0;
+    linked_list->private->esize = esize;
 
-    ll->private = member;
-    ll->private->head = ll->private->tail = NULL;
-    ll->private->size = 0;
-    ll->private->esize = esize;
+    linked_list->push_front = push_front_cb;
+    linked_list->pop_front = pop_front_cb;
+    linked_list->push_back = push_back_cb;
+    linked_list->pop_back = pop_back_cb;
+    linked_list->insert = insert_cb;
+    linked_list->at = at_cb;
+    linked_list->erase = erase_cb;
+    linked_list->size = size_cb;
 
-    ll->push_front = push_front_cb;
-    ll->pop_front = pop_front_cb;
-    ll->push_back = push_back_cb;
-    ll->pop_back = pop_back_cb;
-    ll->insert = insert_cb;
-    ll->at = at_cb;
-    ll->erase = erase_cb;
-    ll->size = size_cb;
-
-    return ll;
+    return linked_list;
 }
 
 void linked_list_delete(linked_list_t** list)
 {
-    return false;
+    assert(*list);
+    assert(list);
+
+    node_t* tmp = (*list)->private->head;
+
+    while (tmp) {
+        node_t* next = tmp->next;
+        node_free(tmp);
+        tmp = next;
+    }
+
+    list_free(*list);
+    (*list) = NULL;
 }
