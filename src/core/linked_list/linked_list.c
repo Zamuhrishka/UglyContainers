@@ -297,7 +297,7 @@ static bool insert_cb(void* list, const void* data, size_t index)
         return false;
     }
 
-    if (is_empty(linked_list))
+    if (is_empty(linked_list) || index == 0)
     {
         linked_list->push_front(linked_list, data);
     }
@@ -309,7 +309,7 @@ static bool insert_cb(void* list, const void* data, size_t index)
             return false;
         }
 
-        node_t* elm = get_nth(linked_list->private->head, index);
+        node_t* elm = get_nth(linked_list->private->head, index-1);
 
         // Fill fields of new node
         memcpy(tmp->data, data, linked_list->private->esize);
@@ -336,9 +336,9 @@ static bool insert_cb(void* list, const void* data, size_t index)
         {
             linked_list->private->tail = elm;
         }
-    }
 
-    linked_list->private->size++;
+        linked_list->private->size++;
+    } 
 
     return true;
 }
