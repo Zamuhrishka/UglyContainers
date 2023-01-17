@@ -38,7 +38,7 @@ queue_t* queue_create(size_t esize)
     allocate_fn_t mem_allocate = get_allocator();
     free_fn_t mem_free = get_free();
 
-    queue_t* queue = container_create(esize);
+    queue_t* queue = container_create(esize, CONTAINER_LINKED_LIST_BASED);
     if (NULL == queue)
     {
         return NULL;
