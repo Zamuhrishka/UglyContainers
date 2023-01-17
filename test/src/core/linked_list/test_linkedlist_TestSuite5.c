@@ -27,7 +27,6 @@ static linked_list_t* ll = NULL;
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 void setUp(void)
 {
-    // container_init(malloc, free);
     ll = linked_list_create(sizeof(uint32_t));
 }
 
@@ -36,46 +35,67 @@ void tearDown(void)
     linked_list_delete(&ll);
 }
 
-void test_pop_front_empty(void)
+void test_init(void)
+{
+    TEST_MESSAGE("Linked List Limits Tests");
+}
+
+
+void test_TestCase_0(void)
+{
+    TEST_MESSAGE("Linked List CREATE test");
+    TEST_ASSERT_NOT_NULL(ll);
+}
+
+
+void test_TestCase_1(void)
 {
     uint32_t actual = 0;
+    TEST_MESSAGE("Linked List POP FRONT EMPTY test");
     TEST_ASSERT_FALSE(ll->pop_front(ll, &actual));
 }
 
-void test_pop_back_empty(void)
+void test_TestCase_2(void)
 {
     uint32_t actual = 0;
+    TEST_MESSAGE("Linked List POP BACK EMPTY test");
     TEST_ASSERT_FALSE(ll->pop_back(ll, &actual));
 }
 
-void test_insert_overflow(void)
+void test_TestCase_3(void)
 {
     uint32_t actual = 0x55555555;
+    TEST_MESSAGE("Linked List INSERT OVERFLOW test");
     TEST_ASSERT_FALSE(ll->insert(ll, &actual, 2));
 }
 
-void test_at_empty(void)
+void test_TestCase_4(void)
 {
     uint32_t actual = 0;
+    TEST_MESSAGE("Linked List AT EMPTY test");
     TEST_ASSERT_FALSE(ll->at(ll, &actual, 0));
 }
 
-void test_erase_empty(void)
+void test_TestCase_5(void)
 {
+    TEST_MESSAGE("Linked List ERASE EMPTY test");
     TEST_ASSERT_FALSE(ll->erase(ll, 0));
 }
 
-void test_erase_overflow(void)
+void test_TestCase_6(void)
 {
     uint32_t actual = 0x55555555;
+
+    TEST_MESSAGE("Linked List ERASE OVERFLOW test");
 
     ll->insert(ll, &actual, 0);
 
     TEST_ASSERT_FALSE(ll->erase(ll, 2));
 }
 
-void test_size_empty(void)
+void test_TestCase_7(void)
 {
+    TEST_MESSAGE("Linked List SIZE EMPTY test");
     size_t size = ll->size(ll);
     TEST_ASSERT_EQUAL_UINT32(0, size);
 }
