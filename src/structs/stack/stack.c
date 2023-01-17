@@ -39,7 +39,7 @@ stack_t* stack_create(size_t esize)
     allocate_fn_t mem_allocate = get_allocator();
     free_fn_t mem_free = get_free();
 
-    stack_t* stack = container_create(esize);
+    stack_t* stack = container_create(esize, CONTAINER_VECTOR_BASED);
     if (NULL == stack)
     {
         return NULL;
@@ -57,7 +57,7 @@ bool stack_push(stack_t* stack, const void* data)
     assert(NULL != stack);
     assert(NULL != data);
 
-    return container_push_front((container_t*)stack, data);
+    return container_push_back((container_t*)stack, data);
 }
 
 bool stack_pop(stack_t* stack, void* data)
@@ -65,7 +65,7 @@ bool stack_pop(stack_t* stack, void* data)
     assert(NULL != stack);
     assert(NULL != data);
 
-    return container_pop_front((container_t*)stack, data);
+    return container_pop_back((container_t*)stack, data);
 }
 
 bool stack_peek(const stack_t* stack, void* data)
