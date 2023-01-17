@@ -200,7 +200,7 @@ static bool push_front_cb(void* vector, const void* data)
     size_t size_in_bytes = _vector->private->size * _vector->private->esize;
     uint8_t* dst = &_vector->private->pool[size_in_bytes + _vector->private->esize];
     uint8_t* src = &_vector->private->pool[size_in_bytes];
-    for (size_t i = 0; i < size_in_bytes; i--)
+    for (size_t i = 0; i < size_in_bytes; i++)
     {
         *dst-- = *src--;
     }
