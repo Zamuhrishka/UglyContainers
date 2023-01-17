@@ -18,6 +18,13 @@
 //_____ C O N F I G S  ________________________________________________________
 
 //_____ D E F I N I T I O N S _________________________________________________
+struct test_ll_simple_struct
+{
+    uint32_t a;
+    uint16_t b;
+    uint8_t c;
+};
+
 //_____ M A C R O S ___________________________________________________________
 
 //_____ V A R I A B L E S _____________________________________________________
@@ -28,7 +35,7 @@ static linked_list_t* ll = NULL;
 void setUp(void)
 {
     container_init(malloc, free);
-    ll = linked_list_create(sizeof(uint32_t));
+    ll = linked_list_create(sizeof(struct test_ll_simple_struct));
 }
 
 void tearDown(void)
@@ -43,59 +50,65 @@ void test_create(void)
 
 void test_push_front(void)
 {
-    uint32_t actual = 0x55555555;
+    struct test_ll_simple_struct actual = {.a = 0x55555555, .b = 0x5555, .c = 0x55};
     TEST_ASSERT_TRUE(ll->push_front(ll, &actual));
 }
 
 void test_pop_front(void)
 {
-    uint32_t actual = 0;
-    uint32_t expected = 0x55555555;
+    struct test_ll_simple_struct actual = {0};
+    struct test_ll_simple_struct expected = {.a = 0x55555555, .b = 0x5555, .c = 0x55};
 
     ll->push_front(ll, &expected);
 
     TEST_ASSERT_TRUE(ll->pop_front(ll, &actual));
-    TEST_ASSERT_EQUAL_UINT32(expected, actual);
+    TEST_ASSERT_EQUAL_UINT32(expected.a, actual.a);
+    TEST_ASSERT_EQUAL_UINT16(expected.b, actual.b);
+    TEST_ASSERT_EQUAL_UINT8(expected.c, actual.c);
 }
 
 void test_push_back(void)
 {
-    uint32_t actual = 0x55555555;
+    struct test_ll_simple_struct actual = {.a = 0x55555555, .b = 0x5555, .c = 0x55};
     TEST_ASSERT_TRUE(ll->push_back(ll, &actual));
 }
 
 void test_pop_back(void)
 {
-    uint32_t actual = 0;
-    uint32_t expected = 0x55555555;
+    struct test_ll_simple_struct actual = {0};
+    struct test_ll_simple_struct expected = {.a = 0x55555555, .b = 0x5555, .c = 0x55};
 
     ll->push_back(ll, &expected);
 
     TEST_ASSERT_TRUE(ll->pop_back(ll, &actual));
-    TEST_ASSERT_EQUAL_UINT32(expected, actual);
+    TEST_ASSERT_EQUAL_UINT32(expected.a, actual.a);
+    TEST_ASSERT_EQUAL_UINT16(expected.b, actual.b);
+    TEST_ASSERT_EQUAL_UINT8(expected.c, actual.c);
 }
 
 void test_insert(void)
 {
-    uint32_t actual = 0x55555555;
+    struct test_ll_simple_struct actual = {.a = 0x55555555, .b = 0x5555, .c = 0x55};
     TEST_ASSERT_TRUE(ll->insert(ll, &actual, 0));
     TEST_ASSERT_TRUE(ll->insert(ll, &actual, 0));
 }
 
 void test_at(void)
 {
-    uint32_t expected = 0x55555555;
-    uint32_t actual = 0;
+    struct test_ll_simple_struct actual = {0};
+    struct test_ll_simple_struct expected = {.a = 0x55555555, .b = 0x5555, .c = 0x55};
 
     ll->insert(ll, &expected, 0);
 
     TEST_ASSERT_TRUE(ll->at(ll, &actual, 0));
-    TEST_ASSERT_EQUAL_UINT32(expected, actual);
+    TEST_ASSERT_EQUAL_UINT32(expected.a, actual.a);
+    TEST_ASSERT_EQUAL_UINT16(expected.b, actual.b);
+    TEST_ASSERT_EQUAL_UINT8(expected.c, actual.c);
 }
 
 void test_erase(void)
 {
-    uint32_t actual = 0x55555555;
+    struct test_ll_simple_struct actual = {.a = 0x55555555, .b = 0x5555, .c = 0x55};
 
     ll->insert(ll, &actual, 0);
 
@@ -110,7 +123,7 @@ void test_size_empty(void)
 
 void test_size(void)
 {
-    uint32_t data = 0x55555555;
+    struct test_ll_simple_struct data = {.a = 0x55555555, .b = 0x5555, .c = 0x55};
     ll->push_front(ll, &data);
 
     size_t size = ll->size(ll);

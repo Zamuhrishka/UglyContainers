@@ -28,7 +28,7 @@ static linked_list_t* ll = NULL;
 void setUp(void)
 {
     container_init(malloc, free);
-    ll = linked_list_create(sizeof(uint32_t));
+    ll = linked_list_create(sizeof(uint16_t));
 }
 
 void tearDown(void)
@@ -43,14 +43,14 @@ void test_create(void)
 
 void test_push_front(void)
 {
-    uint32_t actual = 0x55555555;
+    uint16_t actual = 0x55555555;
     TEST_ASSERT_TRUE(ll->push_front(ll, &actual));
 }
 
 void test_pop_front(void)
 {
-    uint32_t actual = 0;
-    uint32_t expected = 0x55555555;
+    uint16_t actual = 0;
+    uint16_t expected = 0x55555555;
 
     ll->push_front(ll, &expected);
 
@@ -60,14 +60,14 @@ void test_pop_front(void)
 
 void test_push_back(void)
 {
-    uint32_t actual = 0x55555555;
+    uint16_t actual = 0x55555555;
     TEST_ASSERT_TRUE(ll->push_back(ll, &actual));
 }
 
 void test_pop_back(void)
 {
-    uint32_t actual = 0;
-    uint32_t expected = 0x55555555;
+    uint16_t actual = 0;
+    uint16_t expected = 0x55555555;
 
     ll->push_back(ll, &expected);
 
@@ -77,15 +77,15 @@ void test_pop_back(void)
 
 void test_insert(void)
 {
-    uint32_t actual = 0x55555555;
+    uint16_t actual = 0x55555555;
     TEST_ASSERT_TRUE(ll->insert(ll, &actual, 0));
     TEST_ASSERT_TRUE(ll->insert(ll, &actual, 0));
 }
 
 void test_at(void)
 {
-    uint32_t expected = 0x55555555;
-    uint32_t actual = 0;
+    uint16_t expected = 0x55555555;
+    uint16_t actual = 0;
 
     ll->insert(ll, &expected, 0);
 
@@ -95,7 +95,7 @@ void test_at(void)
 
 void test_erase(void)
 {
-    uint32_t actual = 0x55555555;
+    uint16_t actual = 0x55555555;
 
     ll->insert(ll, &actual, 0);
 
@@ -110,7 +110,7 @@ void test_size_empty(void)
 
 void test_size(void)
 {
-    uint32_t data = 0x55555555;
+    uint16_t data = 0x55555555;
     ll->push_front(ll, &data);
 
     size_t size = ll->size(ll);
