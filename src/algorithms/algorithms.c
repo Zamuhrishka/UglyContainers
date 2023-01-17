@@ -33,3 +33,27 @@
 //     }
 //     printf("\n");
 // }
+
+
+// void* search(container_t* container, bool (*match)(void* value))
+// {
+
+// }
+
+
+// void* find_next(container_t* container, bool (*match)(void* value))
+// {
+
+// }
+
+
+// void* sort(container_t* container, cmp_t (*cmp)(void* value, void* value))
+// {
+
+// }
+
+
+// void* iteration(container_t* container))
+// {
+
+// }
