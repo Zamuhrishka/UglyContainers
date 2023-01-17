@@ -1,5 +1,5 @@
 /**
- * @file allocator_if.c
+ * @file
  * @author Aleksander Kovalchuk (aliaksander.kavalchuk@gmail.com)
  * @brief
  * @date 2023-01-14
@@ -12,7 +12,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <string.h>
+#include <stdlib.h>
 //_____ C O N F I G S  ________________________________________________________
 
 //_____ D E F I N I T I O N S _________________________________________________
@@ -21,10 +21,10 @@
 
 //_____ V A R I A B L E S _____________________________________________________
 /// Pointer to the memory allocation function
-static void* (*mem_allocate)(size_t size) = NULL;
+static void* (*mem_allocate)(size_t size) = malloc;
 
 /// Pointer to the memory free function
-static void (*mem_free)(void* pointer) = NULL;
+static void (*mem_free)(void* pointer) = free;
 //_____ P R I V A T E  F U N C T I O N S_______________________________________
 
 //_____ P U B L I C  F U N C T I O N S_________________________________________

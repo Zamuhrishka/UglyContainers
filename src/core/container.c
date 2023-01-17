@@ -29,7 +29,7 @@ struct Container_tag
 //_____ P R I V A T E  F U N C T I O N S_______________________________________
 
 //_____ P U B L I C  F U N C T I O N S_________________________________________
-void container_init(allocate_fn_t alloc_cb, free_fn_t free_cb)
+void container_alloc_init(allocate_fn_t alloc_cb, free_fn_t free_cb)
 {
     assert(alloc_cb);
     assert(free_cb);

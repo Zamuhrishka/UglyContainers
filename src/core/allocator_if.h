@@ -1,5 +1,5 @@
 /**
- * @file allocator_if.h
+ * @file
  * @author Aleksander Kovalchuk (aliaksander.kavalchuk@gmail.com)
  * @brief
  * @date 2023-01-14
