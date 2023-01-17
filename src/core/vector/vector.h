@@ -20,7 +20,7 @@ typedef struct Private_tag private_t;
 typedef struct
 {
     private_t* private;
-    struct public
+    struct
     {
         bool (*push_front)(void* this, const void* data);
         bool (*pop_front)(void* this, void* data);
