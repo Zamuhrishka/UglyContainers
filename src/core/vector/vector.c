@@ -66,14 +66,14 @@ static inline vector_t* vector_allocate(void)
 
 static inline bool vector_resize(vector_t *vector)
 {
-	size_t new_size = vector->private->size + (RESIZE_FACTOR * vector->private->esize);
+	size_t new_size_in_bytes = (vector->private->size * vector->private->esize) + (RESIZE_FACTOR * vector->private->esize);
 
     allocate_fn_t mem_allocate = get_allocator();
     assert(mem_allocate);
     free_fn_t mem_free = get_free();
     assert(mem_free);
 
-    void* data = mem_allocate(new_size);
+    void* data = mem_allocate(new_size_in_bytes);
     if (NULL == data)
     {
         return NULL;
@@ -85,10 +85,46 @@ static inline bool vector_resize(vector_t *vector)
 	mem_free(vector->private->pool);
 
 	vector->private->pool = data;
-	vector->private->capacity = new_size;
+	vector->private->capacity = new_size_in_bytes;
 
 	return true;
 }
+
+#if 0
+static inline bool vector_decrease(vector_t *vector)
+{
+    size_t current_size_in_bytes = vector->private->size * vector->private->esize;
+    size_t resize_factor_size_in_bytes = RESIZE_FACTOR * vector->private->esize;
+
+    if(current_size_in_bytes < resize_factor_size_in_bytes)
+    {
+        return false;
+    }
+
+	size_t new_size_in_bytes = current_size_in_bytes - resize_factor_size_in_bytes;
+
+    allocate_fn_t mem_allocate = get_allocator();
+    assert(mem_allocate);
+    free_fn_t mem_free = get_free();
+    assert(mem_free);
+
+    void* data = mem_allocate(new_size_in_bytes);
+    if (NULL == data)
+    {
+        return NULL;
+    }
+
+    size_t size_in_bytes = vector->private->size * vector->private->esize;
+    memcpy(data, vector->private->pool, size_in_bytes);
+
+	mem_free(vector->private->pool);
+
+	vector->private->pool = data;
+	vector->private->capacity = new_size_in_bytes;
+
+	return true;
+}
+#endif
 
 static inline void vector_free(vector_t* vector)
 {
@@ -113,45 +149,10 @@ static inline void* pool_allocate(size_t size_in_bytes)
         return NULL;
     }
 
+    memset(pool, 0, size_in_bytes);
+
 	return pool;
 }
-
-// static inline void pool_free(void* pool)
-// {
-//     assert(pool);
-
-//     free_fn_t mem_free = get_free();
-//     assert(mem_free);
-
-//     mem_free(pool);
-// }
-
-
-// static inline void* data_allocate(size_t data_size)
-// {
-//     allocate_fn_t mem_allocate = get_allocator();
-//     assert(mem_allocate);
-
-//     void* data = mem_allocate(data_size);
-//     if (NULL == data)
-//     {
-//         return NULL;
-//     }
-
-//     return data;
-// }
-
-// static inline void data_free(void* data)
-// {
-//     assert(data);
-
-//     free_fn_t mem_free = get_free();
-//     assert(mem_free);
-//     mem_free(data);
-// }
-
-
-
 
 static bool is_empty(const vector_t *vector)
 {
@@ -202,7 +203,7 @@ static bool push_front_cb(void* vector, const void* data)
     uint8_t* src = &_vector->private->pool[size_in_bytes];
     for (size_t i = 0; i < size_in_bytes; i++)
     {
-        *dst-- = *src--;
+        *(--dst) = *(--src);
     }
     
     memcpy(&_vector->private->pool[0], data, _vector->private->esize);
@@ -280,7 +281,7 @@ static bool insert_cb(void* vector, const void* data, size_t index)
 
     vector_t* _vector = (vector_t*)vector;
 
-    if(index > _vector->private->size - 1) 
+    if(index > _vector->private->size) 
 	{
 		return false;
 	}
@@ -296,11 +297,11 @@ static bool insert_cb(void* vector, const void* data, size_t index)
     size_t offset_in_bytes = index * _vector->private->esize;
     size_t size_in_bytes = _vector->private->size * _vector->private->esize;
     size_t byte_number = size_in_bytes - offset_in_bytes;
-    uint8_t* dst = &_vector->private->pool[offset_in_bytes + _vector->private->esize];
+    uint8_t* dst = &_vector->private->pool[size_in_bytes + offset_in_bytes];
     uint8_t* src = &_vector->private->pool[offset_in_bytes];
-    for (size_t i = 0; i < byte_number; i--)
+    for (size_t i = 0; i < byte_number; i++)
     {
-        *dst-- = *src--;
+        *(--dst) = *(--src);
     }
 
     memcpy(&_vector->private->pool[offset_in_bytes], data, _vector->private->esize);
@@ -348,7 +349,7 @@ static bool erase_cb(void* vector, size_t index)
     {
         *dst-- = *src--;
     }
-  
+
     _vector->private->size--;
 
     return true;
