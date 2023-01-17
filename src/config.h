@@ -13,7 +13,7 @@
 #define LINKED_LIST 1
 #define VECTOR 2
 
-#define CONTAINER_TYPE LINKED_LIST
+// #define CONTAINER_TYPE VECTOR
 //_____ D E F I N I T I O N S _________________________________________________
 
 //_____ M A C R O S ___________________________________________________________
