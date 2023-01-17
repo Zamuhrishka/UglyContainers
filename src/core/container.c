@@ -71,6 +71,28 @@ container_t* container_create(size_t esize)
     return container;
 }
 
+container_t* container_from_array(void *arr, size_t size, size_t esize)
+{
+    assert(0 != esize);
+    assert(0 != size);
+    assert(arr);
+ 
+    container_t* container = container_create(esize);
+    if(NULL == container)
+    {
+        return NULL;
+    }
+
+    for (size_t i = 0; i < size; i++)
+    {
+        container_push_back(container, ((uint8_t*)arr + i*esize));
+    }
+   
+    return container;
+}
+
+
+
 void container_delete(container_t** list)
 {
 }
