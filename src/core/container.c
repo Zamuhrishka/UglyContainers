@@ -169,6 +169,16 @@ bool container_erase(container_t* container, size_t index)
         false));
 }
 
+size_t container_clear(const container_t* container)
+{
+    assert(container);
+
+    return ((CONTAINER_LINKED_LIST_BASED == container->type) ? \
+        ((linked_list_t*)container->core)->clear(((linked_list_t*)container->core)) :  \
+        ((CONTAINER_VECTOR_BASED == container->type) ? ((vector_t*)container->core)->clear(((vector_t*)container->core)) : \
+        false));
+}
+
 size_t container_size(const container_t* container)
 {
     assert(container);

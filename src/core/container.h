@@ -48,4 +48,5 @@ bool container_pop_back(container_t* container, void* data);
 bool container_insert(container_t* container, const void* data, size_t position);
 bool container_at(const container_t* container, void* data, size_t position);
 bool container_erase(container_t* container, size_t position);
+size_t container_clear(const container_t* container);
 size_t container_size(const container_t* container);
