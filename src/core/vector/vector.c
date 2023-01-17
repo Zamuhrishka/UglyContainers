@@ -297,8 +297,8 @@ static bool insert_cb(void* vector, const void* data, size_t index)
     size_t offset_in_bytes = index * _vector->private->esize;
     size_t size_in_bytes = _vector->private->size * _vector->private->esize;
     size_t byte_number = size_in_bytes - offset_in_bytes;
-    uint8_t* dst = &_vector->private->pool[size_in_bytes + offset_in_bytes];
-    uint8_t* src = &_vector->private->pool[offset_in_bytes];
+    uint8_t* dst = &_vector->private->pool[size_in_bytes + _vector->private->esize];
+    uint8_t* src = &_vector->private->pool[size_in_bytes];
     for (size_t i = 0; i < byte_number; i++)
     {
         *(--dst) = *(--src);
@@ -343,11 +343,11 @@ static bool erase_cb(void* vector, size_t index)
     size_t offset_in_bytes = index * _vector->private->esize;
     size_t size_in_bytes = _vector->private->size * _vector->private->esize;
     size_t byte_number = size_in_bytes - offset_in_bytes;
-    uint8_t* dst = &_vector->private->pool[offset_in_bytes + _vector->private->esize];
-    uint8_t* src = &_vector->private->pool[offset_in_bytes];
-    for (size_t i = 0; i < byte_number; i--)
+    uint8_t* dst = &_vector->private->pool[offset_in_bytes];
+    uint8_t* src = &_vector->private->pool[offset_in_bytes + _vector->private->esize];
+    for (size_t i = 0; i < byte_number; i++)
     {
-        *dst-- = *src--;
+        dst[i] = src[i];
     }
 
     _vector->private->size--;
