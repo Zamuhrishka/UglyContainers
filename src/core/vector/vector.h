@@ -29,6 +29,7 @@ typedef struct
         bool (*insert)(void* this, const void* data, size_t position);
         bool (*at)(const void* this, void* data, size_t position);
         bool (*erase)(void* this, size_t position);
+        bool (*clear)(void* this);
         size_t (*size)(const void* this);
     };
 } vector_t;
@@ -38,4 +39,4 @@ typedef struct
 
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 vector_t* vector_create(size_t esize);
-bool vector_delete(vector_t** vector);
+void vector_delete(vector_t** vector);
