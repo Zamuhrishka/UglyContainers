@@ -28,7 +28,7 @@ static vector_t* vector = NULL;
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 void setUp(void)
 {
-    container_init(malloc, free);
+    // container_init(malloc, free);
     vector = vector_create(sizeof(uint32_t));
 }
 

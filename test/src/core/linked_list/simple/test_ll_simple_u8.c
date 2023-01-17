@@ -27,7 +27,7 @@ static linked_list_t* ll = NULL;
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 void setUp(void)
 {
-    container_init(malloc, free);
+    // container_init(malloc, free);
     ll = linked_list_create(sizeof(uint8_t));
 }
 

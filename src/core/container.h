@@ -29,7 +29,7 @@ typedef struct Container_tag container_t;
 //_____ V A R I A B L E S _____________________________________________________
 
 //_____ P U B L I C  F U N C T I O N S_________________________________________
-void container_init(allocate_fn_t alloc_cb, free_fn_t free_cb);
+void container_alloc_init(allocate_fn_t alloc_cb, free_fn_t free_cb);
 container_t* container_create(size_t esize);
 void container_delete(container_t** list);
 bool container_push_front(container_t* container, const void* data);
