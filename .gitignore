@@ -1,16 +1,16 @@
-# Prerequisites
-*.d
-
+### C ###
 # Object files
 *.o
 *.ko
 *.obj
 *.elf
+*o.d
 
 # Linker output
 *.ilk
 *.map
 *.exp
+*.ld
 
 # Precompiled Headers
 *.gch
@@ -35,27 +35,34 @@
 *.i*86
 *.x86_64
 *.hex
+*.xml
 
 # Debug files
 *.dSYM/
-*.su
-*.idb
-*.pdb
 
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+# Temporary files
+*.tmp
 
-# Other files
+#Archive files
 *.zip
 
+#Build system files
+.clang-format
+ceedling.cmd
+Doxygen.conf
+*.yml
+*.bat
+*.cfg
+*.rb
+
+
 # Folders
-/project
-/.vscode
-/build
-/tools
+build/
+linker/
+options/
+.vscode/
+# src/Core/
+# src/Drivers/
+tools/
+
+src/main.c
