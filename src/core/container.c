@@ -16,11 +16,8 @@
 //_____ D E F I N I T I O N S _________________________________________________
 struct Container_tag
 {
-#if CONTAINER_TYPE == LINKED_LIST
-    linked_list_t* core;
-#elif CONTAINER_TYPE == VECTOR
-    vector_t* core;
-#endif
+    void* core;
+    container_type_e type;
 };
 //_____ M A C R O S ___________________________________________________________
 
@@ -38,7 +35,7 @@ void container_alloc_init(allocate_fn_t alloc_cb, free_fn_t free_cb)
     free_cb_register(free_cb);
 }
 
-container_t* container_create(size_t esize)
+container_t* container_create(size_t esize, container_type_e type)
 {
     assert(0 != esize);
 
@@ -56,11 +53,9 @@ container_t* container_create(size_t esize)
         return NULL;
     }
 
-#if CONTAINER_TYPE == LINKED_LIST
-    container->core = linked_list_create(esize);
-#elif CONTAINER_TYPE == VECTOR
-    container->core = vector_create(esize);
-#endif
+    container->type = type;
+    container->core = ((CONTAINER_LINKED_LIST_BASED == type) ? (void*)linked_list_create(esize) :
+                        ((CONTAINER_VECTOR_BASED == type) ? (void*)vector_create(esize) : NULL)); 
 
     if (container->core == NULL)
     {
@@ -71,6 +66,7 @@ container_t* container_create(size_t esize)
     return container;
 }
 
+#if 0
 container_t* container_from_array(void *arr, size_t size, size_t esize)
 {
     assert(0 != esize);
@@ -90,7 +86,7 @@ container_t* container_from_array(void *arr, size_t size, size_t esize)
    
     return container;
 }
-
+#endif
 
 
 void container_delete(container_t** list)
@@ -102,7 +98,10 @@ bool container_push_front(container_t* container, const void* data)
     assert(container);
     assert(data);
 
-    return container->core->push_front(container->core, data);
+    return ((CONTAINER_LINKED_LIST_BASED == container->type) ? \
+        ((linked_list_t*)container->core)->push_front(((linked_list_t*)container->core), data) :  \
+        ((CONTAINER_VECTOR_BASED == container->type) ? ((vector_t*)container->core)->push_front(((vector_t*)container->core), data) : \
+        false));
 }
 
 bool container_pop_front(container_t* container, void* data)
@@ -110,7 +109,10 @@ bool container_pop_front(container_t* container, void* data)
     assert(container);
     assert(data);
 
-    return container->core->pop_front(container->core, data);
+    return ((CONTAINER_LINKED_LIST_BASED == container->type) ? \
+        ((linked_list_t*)container->core)->pop_front(((linked_list_t*)container->core), data) :  \
+        ((CONTAINER_VECTOR_BASED == container->type) ? ((vector_t*)container->core)->pop_front(((vector_t*)container->core), data) : \
+        false));
 }
 
 bool container_push_back(container_t* container, const void* data)
@@ -118,7 +120,10 @@ bool container_push_back(container_t* container, const void* data)
     assert(container);
     assert(data);
 
-    return container->core->push_back(container->core, data);
+    return ((CONTAINER_LINKED_LIST_BASED == container->type) ? \
+        ((linked_list_t*)container->core)->push_back(((linked_list_t*)container->core), data) :  \
+        ((CONTAINER_VECTOR_BASED == container->type) ? ((vector_t*)container->core)->push_back(((vector_t*)container->core), data) : \
+        false));
 }
 
 bool container_pop_back(container_t* container, void* data)
@@ -126,35 +131,50 @@ bool container_pop_back(container_t* container, void* data)
     assert(container);
     assert(data);
 
-    return container->core->pop_back(container->core, data);
+    return ((CONTAINER_LINKED_LIST_BASED == container->type) ? \
+        ((linked_list_t*)container->core)->pop_back(((linked_list_t*)container->core), data) :  \
+        ((CONTAINER_VECTOR_BASED == container->type) ? ((vector_t*)container->core)->pop_back(((vector_t*)container->core), data) : \
+        false));
 }
 
-bool container_insert(container_t* container, const void* data, size_t position)
+bool container_insert(container_t* container, const void* data, size_t index)
 {
     assert(container);
     assert(data);
 
-    return container->core->insert(container->core, data, position);
+    return ((CONTAINER_LINKED_LIST_BASED == container->type) ? \
+        ((linked_list_t*)container->core)->insert(((linked_list_t*)container->core), data, index) :  \
+        ((CONTAINER_VECTOR_BASED == container->type) ? ((vector_t*)container->core)->insert(((vector_t*)container->core), data, index) : \
+        false));
 }
 
-bool container_at(const container_t* container, void* data, size_t position)
+bool container_at(const container_t* container, void* data, size_t index)
 {
     assert(container);
     assert(data);
 
-    return container->core->at(container->core, data, position);
+    return ((CONTAINER_LINKED_LIST_BASED == container->type) ? \
+        ((linked_list_t*)container->core)->at(((linked_list_t*)container->core), data, index) :  \
+        ((CONTAINER_VECTOR_BASED == container->type) ? ((vector_t*)container->core)->at(((vector_t*)container->core), data, index) : \
+        false));
 }
 
-bool container_erase(container_t* container, size_t position)
+bool container_erase(container_t* container, size_t index)
 {
     assert(container);
 
-    return container->core->erase(container->core, position);
+    return ((CONTAINER_LINKED_LIST_BASED == container->type) ? \
+        ((linked_list_t*)container->core)->erase(((linked_list_t*)container->core), index) :  \
+        ((CONTAINER_VECTOR_BASED == container->type) ? ((vector_t*)container->core)->erase(((vector_t*)container->core), index) : \
+        false));
 }
 
 size_t container_size(const container_t* container)
 {
     assert(container);
 
-    return container->core->size(container->core);
+    return ((CONTAINER_LINKED_LIST_BASED == container->type) ? \
+        ((linked_list_t*)container->core)->size(((linked_list_t*)container->core)) :  \
+        ((CONTAINER_VECTOR_BASED == container->type) ? ((vector_t*)container->core)->size(((vector_t*)container->core)) : \
+        false));
 }
