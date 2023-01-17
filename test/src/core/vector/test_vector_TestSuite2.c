@@ -284,7 +284,7 @@ void test_TestCase_11(void)
 
 void test_TestCase_12(void)
 {
-    TEST_IGNORE_MESSAGE("Strange behavior of test. Have to figure ou root cause!");
+    // TEST_IGNORE_MESSAGE("Strange behavior of test. Have to figure ou root cause!");
 
     uint32_t input[] = {1, 562610, 907163, 90197, 10021, 771535, 54519, 66, 67793, 93274};
     uint32_t expected[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
@@ -314,7 +314,7 @@ void test_TestCase_12(void)
 
 void test_TestCase_13(void)
 {
-    TEST_IGNORE_MESSAGE("Test fault. Have to figure ou root cause!");
+    // TEST_IGNORE_MESSAGE("Test fault. Have to figure ou root cause!");
 
     uint32_t input[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
     uint32_t expected[] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
