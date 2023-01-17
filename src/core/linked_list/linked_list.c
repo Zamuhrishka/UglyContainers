@@ -414,6 +414,26 @@ static bool erase_cb(void* list, size_t index)
     return true;
 }
 
+static bool clear_cb(const void* list)
+{
+    assert(list);
+
+    linked_list_t* linked_list = (linked_list_t*)list;
+
+    node_t* tmp = linked_list->private->head;
+
+    while (tmp) {
+        node_t* next = tmp->next;
+        node_free(tmp);
+        tmp = next;
+    }
+
+    linked_list->private->head = linked_list->private->tail = NULL;
+    linked_list->private->size = 0;
+    linked_list->private->esize = linked_list->private->esize;
+}
+
+
 static size_t size_cb(const void* list)
 {
     assert(list);
@@ -443,7 +463,8 @@ linked_list_t* linked_list_create(size_t esize)
     linked_list->insert = insert_cb;
     linked_list->at = at_cb;
     linked_list->erase = erase_cb;
-    linked_list->size = size_cb;
+    linked_list->clear = clear_cb;
+    linked_list->size = size_cb;    
 
     return linked_list;
 }
