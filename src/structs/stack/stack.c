@@ -31,14 +31,6 @@ stack_t* stack_create(size_t esize)
 {
     assert(0 != esize);
 
-    if (!is_allocator_valid())
-    {
-        return false;
-    }
-
-    allocate_fn_t mem_allocate = get_allocator();
-    free_fn_t mem_free = get_free();
-
     stack_t* stack = container_create(esize, CONTAINER_VECTOR_BASED);
     if (NULL == stack)
     {
@@ -50,6 +42,10 @@ stack_t* stack_create(size_t esize)
 
 void stack_delete(stack_t** stack)
 {
+    assert(*stack);
+    assert(stack);
+
+    container_delete((container_t*)stack);
 }
 
 bool stack_push(stack_t* stack, const void* data)
@@ -73,12 +69,19 @@ bool stack_peek(const stack_t* stack, void* data)
     assert(NULL != stack);
     assert(NULL != data);
 
-    return container_at((container_t*)stack, data, 0);
+    return container_at((container_t*)stack, data, container_size((container_t*)stack) - 1);
 }
 
-bool stack_size(const stack_t* stack)
+size_t stack_size(const stack_t* stack)
 {
     assert(NULL != stack);
 
     return container_size((container_t*)stack);
+}
+
+bool stack_empty(const stack_t* stack)
+{
+    assert(stack);
+    size_t size = container_size((container_t*)stack);
+	return (size == 0);
 }
