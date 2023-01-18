@@ -24,7 +24,8 @@ typedef container_t queue_t;
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 queue_t* queue_create(size_t esize);
 void queue_delete(queue_t** queue);
-bool queue_get(queue_t* queue, const void* data);
-bool queue_add(queue_t* queue, void* data);
+bool queue_empty(const queue_t* queue);
+bool queue_dequeue(queue_t* queue, void* data);
+bool queue_enqueue(queue_t* queue, const void* data);
 bool queue_peek(const queue_t* queue, void* data);
-bool queue_size(const queue_t* queue);
+size_t queue_size(const queue_t* queue);

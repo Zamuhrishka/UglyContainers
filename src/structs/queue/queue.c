@@ -35,9 +35,6 @@ queue_t* queue_create(size_t esize)
         return false;
     }
 
-    allocate_fn_t mem_allocate = get_allocator();
-    free_fn_t mem_free = get_free();
-
     queue_t* queue = container_create(esize, CONTAINER_LINKED_LIST_BASED);
     if (NULL == queue)
     {
@@ -49,22 +46,34 @@ queue_t* queue_create(size_t esize)
 
 void queue_delete(queue_t** queue)
 {
+    assert(*queue);
+    assert(queue);
+
+    container_delete((container_t*)queue);
 }
 
-bool queue_get(queue_t* queue, const void* data)
+bool queue_empty(const queue_t* queue)
+{
+    assert(queue);
+    size_t size = container_size((container_t*)queue);
+	return (size == 0);
+}
+
+
+bool queue_enqueue(queue_t* queue, const void* data)
 {
     assert(queue);
     assert(data);
 
-    return container_push_front((container_t*)queue, data);
+    return container_push_back((container_t*)queue, data);
 }
 
-bool queue_add(queue_t* queue, void* data)
+bool queue_dequeue(queue_t* queue, void* data)
 {
     assert(NULL != queue);
     assert(NULL != data);
 
-    return container_pop_back((container_t*)queue, data);
+    return container_pop_front((container_t*)queue, data);
 }
 
 bool queue_peek(const queue_t* queue, void* data)
@@ -75,7 +84,7 @@ bool queue_peek(const queue_t* queue, void* data)
     return container_at((container_t*)queue, data, 0);
 }
 
-bool queue_size(const queue_t* queue)
+size_t queue_size(const queue_t* queue)
 {
     return container_size((container_t*)queue);
 }
