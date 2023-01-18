@@ -27,4 +27,5 @@ void stack_delete(stack_t** stack);
 bool stack_push(stack_t* stack, const void* data);
 bool stack_pop(stack_t* stack, void* data);
 bool stack_peek(const stack_t* stack, void* data);
-bool stack_size(const stack_t* stack);
+size_t stack_size(const stack_t* stack);
+bool stack_empty(const stack_t* stack);
