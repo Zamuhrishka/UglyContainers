@@ -22,11 +22,9 @@
     - +:test/**
     - -:test/support
   :source:
-    - src/queue/*
-    - src/support/allocator/*
+    - src/**
   :include:
-    - src/queue/
-    - src/support/allocator/
+    - src/
   :support:
     - test/support
   :libraries: []
@@ -40,6 +38,7 @@
   :test:
     - *common_defines
     - TEST
+    - CONTAINER_TYPE=2
   :test_preprocess:
     - *common_defines
     - TEST
@@ -53,11 +52,11 @@
     - :ignore
     - :callback
   :treat_as:
-    uint8:    HEX8
-    uint16:   HEX16
-    uint32:   UINT32
-    int8:     INT8
-    bool:     UINT8
+    uint8: HEX8
+    uint16: HEX16
+    uint32: UINT32
+    int8: INT8
+    bool: UINT8
 
 :gcov:
   :reports:
@@ -74,7 +73,7 @@
   :placement: :end
   :flag: "-l${1}"
   :path_flag: "-L ${1}"
-  :system: []    
+  :system: []
   :test: []
   :release: []
 
@@ -87,4 +86,3 @@
     - raw_output_report
     - xml_tests_report
     - command_hooks
-...
