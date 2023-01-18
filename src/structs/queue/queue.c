@@ -30,11 +30,6 @@ queue_t* queue_create(size_t esize)
 {
     assert(0 != esize);
 
-    if (!is_allocator_valid())
-    {
-        return false;
-    }
-
     queue_t* queue = container_create(esize, CONTAINER_LINKED_LIST_BASED);
     if (NULL == queue)
     {
