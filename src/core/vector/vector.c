@@ -219,6 +219,11 @@ static bool pop_front_cb(void* vector, void* data)
     assert(data);
 
     vector_t* _vector = (vector_t*)vector;
+
+    if (is_empty(_vector))
+    {
+        return false;
+    }
  
     memcpy(data, &_vector->private->pool[0], _vector->private->esize);
 
@@ -264,6 +269,11 @@ static bool pop_back_cb(void* vector, void* data)
     assert(data);
 
     vector_t* _vector = (vector_t*)vector;
+
+    if (is_empty(_vector))
+    {
+        return false;
+    }
  
     size_t size_in_bytes = _vector->private->size * _vector->private->esize;
     size_t offset_in_bytes = size_in_bytes - _vector->private->esize;
