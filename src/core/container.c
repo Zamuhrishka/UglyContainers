@@ -148,6 +148,17 @@ bool container_insert(container_t* container, const void* data, size_t index)
         false));
 }
 
+bool container_extract(container_t* container, void* data, size_t index)
+{
+    assert(container);
+    assert(data);
+
+    return ((CONTAINER_LINKED_LIST_BASED == container->type) ? \
+        ((linked_list_t*)container->core)->extract(((linked_list_t*)container->core), data, index) :  \
+        ((CONTAINER_VECTOR_BASED == container->type) ? ((vector_t*)container->core)->extract(((vector_t*)container->core), data, index) : \
+        false)); 
+}
+
 bool container_at(const container_t* container, void* data, size_t index)
 {
     assert(container);
