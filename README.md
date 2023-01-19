@@ -10,6 +10,7 @@
 - Add thread safety (use atomic access and mutex)
 - Add `clear()` and `extract()` functions to all containers
 - Split core on dynamic and static types
+- Think about `volatile`
 
 
 Добавить алгоритмы:
