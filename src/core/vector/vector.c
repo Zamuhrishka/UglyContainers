@@ -23,8 +23,8 @@ struct Private_tag
 {
     void* pool;             ///Pool of bytes
     size_t esize;           ///Single element size
-    size_t size;            ///Stores elements number
-    size_t capacity;        ///Max size of pool in bytes
+    volatile size_t size;            ///Stores elements number
+    volatile size_t capacity;        ///Max size of pool in bytes
 };
 
 //_____ M A C R O S ___________________________________________________________

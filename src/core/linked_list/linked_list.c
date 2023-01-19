@@ -21,15 +21,15 @@
 //_____ D E F I N I T I O N S _________________________________________________
 typedef struct _Node_tag
 {
-    void* data;
-    struct _Node_tag* next;
-    struct _Node_tag* prev;
+    volatile void* data;
+    volatile struct _Node_tag* next;
+    volatile struct _Node_tag* prev;
 } node_t;
 
 struct Private_tag
 {
     size_t esize;
-    size_t size;
+    volatile size_t size;
     node_t* head;
     node_t* tail;
 };
