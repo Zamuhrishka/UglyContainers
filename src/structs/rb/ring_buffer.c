@@ -109,9 +109,7 @@ bool rb_peek(const ring_buffer_t* rb, void* data)
 {
     assert(rb);
 
-    if(!container_at(rb->container, data, rb->tail)) {
-        return false;
-    }
+   return container_at(rb->container, data, rb->tail);
 }
 
 size_t rb_size(const ring_buffer_t* rb)
