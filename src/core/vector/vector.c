@@ -333,19 +333,15 @@ static bool extract_cb(void* vector, void* data, size_t index)
 		return false;
 	}
 
-    // size_t offset_in_bytes = index * _vector->private->esize;
-    // size_t size_in_bytes = _vector->private->size * _vector->private->esize;
-    // size_t byte_number = size_in_bytes - offset_in_bytes;
-    // uint8_t* dst = &_vector->private->pool[size_in_bytes + _vector->private->esize];
-    // uint8_t* src = &_vector->private->pool[size_in_bytes];
-    // for (size_t i = 0; i < byte_number; i++)
-    // {
-    //     *(--dst) = *(--src);
-    // }
+    if(!_vector->at(_vector, data, index)) 
+    {
+        return false;
+    }
 
-    // memcpy(&_vector->private->pool[offset_in_bytes], data, _vector->private->esize);
-
-    // _vector->private->size--;
+    if(!_vector->erase(_vector, index))
+    {
+        return false;
+    }
 
     return true;
 }
