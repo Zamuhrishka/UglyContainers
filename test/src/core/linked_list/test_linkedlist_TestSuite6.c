@@ -372,3 +372,9 @@ void test_TestCase_15(void)
         ll->erase(ll, 0);   
     }
 }
+
+void test_TestCase_16(void)
+{
+    TEST_MESSAGE("Linked List INSERT/EXTRACT test");
+    TEST_IGNORE_MESSAGE("Test not implemented!");
+}

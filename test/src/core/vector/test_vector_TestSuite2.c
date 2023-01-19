@@ -483,3 +483,9 @@ void test_TestCase_20(void)
         vector->erase(vector, 0);   
     }
 }
+
+void test_TestCase_21(void)
+{
+    TEST_MESSAGE("Vector EXTRACT test");
+    TEST_IGNORE_MESSAGE("Test not implemented!");
+}

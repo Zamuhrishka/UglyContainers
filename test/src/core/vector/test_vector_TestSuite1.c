@@ -189,3 +189,9 @@ void test_TestCase_12(void)
     size_t size = vector->size(vector);
     TEST_ASSERT_EQUAL_UINT32(1, size);
 }
+
+void test_TestCase_13(void)
+{
+    TEST_MESSAGE("Bector EXTRACT test");
+    TEST_IGNORE_MESSAGE("Test not implemented!");
+}
