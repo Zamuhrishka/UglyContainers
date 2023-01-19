@@ -21,15 +21,15 @@
 //_____ D E F I N I T I O N S _________________________________________________
 typedef struct _Node_tag
 {
-    void* data;
-    struct _Node_tag* next;
-    struct _Node_tag* prev;
+    volatile void* data;
+    volatile struct _Node_tag* next;
+    volatile struct _Node_tag* prev;
 } node_t;
 
 struct Private_tag
 {
     size_t esize;
-    size_t size;
+    volatile size_t size;
     node_t* head;
     node_t* tail;
 };
@@ -343,6 +343,22 @@ static bool insert_cb(void* list, const void* data, size_t index)
     return true;
 }
 
+static bool extract_cb(void* list, void* data, size_t index)
+{
+    assert(list);
+    assert(data);
+
+    linked_list_t* linked_list = (linked_list_t*)list;
+
+    if (index > linked_list->private->size)
+    {
+        return false;
+    }
+
+   
+    return true;
+}
+
 static bool at_cb(const void* list, void* data, size_t index)
 {
     assert(list);
@@ -461,6 +477,7 @@ linked_list_t* linked_list_create(size_t esize)
     linked_list->push_back = push_back_cb;
     linked_list->pop_back = pop_back_cb;
     linked_list->insert = insert_cb;
+    linked_list->extract = extract_cb;
     linked_list->at = at_cb;
     linked_list->erase = erase_cb;
     linked_list->clear = clear_cb;

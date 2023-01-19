@@ -28,6 +28,7 @@ typedef struct
         bool (*push_back)(void* this, const void* data);
         bool (*pop_back)(void* this, void* data);
         bool (*insert)(void* this, const void* data, size_t position);
+        bool (*extract)(void* this, void* data, size_t position);
         bool (*at)(const void* this, void* data, size_t position);
         bool (*erase)(void* this, size_t position);
         bool (*clear)(void* this);
