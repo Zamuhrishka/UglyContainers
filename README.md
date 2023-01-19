@@ -2,9 +2,6 @@
 
 ## ToDo
 
-- Make std malloc and free as default allocators
-- Make choose btw linked_list and vector not in compiler time but in runtime
-- Implement of Ring Buffer
 - Implement of Hash Table
 - Add Unit tests
 - Add thread safety (use atomic access and mutex)
