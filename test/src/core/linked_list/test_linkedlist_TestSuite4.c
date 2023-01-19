@@ -149,3 +149,9 @@ void test_TestCase_9(void)
     TEST_MESSAGE("Linked List EXTRACT test");
     TEST_IGNORE_MESSAGE("Test not implemented!");
 }
+
+void test_TestCase_10(void)
+{
+    TEST_MESSAGE("Linked List CLEAR test");
+    TEST_IGNORE_MESSAGE("Test not implemented!");
+}
