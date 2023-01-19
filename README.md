@@ -11,6 +11,7 @@
 - Add `clear()` and `extract()` functions to all containers
 - Split core on dynamic and static types
 - Think about `volatile`
+- FIFO блокируется при переполнении, в отличие от кольцевого буфера
 
 
 Добавить алгоритмы:
@@ -28,4 +29,4 @@ toArray
 - [C-Macro-Collections](https://github.com/LeoVen/C-Macro-Collections)
 - [sc](https://github.com/tezc/sc)
 - [fifofast](https://github.com/nqtronix/fifofast)
-- 
+- [Используем черную магию для создания быстрого кольцевого буфера](https://habr.com/ru/company/otus/blog/557310/)
