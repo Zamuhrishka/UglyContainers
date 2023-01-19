@@ -489,3 +489,9 @@ void test_TestCase_21(void)
     TEST_MESSAGE("Vector EXTRACT test");
     TEST_IGNORE_MESSAGE("Test not implemented!");
 }
+
+void test_TestCase_22(void)
+{
+    TEST_MESSAGE("Vector CLEAR test");
+    TEST_IGNORE_MESSAGE("Test not implemented!");
+}
