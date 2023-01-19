@@ -321,6 +321,35 @@ static bool insert_cb(void* vector, const void* data, size_t index)
     return true;
 }
 
+static bool extract_cb(void* vector, void* data, size_t index)
+{
+    assert(vector);
+    assert(data);
+
+    vector_t* _vector = (vector_t*)vector;
+
+    if(index > _vector->private->size) 
+	{
+		return false;
+	}
+
+    // size_t offset_in_bytes = index * _vector->private->esize;
+    // size_t size_in_bytes = _vector->private->size * _vector->private->esize;
+    // size_t byte_number = size_in_bytes - offset_in_bytes;
+    // uint8_t* dst = &_vector->private->pool[size_in_bytes + _vector->private->esize];
+    // uint8_t* src = &_vector->private->pool[size_in_bytes];
+    // for (size_t i = 0; i < byte_number; i++)
+    // {
+    //     *(--dst) = *(--src);
+    // }
+
+    // memcpy(&_vector->private->pool[offset_in_bytes], data, _vector->private->esize);
+
+    // _vector->private->size--;
+
+    return true;
+}
+
 static bool at_cb(const void* vector, void* data, size_t index)
 {
     assert(vector);
@@ -421,6 +450,7 @@ vector_t* vector_create(size_t esize)
     vector->push_back = push_back_cb;
     vector->pop_back = pop_back_cb;
     vector->insert = insert_cb;
+    vector->extract = extract_cb;
     vector->at = at_cb;
     vector->erase = erase_cb;
     vector->clear = clear_cb;

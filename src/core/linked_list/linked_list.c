@@ -343,6 +343,22 @@ static bool insert_cb(void* list, const void* data, size_t index)
     return true;
 }
 
+static bool extract_cb(void* list, void* data, size_t index)
+{
+    assert(list);
+    assert(data);
+
+    linked_list_t* linked_list = (linked_list_t*)list;
+
+    if (index > linked_list->private->size)
+    {
+        return false;
+    }
+
+   
+    return true;
+}
+
 static bool at_cb(const void* list, void* data, size_t index)
 {
     assert(list);
@@ -461,6 +477,7 @@ linked_list_t* linked_list_create(size_t esize)
     linked_list->push_back = push_back_cb;
     linked_list->pop_back = pop_back_cb;
     linked_list->insert = insert_cb;
+    linked_list->extract = extract_cb;
     linked_list->at = at_cb;
     linked_list->erase = erase_cb;
     linked_list->clear = clear_cb;
