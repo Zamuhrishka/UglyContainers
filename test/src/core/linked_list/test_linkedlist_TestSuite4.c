@@ -143,3 +143,9 @@ void test_TestCase_8(void)
     size_t size = ll->size(ll);
     TEST_ASSERT_EQUAL_UINT32(1, size);
 }
+
+void test_TestCase_9(void)
+{
+    TEST_MESSAGE("Linked List EXTRACT test");
+    TEST_IGNORE_MESSAGE("Test not implemented!");
+}
