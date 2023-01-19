@@ -44,7 +44,7 @@ void queue_delete(queue_t** queue)
     assert(*queue);
     assert(queue);
 
-    container_delete((container_t*)queue);
+    container_delete((container_t**)queue);
 }
 
 bool queue_empty(const queue_t* queue)

@@ -89,8 +89,31 @@ container_t* container_from_array(void *arr, size_t size, size_t esize)
 #endif
 
 
-void container_delete(container_t** list)
+void container_delete(container_t** container)
 {
+    assert(container);
+    assert(*container);
+
+    if (!is_allocator_valid())
+    {
+        return false;
+    }
+
+    free_fn_t mem_free = get_free();
+
+    if(CONTAINER_LINKED_LIST_BASED == (*container)->type)
+    {
+        linked_list_t* pointer = (linked_list_t*)((*container)->core);
+        linked_list_delete(&pointer);
+    }
+    else if(CONTAINER_VECTOR_BASED == (*container)->type)
+    {
+        vector_t* pointer = (vector_t*)((*container)->core);
+        vector_delete(&pointer);
+    }
+
+    mem_free(*container);
+    (*container) = NULL;
 }
 
 bool container_push_front(container_t* container, const void* data)

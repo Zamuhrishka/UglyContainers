@@ -45,7 +45,7 @@ void stack_delete(stack_t** stack)
     assert(*stack);
     assert(stack);
 
-    container_delete((container_t*)stack);
+    container_delete((container_t**)stack);
 }
 
 bool stack_push(stack_t* stack, const void* data)
