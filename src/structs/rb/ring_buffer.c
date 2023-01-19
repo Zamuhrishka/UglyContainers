@@ -90,6 +90,7 @@ bool rb_add(ring_buffer_t* rb, const void* data)
     }
 
     rb->head = (rb->head == container_size(rb->container)) ? 0 : (rb->head + 1);
+    // rb->head = (rb->head +1) % rb->max_size;
 
 	return true;
 }
@@ -103,6 +104,7 @@ bool rb_get(ring_buffer_t* rb, void* data)
     }
 
     rb->tail = (rb->tail == container_size(rb->container)) ? 0 : (rb->tail + 1);
+    // rb->tail = (rb->tail +1) % rb->max_size;
 }
 
 bool rb_peek(const ring_buffer_t* rb, void* data)
