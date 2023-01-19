@@ -457,9 +457,10 @@ vector_t* vector_create(size_t esize)
 
 void vector_delete(vector_t** vector)
 {
-    assert(*vector);
     assert(vector);
+    assert(*vector);
 
+	vector_free((*vector)->private->pool);
 	vector_free(*vector);
-	*vector = NULL;
+	(*vector) = NULL;
 }

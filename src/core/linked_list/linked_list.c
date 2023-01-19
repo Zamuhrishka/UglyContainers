@@ -497,8 +497,8 @@ linked_list_t* linked_list_create(size_t esize)
 
 void linked_list_delete(linked_list_t** list)
 {
-    assert(*list);
     assert(list);
+    assert(*list);
 
     node_t* tmp = (*list)->private->head;
 

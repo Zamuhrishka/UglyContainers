@@ -75,6 +75,8 @@ void rb_delete(ring_buffer_t** rb)
 {
     assert(*rb);
     assert(rb);
+
+    container_delete((container_t**)(*rb)->container);
 }
 
 bool rb_add(ring_buffer_t* rb, const void* data)
