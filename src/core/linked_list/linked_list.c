@@ -355,6 +355,15 @@ static bool extract_cb(void* list, void* data, size_t index)
         return false;
     }
 
+    if(!linked_list->at(linked_list, data, index)) 
+    {
+        return false;
+    }
+
+    if(!linked_list->erase(linked_list, index))
+    {
+        return false;
+    }
    
     return true;
 }
