@@ -5,7 +5,6 @@
 - Implement of Hash Table
 - Add Unit tests
 - Add thread safety (use atomic access and mutex)
-- Add `clear()` and `extract()` functions to all containers
 - Split core on dynamic and static types
 - Think about `volatile`
 - FIFO блокируется при переполнении, в отличие от кольцевого буфера
