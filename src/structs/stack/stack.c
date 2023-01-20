@@ -85,3 +85,10 @@ bool stack_empty(const stack_t* stack)
     size_t size = container_size((container_t*)stack);
 	return (size == 0);
 }
+
+size_t stack_clear(stack_t* stack)
+{
+    assert(NULL != stack);
+
+    return container_clear((container_t*)stack);
+}
