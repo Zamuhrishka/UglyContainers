@@ -1,7 +1,7 @@
 /**
  * @file ring_buffer.h
  * @author Aleksander Kovalchuk (aliaksander.kavalchuk@gmail.com)
- * @brief 
+ * @brief
  * @date 2023-01-18
  */
 
@@ -33,4 +33,4 @@ bool rb_get(ring_buffer_t* rb, void* data);
 
 bool rb_peek(const ring_buffer_t* rb, void* data);
 size_t rb_size(const ring_buffer_t* rb);
-size_t rb_clear(const ring_buffer_t* rb);
+bool rb_clear(ring_buffer_t* rb);
