@@ -29,3 +29,4 @@ bool queue_dequeue(queue_t* queue, void* data);
 bool queue_enqueue(queue_t* queue, const void* data);
 bool queue_peek(const queue_t* queue, void* data);
 size_t queue_size(const queue_t* queue);
+bool queue_clear(queue_t* queue);
