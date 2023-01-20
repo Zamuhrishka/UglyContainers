@@ -81,5 +81,12 @@ bool queue_peek(const queue_t* queue, void* data)
 
 size_t queue_size(const queue_t* queue)
 {
+    assert(NULL != queue);
     return container_size((container_t*)queue);
+}
+
+bool queue_clear(queue_t* queue)
+{
+    assert(NULL != queue);
+    return container_clear((container_t*)queue);
 }
