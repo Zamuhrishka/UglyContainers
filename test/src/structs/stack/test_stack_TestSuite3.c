@@ -30,7 +30,7 @@ static stack_t* stack = NULL;
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 void setUp(void)
 {
-    stack = stack_create(sizeof(uint8_t));
+    stack = stack_create(sizeof(uint32_t));
 }
 
 void tearDown(void)
@@ -40,7 +40,99 @@ void tearDown(void)
 
 void test_init(void)
 {
-    TEST_MESSAGE("Stack Simple Tests For 8-bit Data");
-    TEST_IGNORE_MESSAGE("Need to be implemented!");
+    TEST_MESSAGE("Stack Complex Tests");
 }
 
+void test_TestCase_0(void)
+{
+    TEST_MESSAGE("[STACK_TEST]: create");
+    TEST_ASSERT_NOT_NULL(stack);
+}
+
+void test_TestCase_1(void)
+{
+	uint32_t input[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
+    uint32_t expected[] = {1, 562610, 907163, 90197, 10021, 99999, 771535, 77777, 54519, 55555, 66, 33333, 67793, 11111,93274};
+    uint32_t output[sizeof(expected)/sizeof(uint32_t)] = {};
+
+    TEST_MESSAGE("[STACK_TEST]: push/pop");
+
+    for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
+    {
+        TEST_ASSERT_TRUE(stack_push(stack, &input[i]));
+    }
+
+    for (size_t i = 0; i < sizeof(expected)/sizeof(uint32_t); i++)
+    {
+        TEST_ASSERT_TRUE(stack_pop(stack, &output[i]));
+    }
+
+    TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, output, sizeof(expected)/sizeof(uint32_t));
+}
+
+void test_TestCase_2(void)
+{
+	uint32_t input[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
+    uint32_t expected[] = {1, 562610, 907163, 90197, 10021, 99999, 771535, 77777, 54519, 55555, 66, 33333, 67793, 11111,93274};
+    uint32_t output = 0;
+
+    TEST_MESSAGE("[STACK_TEST]: push/peek");
+
+    for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
+    {
+        TEST_ASSERT_TRUE(stack_push(stack, &input[i]));
+    }
+
+    for (size_t i = 0; i < sizeof(expected)/sizeof(uint32_t); i++)
+    {
+        TEST_ASSERT_TRUE(stack_peek(stack, &output));
+        TEST_ASSERT_EQUAL_UINT32(expected[i], output);
+        stack_pop(stack, &output);
+    }
+}
+
+void test_TestCase_3(void)
+{
+	uint32_t input[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
+    uint32_t expected[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
+    uint32_t output[sizeof(expected)/sizeof(uint32_t)] = {};
+
+    TEST_MESSAGE("[STACK_TEST]: size #1");
+
+    for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
+    {
+        size_t size = stack_size(stack);
+        TEST_ASSERT_EQUAL_UINT32(i, size);
+        stack_push(stack, &input[i]);
+    }
+
+    for (size_t i = 0; i < sizeof(expected)/sizeof(uint32_t); i++)
+    {
+        size_t size = stack_size(stack);
+        TEST_ASSERT_EQUAL_UINT32(sizeof(input)/sizeof(uint32_t), size);
+        stack_peek(stack, &output[i]);
+    }
+}
+
+void test_TestCase_4(void)
+{
+	uint32_t input[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
+    uint32_t expected[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
+    uint32_t output[sizeof(expected)/sizeof(uint32_t)] = {};
+
+    TEST_MESSAGE("[STACK_TEST]: size #2");
+
+    for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
+    {
+        size_t size = stack_size(stack);
+        TEST_ASSERT_EQUAL_UINT32(i, size);
+        stack_push(stack, &input[i]);
+    }
+
+    for (size_t i = 0; i < sizeof(expected)/sizeof(uint32_t); i++)
+    {
+        size_t size = stack_size(stack);
+        TEST_ASSERT_EQUAL_UINT32(sizeof(input)/sizeof(uint32_t) - i, size);
+        stack_pop(stack, &output[i]);
+    }
+}

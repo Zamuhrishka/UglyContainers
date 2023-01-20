@@ -40,21 +40,19 @@ void tearDown(void)
 
 void test_init(void)
 {
-    TEST_MESSAGE("Queue Simple Tests For 32-bit Data");
+    TEST_MESSAGE("Queue Simple Tests");
 }
 
 void test_TestCase_0(void)
 {
-    TEST_MESSAGE("Queue create test");
+    TEST_MESSAGE("[QUEUE_TEST]: create");
     TEST_ASSERT_NOT_NULL(queue);
 }
 
 void test_TestCase_1(void)
 {
 	uint32_t data = 0x55;
-
-    TEST_MESSAGE("Queue ENQUEUE test");
-
+    TEST_MESSAGE("[QUEUE_TEST]: enqueue");
     TEST_ASSERT_TRUE(queue_enqueue(queue, &data));
 }
 
@@ -62,12 +60,9 @@ void test_TestCase_2(void)
 {
 	uint32_t data = 0x55;
 
-    TEST_MESSAGE("Queue EMPTY test");
-
+    TEST_MESSAGE("[QUEUE_TEST]: is empty");
     TEST_ASSERT_TRUE(queue_empty(queue));
-
     queue_enqueue(queue, &data);
-
     TEST_ASSERT_FALSE(queue_empty(queue));
 }
 
@@ -75,8 +70,7 @@ void test_TestCase_3(void)
 {
 	uint32_t data = 0x55;
 
-    TEST_MESSAGE("Queue SIZE test");
-
+    TEST_MESSAGE("[QUEUE_TEST]: size");
     queue_enqueue(queue, &data);
     size_t size = queue_size(queue);
     TEST_ASSERT_EQUAL_UINT32(1, size);
@@ -87,8 +81,7 @@ void test_TestCase_4(void)
 {
 	uint32_t data = 0x55;
 
-    TEST_MESSAGE("Queue DEQUEUE test");
-
+    TEST_MESSAGE("[QUEUE_TEST]: dequeue");
     queue_enqueue(queue, &data);
     TEST_ASSERT_TRUE(queue_dequeue(queue, &data));
 }
@@ -97,8 +90,7 @@ void test_TestCase_5(void)
 {
 	uint32_t data = 0x55;
 
-    TEST_MESSAGE("Queue PEEK test");
-
+    TEST_MESSAGE("[QUEUE_TEST]: peek");
     queue_enqueue(queue, &data);
     TEST_ASSERT_TRUE(queue_peek(queue, &data));
 }

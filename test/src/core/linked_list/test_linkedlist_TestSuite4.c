@@ -50,14 +50,14 @@ void test_init(void)
 
 void test_TestCase_0(void)
 {
-    TEST_MESSAGE("Linked List CREATE test");
+    TEST_MESSAGE("[LL_TEST]: create");
     TEST_ASSERT_NOT_NULL(ll);
 }
 
 void test_TestCase_1(void)
 {
     struct test_ll_simple_struct input = {.a = 0x55555555, .b = 0x5555, .c = 0x55};
-    TEST_MESSAGE("Linked List PUSH FRONT test");
+    TEST_MESSAGE("[LL_TEST]: push front");
     TEST_ASSERT_TRUE(ll->push_front(ll, &input));
 }
 
@@ -66,7 +66,7 @@ void test_TestCase_2(void)
     struct test_ll_simple_struct output = {};
     struct test_ll_simple_struct input = {.a = 0x55555555, .b = 0x5555, .c = 0x55};
 
-    TEST_MESSAGE("Linked List POP FRONT test");
+    TEST_MESSAGE("[LL_TEST]: pop front");
 
     ll->push_front(ll, &input);
 
@@ -79,7 +79,7 @@ void test_TestCase_2(void)
 void test_TestCase_3(void)
 {
     struct test_ll_simple_struct input = {.a = 0x55555555, .b = 0x5555, .c = 0x55};
-    TEST_MESSAGE("Linked List PUSH BACK test");
+    TEST_MESSAGE("[LL_TEST]: push back");
     TEST_ASSERT_TRUE(ll->push_back(ll, &input));
 }
 
@@ -88,11 +88,11 @@ void test_TestCase_4(void)
     struct test_ll_simple_struct output = {};
     struct test_ll_simple_struct input = {.a = 0x55555555, .b = 0x5555, .c = 0x55};
 
-    TEST_MESSAGE("Linked List POP BACK test");
+    TEST_MESSAGE("[LL_TEST]: pop back");
 
     ll->push_back(ll, &input);
 
-    TEST_ASSERT_TRUE(ll->pop_back(ll, &output));    
+    TEST_ASSERT_TRUE(ll->pop_back(ll, &output));
     TEST_ASSERT_EQUAL_UINT32(output.a, input.a);
     TEST_ASSERT_EQUAL_UINT16(output.b, input.b);
     TEST_ASSERT_EQUAL_UINT8(output.c, input.c);
@@ -101,7 +101,7 @@ void test_TestCase_4(void)
 void test_TestCase_5(void)
 {
     struct test_ll_simple_struct input = {.a = 0x55555555, .b = 0x5555, .c = 0x55};
-    TEST_MESSAGE("Linked List INSERT test");
+    TEST_MESSAGE("[LL_TEST]: insert");
     TEST_ASSERT_TRUE(ll->insert(ll, &input, 0));
     TEST_ASSERT_TRUE(ll->insert(ll, &input, 0));
 }
@@ -111,7 +111,7 @@ void test_TestCase_6(void)
     struct test_ll_simple_struct input = {.a = 0x55555555, .b = 0x5555, .c = 0x55};
     struct test_ll_simple_struct output = {};
 
-    TEST_MESSAGE("Linked List AT test");
+    TEST_MESSAGE("[LL_TEST]: at");
 
     ll->insert(ll, &input, 0);
 
@@ -125,7 +125,7 @@ void test_TestCase_7(void)
 {
     struct test_ll_simple_struct input = {.a = 0x55555555, .b = 0x5555, .c = 0x55};
 
-    TEST_MESSAGE("Linked List ERASE test");
+    TEST_MESSAGE("[LL_TEST]: erase");
 
     ll->insert(ll, &input, 0);
 
@@ -136,7 +136,7 @@ void test_TestCase_8(void)
 {
     struct test_ll_simple_struct input = {.a = 0x55555555, .b = 0x5555, .c = 0x55};
 
-    TEST_MESSAGE("Linked List SIZE test");
+    TEST_MESSAGE("[LL_TEST]: size");
 
     ll->push_front(ll, &input);
 
@@ -146,12 +146,26 @@ void test_TestCase_8(void)
 
 void test_TestCase_9(void)
 {
-    TEST_MESSAGE("Linked List EXTRACT test");
-    TEST_IGNORE_MESSAGE("Test not implemented!");
+    struct test_ll_simple_struct input = {.a = 0, .b = 0, .c = 0};
+
+    TEST_MESSAGE("[LL_TEST]: extract");
+
+    ll->insert(ll, &input, 0);
+
+    TEST_ASSERT_TRUE(ll->extract(ll, &input, 0));
 }
 
 void test_TestCase_10(void)
 {
-    TEST_MESSAGE("Linked List CLEAR test");
-    TEST_IGNORE_MESSAGE("Test not implemented!");
+    struct test_ll_simple_struct input = {.a = 0x55555555, .b = 0x5555, .c = 0x55};
+
+    TEST_MESSAGE("[LL_TEST]: clear");
+
+    ll->insert(ll, &input, 0);
+
+    size_t size = ll->size(ll);
+    TEST_ASSERT_EQUAL_UINT32(1, size);
+    TEST_ASSERT_TRUE(ll->clear(ll));
+    size = ll->size(ll);
+    TEST_ASSERT_EQUAL_UINT32(0, size);
 }

@@ -43,89 +43,89 @@ void test_init(void)
 
 void test_TestCase_0(void)
 {
-    TEST_MESSAGE("Linked List CREATE test");
+    TEST_MESSAGE("[LL_TEST]: create");
     TEST_ASSERT_NOT_NULL(ll);
 }
 
 void test_TestCase_1(void)
 {
-    uint32_t actual = 0x55555555;
-    TEST_MESSAGE("Linked List PUSH FRONT test");
-    TEST_ASSERT_TRUE(ll->push_front(ll, &actual));
+    uint32_t input = 0x55555555;
+    TEST_MESSAGE("[LL_TEST]: push front");
+    TEST_ASSERT_TRUE(ll->push_front(ll, &input));
 }
 
 void test_TestCase_2(void)
 {
-    uint32_t actual = 0;
-    uint32_t expected = 0x55555555;
+    uint32_t output = 0;
+    uint32_t input = 0x55555555;
 
-    TEST_MESSAGE("Linked List POP FRONT test");
+    TEST_MESSAGE("[LL_TEST]: pop front");
 
-    ll->push_front(ll, &expected);
+    ll->push_front(ll, &input);
 
-    TEST_ASSERT_TRUE(ll->pop_front(ll, &actual));
-    TEST_ASSERT_EQUAL_UINT32(expected, actual);
+    TEST_ASSERT_TRUE(ll->pop_front(ll, &output));
+    TEST_ASSERT_EQUAL_UINT32(input, output);
 }
 
 void test_TestCase_3(void)
 {
-    uint32_t actual = 0x55555555;
-    TEST_MESSAGE("Linked List PUSH BACK test");
-    TEST_ASSERT_TRUE(ll->push_back(ll, &actual));
+    uint32_t input = 0x55555555;
+    TEST_MESSAGE("[LL_TEST]: push back");
+    TEST_ASSERT_TRUE(ll->push_back(ll, &input));
 }
 
 void test_TestCase_4(void)
 {
-    uint32_t actual = 0;
-    uint32_t expected = 0x55555555;
+    uint32_t output = 0;
+    uint32_t input = 0x55555555;
 
-    TEST_MESSAGE("Linked List POP BACK test");
+    TEST_MESSAGE("[LL_TEST]: pop back");
 
-    ll->push_back(ll, &expected);
+    ll->push_back(ll, &input);
 
-    TEST_ASSERT_TRUE(ll->pop_back(ll, &actual));
-    TEST_ASSERT_EQUAL_UINT32(expected, actual);
+    TEST_ASSERT_TRUE(ll->pop_back(ll, &output));
+    TEST_ASSERT_EQUAL_UINT32(input, output);
 }
 
 void test_TestCase_5(void)
 {
-    uint32_t actual = 0x55555555;
-    TEST_MESSAGE("Linked List INSERT test");
-    TEST_ASSERT_TRUE(ll->insert(ll, &actual, 0));
-    TEST_ASSERT_TRUE(ll->insert(ll, &actual, 0));
+    uint32_t input = 0x55555555;
+    TEST_MESSAGE("[LL_TEST]: insert");
+    TEST_ASSERT_TRUE(ll->insert(ll, &input, 0));
+    TEST_ASSERT_TRUE(ll->insert(ll, &input, 0));
 }
 
 void test_TestCase_6(void)
 {
-    uint32_t expected = 0x55555555;
-    uint32_t actual = 0;
+    uint32_t input = 0x55555555;
+    uint32_t output = 0;
 
-    TEST_MESSAGE("Linked List AT test");
+    TEST_MESSAGE("[LL_TEST]: at");
 
-    ll->insert(ll, &expected, 0);
+    ll->insert(ll, &input, 0);
 
-    TEST_ASSERT_TRUE(ll->at(ll, &actual, 0));
-    TEST_ASSERT_EQUAL_UINT32(expected, actual);
+    TEST_ASSERT_TRUE(ll->at(ll, &output, 0));
+    TEST_ASSERT_EQUAL_UINT32(input, output);
 }
 
 void test_TestCase_7(void)
 {
-    uint32_t actual = 0x55555555;
+    uint32_t input = 0x55555555;
 
-    TEST_MESSAGE("Linked List ERASE test");
+    TEST_MESSAGE("[LL_TEST]: erase");
 
-    ll->insert(ll, &actual, 0);
+    ll->insert(ll, &input, 0);
 
     TEST_ASSERT_TRUE(ll->erase(ll, 0));
 }
 
 void test_TestCase_8(void)
 {
-    uint32_t data = 0x55555555;
+    uint32_t input = 0x55555555;
 
-    TEST_MESSAGE("Linked List SIZE test");
+    TEST_MESSAGE("[LL_TEST]: size");
 
-    ll->push_front(ll, &data);
+    ll->push_front(ll, &input);
 
     size_t size = ll->size(ll);
     TEST_ASSERT_EQUAL_UINT32(1, size);
@@ -133,12 +133,26 @@ void test_TestCase_8(void)
 
 void test_TestCase_9(void)
 {
-    TEST_MESSAGE("Linked List EXTRACT test");
-    TEST_IGNORE_MESSAGE("Test not implemented!");
+    uint32_t input = 0x55555555;
+
+    TEST_MESSAGE("[LL_TEST]: extract");
+
+    ll->insert(ll, &input, 0);
+
+    TEST_ASSERT_TRUE(ll->extract(ll, &input, 0));
 }
 
 void test_TestCase_10(void)
 {
-    TEST_MESSAGE("Linked List CLEAR test");
-    TEST_IGNORE_MESSAGE("Test not implemented!");
+    uint32_t input = 0x55555555;
+
+    TEST_MESSAGE("[LL_TEST]: clear");
+
+    ll->insert(ll, &input, 0);
+
+    size_t size = ll->size(ll);
+    TEST_ASSERT_EQUAL_UINT32(1, size);
+    TEST_ASSERT_TRUE(ll->clear(ll));
+    size = ll->size(ll);
+    TEST_ASSERT_EQUAL_UINT32(0, size);
 }
