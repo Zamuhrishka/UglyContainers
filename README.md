@@ -8,15 +8,17 @@
 - Split core on dynamic and static types
 - Think about `volatile`
 - FIFO блокируется при переполнении, в отличие от кольцевого буфера
+- Add algoruthms: sort, find, print, fromArray, toArray, iterator
 
+## Allocators
 
-Добавить алгоритмы:
-
-- сортировка
-- print
-
-fromArray   
-toArray
+- [Аллокаторы памяти](https://habr.com/ru/post/505632/)
+- [Менеджмент памяти или как реже стрелять себе в ногу](https://habr.com/ru/post/473294/)
+- [Происхождение и эволюция аллокатора памяти в С](https://habr.com/ru/post/707032/)
+- [tlsf](https://github.com/mattconte/tlsf)
+- [Malloc-Implementations](https://github.com/emeryberger/Malloc-Implementations)
+- [tinyalloc](https://github.com/thi-ng/tinyalloc)
+- [umm_malloc](https://github.com/dimonomid/umm_malloc)
 
 ## LINKS
 
