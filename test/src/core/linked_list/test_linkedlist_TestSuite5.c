@@ -40,68 +40,80 @@ void test_init(void)
     TEST_MESSAGE("Linked List Limits Tests");
 }
 
-
 void test_TestCase_0(void)
 {
-    TEST_MESSAGE("Linked List CREATE test");
+    TEST_MESSAGE("[LL_TEST]: clear");
     TEST_ASSERT_NOT_NULL(ll);
 }
 
-
 void test_TestCase_1(void)
 {
-    uint32_t actual = 0;
-    TEST_MESSAGE("Linked List POP FRONT EMPTY test");
-    TEST_ASSERT_FALSE(ll->pop_front(ll, &actual));
+    uint32_t input = 0;
+    TEST_MESSAGE("[LL_TEST]: pop front from empty");
+    TEST_ASSERT_FALSE(ll->pop_front(ll, &input));
 }
 
 void test_TestCase_2(void)
 {
-    uint32_t actual = 0;
-    TEST_MESSAGE("Linked List POP BACK EMPTY test");
-    TEST_ASSERT_FALSE(ll->pop_back(ll, &actual));
+    uint32_t input = 0;
+    TEST_MESSAGE("[LL_TEST]: pop back from empty");
+    TEST_ASSERT_FALSE(ll->pop_back(ll, &input));
 }
 
 void test_TestCase_3(void)
 {
-    uint32_t actual = 0x55555555;
-    TEST_MESSAGE("Linked List INSERT OVERFLOW test");
-    TEST_ASSERT_FALSE(ll->insert(ll, &actual, 2));
+    uint32_t input = 0x55555555;
+    TEST_MESSAGE("[LL_TEST]: pop insert in to overflow index");
+    TEST_ASSERT_FALSE(ll->insert(ll, &input, 2));
 }
 
 void test_TestCase_4(void)
 {
-    uint32_t actual = 0;
-    TEST_MESSAGE("Linked List AT EMPTY test");
-    TEST_ASSERT_FALSE(ll->at(ll, &actual, 0));
+    uint32_t input = 0;
+    TEST_MESSAGE("[LL_TEST]: pop at from empty");
+    TEST_ASSERT_FALSE(ll->at(ll, &input, 0));
 }
 
 void test_TestCase_5(void)
 {
-    TEST_MESSAGE("Linked List ERASE EMPTY test");
+    TEST_MESSAGE("[LL_TEST]: erase from empty");
     TEST_ASSERT_FALSE(ll->erase(ll, 0));
 }
 
 void test_TestCase_6(void)
 {
-    uint32_t actual = 0x55555555;
+    uint32_t input = 0x55555555;
 
-    TEST_MESSAGE("Linked List ERASE OVERFLOW test");
+    TEST_MESSAGE("[LL_TEST]: erase overflow index");
 
-    ll->insert(ll, &actual, 0);
+    ll->insert(ll, &input, 0);
 
     TEST_ASSERT_FALSE(ll->erase(ll, 2));
 }
 
 void test_TestCase_7(void)
 {
-    TEST_MESSAGE("Linked List SIZE EMPTY test");
+    TEST_MESSAGE("[LL_TEST]: size of empty");
     size_t size = ll->size(ll);
     TEST_ASSERT_EQUAL_UINT32(0, size);
 }
 
 void test_TestCase_8(void)
 {
-    TEST_MESSAGE("Linked List EXTRACT EMPTYtest");
-    TEST_IGNORE_MESSAGE("Test not implemented!");
+    uint32_t input = 0;
+    TEST_MESSAGE("[LL_TEST]: extract from empty");
+    TEST_ASSERT_FALSE(ll->extract(ll, &input, 0));
+}
+
+void test_TestCase_9(void)
+{
+    uint32_t input = 0;
+    TEST_MESSAGE("[LL_TEST]: extract overflow index");
+    TEST_ASSERT_FALSE(ll->extract(ll, &input, 2));
+}
+
+void test_TestCase_10(void)
+{
+    TEST_MESSAGE("[LL_TEST]: clear empty");
+    TEST_ASSERT_TRUE(ll->clear(ll));
 }

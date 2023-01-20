@@ -11,11 +11,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "core/allocator_if.h"
-#include "core/container.h"
-#include "core/linked_list/linked_list.h"
-#include "core/vector/vector.h"
-#include "structs/stack/stack.h"
+#include "allocator_if.h"
+#include "linked_list.h"
 
 //_____ C O N F I G S  ________________________________________________________
 
@@ -24,46 +21,22 @@
 //_____ M A C R O S ___________________________________________________________
 
 //_____ V A R I A B L E S _____________________________________________________
-static stack_t* stack = NULL;
+
 //_____ P R I V A T E  F U N C T I O N S_______________________________________
 
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 void setUp(void)
 {
-    stack = stack_create(sizeof(uint32_t));
+
 }
 
 void tearDown(void)
 {
-    stack_delete(&stack);
+
 }
 
 void test_init(void)
 {
-    TEST_MESSAGE("Stack Limits Tests");
-}
-
-void test_TestCase_0(void)
-{
-    TEST_MESSAGE("Stack create test");
-    TEST_ASSERT_NOT_NULL(stack);
-}
-
-void test_TestCase_1(void)
-{
-	uint16_t data = 0x55;
-
-    TEST_MESSAGE("Stack POP EMPTY test");
-
-    TEST_ASSERT_FALSE(stack_pop(stack, &data));
-}
-
-void test_TestCase_2(void)
-{
-	uint16_t data = 0x55;
-
-    TEST_MESSAGE("Stack SIZE EMPTY test");
-
-    size_t size = stack_size(stack);
-    TEST_ASSERT_EQUAL_UINT32(0, size);
+    TEST_MESSAGE("Linked List Complex Tests For Struct Data");
+    TEST_IGNORE_MESSAGE("This TestSuite haven`t implemented");
 }

@@ -30,7 +30,7 @@ static queue_t* queue = NULL;
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 void setUp(void)
 {
-    queue = queue_create(sizeof(uint16_t));
+    queue = queue_create(sizeof(uint32_t));
 }
 
 void tearDown(void)
@@ -40,12 +40,12 @@ void tearDown(void)
 
 void test_init(void)
 {
-    TEST_MESSAGE("Queue Simple Tests For 16-bit Data");
+    TEST_MESSAGE("Queue Limits Tests");
 }
 
 void test_TestCase_0(void)
 {
-    TEST_MESSAGE("Queue create test");
+    TEST_MESSAGE("[QUEUE_TEST]: create");
     TEST_ASSERT_NOT_NULL(queue);
 }
 
@@ -53,53 +53,15 @@ void test_TestCase_1(void)
 {
 	uint16_t data = 0x55;
 
-    TEST_MESSAGE("Queue ENQUEUE test");
-
-    TEST_ASSERT_TRUE(queue_enqueue(queue, &data));
+    TEST_MESSAGE("[QUEUE_TEST]: dequeue empty");
+    TEST_ASSERT_FALSE(queue_dequeue(queue, &data));
 }
 
 void test_TestCase_2(void)
 {
 	uint16_t data = 0x55;
 
-    TEST_MESSAGE("Queue EMPTY test");
-
-    TEST_ASSERT_TRUE(queue_empty(queue));
-
-    queue_enqueue(queue, &data);
-
-    TEST_ASSERT_FALSE(queue_empty(queue));
-}
-
-void test_TestCase_3(void)
-{
-	uint16_t data = 0x55;
-
-    TEST_MESSAGE("Queue SIZE test");
-
-    queue_enqueue(queue, &data);
+    TEST_MESSAGE("[QUEUE_TEST]: size for empty");
     size_t size = queue_size(queue);
-    TEST_ASSERT_EQUAL_UINT32(1, size);
+    TEST_ASSERT_EQUAL_UINT32(0, size);
 }
-
-
-void test_TestCase_4(void)
-{
-	uint16_t data = 0x55;
-
-    TEST_MESSAGE("Queue DEQUEUE test");
-
-    queue_enqueue(queue, &data);
-    TEST_ASSERT_TRUE(queue_dequeue(queue, &data));
-}
-
-void test_TestCase_5(void)
-{
-	uint16_t data = 0x55;
-
-    TEST_MESSAGE("Queue PEEK test");
-
-    queue_enqueue(queue, &data);
-    TEST_ASSERT_TRUE(queue_peek(queue, &data));
-}
-

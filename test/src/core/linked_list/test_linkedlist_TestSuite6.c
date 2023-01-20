@@ -42,7 +42,7 @@ void test_init(void)
 
 void test_TestCase_0(void)
 {
-    TEST_MESSAGE("Linked List create test");
+    TEST_MESSAGE("[LL_TEST]: Create");
     TEST_ASSERT_NOT_NULL(ll);
 }
 
@@ -52,7 +52,7 @@ void test_TestCase_1(void)
     uint32_t expected[] = {1, 562610, 907163, 90197, 10021, 771535, 54519, 66, 67793, 93274};
     uint32_t output[sizeof(expected)/sizeof(uint32_t)] = {};
 
-    TEST_MESSAGE("Linked List push front/pop front test");
+    TEST_MESSAGE("[LL_TEST]: push front/pop front");
 
     for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
     {
@@ -73,7 +73,7 @@ void test_TestCase_2(void)
     uint32_t expected[] = {1, 562610, 907163, 90197, 10021, 771535, 54519, 66, 67793, 93274};
     uint32_t output[sizeof(expected)/sizeof(uint32_t)] = {};
 
-    TEST_MESSAGE("Linked List push back/pop back test");
+    TEST_MESSAGE("[LL_TEST]: push back/pop back");
 
     for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
     {
@@ -94,7 +94,7 @@ void test_TestCase_3(void)
     uint32_t expected[] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
     uint32_t output[sizeof(expected)/sizeof(uint32_t)] = {};
 
-    TEST_MESSAGE("Linked List push front/pop back test");
+    TEST_MESSAGE("[LL_TEST]: push front/pop back");
 
     for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
     {
@@ -115,7 +115,7 @@ void test_TestCase_4(void)
     uint32_t expected[] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
     uint32_t output[sizeof(expected)/sizeof(uint32_t)] = {};
 
-    TEST_MESSAGE("Linked List push back/pop front test");
+    TEST_MESSAGE("[LL_TEST]: push back/pop front");
 
     for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
     {
@@ -137,7 +137,7 @@ void test_TestCase_5(void)
     uint32_t expected[] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
     uint32_t output[sizeof(expected)/sizeof(uint32_t)] = {};
 
-    TEST_MESSAGE("Linked List at test");
+    TEST_MESSAGE("[LL_TEST]: at");
 
     for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
     {
@@ -158,7 +158,7 @@ void test_TestCase_6(void)
     uint32_t expected[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
     uint32_t output[sizeof(expected)/sizeof(uint32_t)] = {};
 
-    TEST_MESSAGE("Linked List insert into empty test");
+    TEST_MESSAGE("[LL_TEST]: insert #1");
 
     for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
     {
@@ -179,7 +179,7 @@ void test_TestCase_7(void)
     uint32_t expected[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
     uint32_t output[sizeof(expected)/sizeof(uint32_t)] = {};
 
-    TEST_MESSAGE("Linked List insert into exist test");
+    TEST_MESSAGE("[LL_TEST]: insert #2");
 
     for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
     {
@@ -201,15 +201,44 @@ void test_TestCase_7(void)
     TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, output, sizeof(expected)/sizeof(uint32_t));
 }
 
-
-
 void test_TestCase_8(void)
 {
     uint32_t input[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
     uint32_t expected[] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
     uint32_t output[sizeof(expected)/sizeof(uint32_t)] = {};
+    uint32_t values[] = {11111, 33333, 55555, 77777, 99999}; 
+    uint32_t extracted[sizeof(values)/sizeof(uint32_t)] = {};
 
-    TEST_MESSAGE("Linked List erase test");
+    TEST_MESSAGE("[LL_TEST]: extract");
+
+    for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
+    {
+        ll->insert(ll, &input[i], i);
+    }
+
+    TEST_ASSERT_TRUE(ll->extract(ll, &extracted[0], 1));
+    TEST_ASSERT_TRUE(ll->extract(ll, &extracted[1], 2));
+    TEST_ASSERT_TRUE(ll->extract(ll, &extracted[2], 3));
+    TEST_ASSERT_TRUE(ll->extract(ll, &extracted[3], 4));
+    TEST_ASSERT_TRUE(ll->extract(ll, &extracted[4], 5));
+
+    TEST_ASSERT_EQUAL_UINT32_ARRAY(values, extracted, sizeof(values)/sizeof(uint32_t));
+
+    for (size_t i = 0; i < sizeof(expected)/sizeof(uint32_t); i++)
+    {
+        ll->at(ll, &output[i], i);
+    }
+    
+    TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, output, sizeof(expected)/sizeof(uint32_t));
+}
+
+void test_TestCase_9(void)
+{
+    uint32_t input[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
+    uint32_t expected[] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
+    uint32_t output[sizeof(expected)/sizeof(uint32_t)] = {};
+
+    TEST_MESSAGE("[LL_TEST]: erase");
 
     for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
     {
@@ -230,12 +259,12 @@ void test_TestCase_8(void)
     TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, output, sizeof(expected)/sizeof(uint32_t));
 }
 
-void test_TestCase_9(void)
+void test_TestCase_10(void)
 {
     uint32_t input[] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
     uint32_t output[sizeof(input)/sizeof(uint32_t)] = {};
 
-    TEST_MESSAGE("Test for checking of size() with push/pop front functions");
+    TEST_MESSAGE("[LL_TEST]: size #1");
 
     for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
     {
@@ -252,40 +281,18 @@ void test_TestCase_9(void)
     }
 }
 
-void test_TestCase_10(void)
+void test_TestCase_11(void)
 {
     uint32_t input[] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
     uint32_t output[sizeof(input)/sizeof(uint32_t)] = {};
 
-    TEST_MESSAGE("Test for checking of size() with push/pop back functions");
+    TEST_MESSAGE("[LL_TEST]: size #2");
 
     for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
     {
         size_t size = ll->size(ll);
         TEST_ASSERT_EQUAL_UINT32(i, size);
         ll->push_back(ll, &input[i]);        
-    }
-
-    for (size_t i = 0; i < sizeof(output)/sizeof(uint32_t); i++)
-    {
-        size_t size = ll->size(ll);
-        TEST_ASSERT_EQUAL_UINT32(sizeof(output)/sizeof(uint32_t) - i, size);
-        ll->pop_back(ll, &output[i]);        
-    }
-}
-
-void test_TestCase_11(void)
-{
-    uint32_t input[] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
-    uint32_t output[sizeof(input)/sizeof(uint32_t)] = {};
-
-    TEST_MESSAGE("Test for checking of size() with push front/pop back functions");
-
-    for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
-    {
-        size_t size = ll->size(ll);
-        TEST_ASSERT_EQUAL_UINT32(i, size);
-        ll->push_front(ll, &input[i]);        
     }
 
     for (size_t i = 0; i < sizeof(output)/sizeof(uint32_t); i++)
@@ -301,7 +308,29 @@ void test_TestCase_12(void)
     uint32_t input[] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
     uint32_t output[sizeof(input)/sizeof(uint32_t)] = {};
 
-    TEST_MESSAGE("Test for checking of size() with push back/pop front functions");
+    TEST_MESSAGE("[LL_TEST]: size #3");
+
+    for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
+    {
+        size_t size = ll->size(ll);
+        TEST_ASSERT_EQUAL_UINT32(i, size);
+        ll->push_front(ll, &input[i]);        
+    }
+
+    for (size_t i = 0; i < sizeof(output)/sizeof(uint32_t); i++)
+    {
+        size_t size = ll->size(ll);
+        TEST_ASSERT_EQUAL_UINT32(sizeof(output)/sizeof(uint32_t) - i, size);
+        ll->pop_back(ll, &output[i]);        
+    }
+}
+
+void test_TestCase_13(void)
+{
+    uint32_t input[] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
+    uint32_t output[sizeof(input)/sizeof(uint32_t)] = {};
+
+    TEST_MESSAGE("[LL_TEST]: size #4");
 
     for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
     {
@@ -318,12 +347,12 @@ void test_TestCase_12(void)
     }
 }
 
-void test_TestCase_13(void)
+void test_TestCase_14(void)
 {
     uint32_t input[] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
     uint32_t output[sizeof(input)/sizeof(uint32_t)] = {};
 
-    TEST_MESSAGE("Test for checking of size() with at functions");
+    TEST_MESSAGE("[LL_TEST]: size #5");
 
     for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
     {
@@ -340,11 +369,11 @@ void test_TestCase_13(void)
     }
 }
 
-void test_TestCase_14(void)
+void test_TestCase_15(void)
 {
     uint32_t input[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
 
-    TEST_MESSAGE("Test for checking of size() with insert function");
+    TEST_MESSAGE("[LL_TEST]: size #6");
 
     for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
     {
@@ -354,11 +383,11 @@ void test_TestCase_14(void)
     }
 }
 
-void test_TestCase_15(void)
+void test_TestCase_16(void)
 {
     uint32_t input[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
 
-    TEST_MESSAGE("Test for checking of size() with erase function");
+    TEST_MESSAGE("[LL_TEST]: size #7");
 
     for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
     {
@@ -373,14 +402,55 @@ void test_TestCase_15(void)
     }
 }
 
-void test_TestCase_16(void)
-{
-    TEST_MESSAGE("Linked List INSERT/EXTRACT test");
-    TEST_IGNORE_MESSAGE("Test not implemented!");
-}
-
 void test_TestCase_17(void)
 {
-    TEST_MESSAGE("Linked List CLEAR test");
-    TEST_IGNORE_MESSAGE("Test not implemented!");
+    uint32_t input[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
+    uint32_t output = 0;
+
+    TEST_MESSAGE("[LL_TEST]: size #8");
+
+    for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
+    {
+        ll->insert(ll, &input[i], i);
+    }
+
+    for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
+    {
+        size_t size = ll->size(ll);
+        TEST_ASSERT_EQUAL_UINT32(sizeof(input)/sizeof(uint32_t) - i, size);
+        ll->extract(ll, &output, 0);   
+    }
+}
+
+void test_TestCase_18(void)
+{
+    uint32_t input[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
+    uint32_t expected[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
+    uint32_t output[sizeof(expected)/sizeof(uint32_t)] = {};
+
+    TEST_MESSAGE("[LL_TEST]: clear");
+
+    for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
+    {
+        ll->insert(ll, &input[i], i);
+    }
+
+    size_t size = ll->size(ll);
+    TEST_ASSERT_EQUAL_UINT32(sizeof(expected)/sizeof(uint32_t), size);
+    TEST_ASSERT_TRUE(ll->clear(ll));
+    size = ll->size(ll);
+    TEST_ASSERT_EQUAL_UINT32(0, size);
+
+
+    for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
+    {
+        TEST_ASSERT_TRUE(ll->insert(ll, &input[i], i));
+    }
+
+    for (size_t i = 0; i < sizeof(expected)/sizeof(uint32_t); i++)
+    {
+        ll->at(ll, &output[i], i);
+    }
+    
+    TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, output, sizeof(expected)/sizeof(uint32_t));
 }

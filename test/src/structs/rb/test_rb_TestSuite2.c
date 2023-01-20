@@ -20,7 +20,7 @@
 //_____ C O N F I G S  ________________________________________________________
 
 //_____ D E F I N I T I O N S _________________________________________________
-
+#define RB_MAX_SIZE 32
 //_____ M A C R O S ___________________________________________________________
 
 //_____ V A R I A B L E S _____________________________________________________
@@ -30,7 +30,7 @@ static ring_buffer_t* rb = NULL;
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 void setUp(void)
 {
-    rb = rb_create(32, sizeof(uint32_t));
+    rb = rb_create(RB_MAX_SIZE, sizeof(uint32_t));
 }
 
 void tearDown(void)
@@ -40,7 +40,7 @@ void tearDown(void)
 
 void test_init(void)
 {
-    TEST_MESSAGE("RingBuffer Simple Tests");
+    TEST_MESSAGE("RingBuffer Limits Tests");
 }
 
 void test_TestCase_0(void)
@@ -51,48 +51,38 @@ void test_TestCase_0(void)
 
 void test_TestCase_1(void)
 {
-	uint32_t data = 0x55;
+	uint16_t data = 0x55;
 
-    TEST_MESSAGE("[RB_TEST]: add");
-    TEST_ASSERT_TRUE(rb_add(rb, &data));
+    TEST_MESSAGE("[RB_TEST]: get empty");
+    TEST_ASSERT_FALSE(rb_get(rb, &data));
 }
 
 void test_TestCase_2(void)
 {
-	uint32_t data = 0x55;
+	uint16_t data = 0x55;
 
-    TEST_MESSAGE("[RB_TEST]: is empty");
-    TEST_ASSERT_TRUE(rb_is_empty(rb));
-    rb_add(rb, &data);
-    TEST_ASSERT_FALSE(rb_is_empty(rb));
+    TEST_MESSAGE("[RB_TEST]: peek empty");
+    TEST_ASSERT_FALSE(rb_peek(rb, &data));
 }
 
 void test_TestCase_3(void)
 {
-	uint32_t data = 0x55;
+	uint16_t data = 0x55;
 
-    TEST_MESSAGE("[RB_TEST]: size");
-    rb_add(rb, &data);
-    size_t size = rb_size(rb);
-    TEST_ASSERT_EQUAL_UINT32(1, size);
+    TEST_MESSAGE("[RB_TEST]: add full");
+    for (size_t i = 0; i < RB_MAX_SIZE; i++)
+    {
+        rb_add(rb, &data);
+    }
+
+    TEST_ASSERT_FALSE(rb_add(rb, &data));
 }
-
 
 void test_TestCase_4(void)
 {
-	uint32_t data = 0x55;
+	uint16_t data = 0x55;
 
-    TEST_MESSAGE("[RB_TEST]: get");
-    rb_add(rb, &data);
-    TEST_ASSERT_TRUE(rb_get(rb, &data));
+    TEST_MESSAGE("[RB_TEST]: size empty");
+    size_t size = rb_size(rb);
+    TEST_ASSERT_EQUAL_UINT32(0, size);
 }
-
-void test_TestCase_5(void)
-{
-	uint32_t data = 0x55;
-
-    TEST_MESSAGE("[RB_TEST]: peek");
-    rb_add(rb, &data);
-    TEST_ASSERT_TRUE(rb_peek(rb, &data));
-}
-

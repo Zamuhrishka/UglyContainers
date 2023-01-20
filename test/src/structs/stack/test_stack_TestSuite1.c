@@ -40,12 +40,12 @@ void tearDown(void)
 
 void test_init(void)
 {
-    TEST_MESSAGE("Stack Simple Tests For 32-bit Data");
+    TEST_MESSAGE("Stack Simple Tests");
 }
 
 void test_TestCase_0(void)
 {
-    TEST_MESSAGE("Stack create test");
+    TEST_MESSAGE("[STACK_TEST]: create");
     TEST_ASSERT_NOT_NULL(stack);
 }
 
@@ -53,8 +53,7 @@ void test_TestCase_1(void)
 {
 	uint32_t data = 0x55;
 
-    TEST_MESSAGE("Stack PUSH test");
-
+    TEST_MESSAGE("[STACK_TEST]: push");
     TEST_ASSERT_TRUE(stack_push(stack, &data));
 }
 
@@ -62,12 +61,9 @@ void test_TestCase_2(void)
 {
 	uint32_t data = 0x55;
 
-    TEST_MESSAGE("Stack EMPTY test");
-
+    TEST_MESSAGE("[STACK_TEST]: empty");
     TEST_ASSERT_TRUE(stack_empty(stack));
-
     stack_push(stack, &data);
-
     TEST_ASSERT_FALSE(stack_empty(stack));
 }
 
@@ -75,8 +71,7 @@ void test_TestCase_3(void)
 {
 	uint32_t data = 0x55;
 
-    TEST_MESSAGE("Stack SIZE test");
-
+    TEST_MESSAGE("[STACK_TEST]: size");
     stack_push(stack, &data);
     size_t size = stack_size(stack);
     TEST_ASSERT_EQUAL_UINT32(1, size);
@@ -87,8 +82,7 @@ void test_TestCase_4(void)
 {
 	uint32_t data = 0x55;
 
-    TEST_MESSAGE("Stack POP test");
-
+    TEST_MESSAGE("[STACK_TEST]: pop");
     stack_push(stack, &data);
     TEST_ASSERT_TRUE(stack_pop(stack, &data));
 }
@@ -97,8 +91,7 @@ void test_TestCase_5(void)
 {
 	uint32_t data = 0x55;
 
-    TEST_MESSAGE("Stack PEEK test");
-
+    TEST_MESSAGE("[STACK_TEST]: peek");
     stack_push(stack, &data);
     TEST_ASSERT_TRUE(stack_peek(stack, &data));
 }
