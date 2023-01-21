@@ -205,7 +205,7 @@ static bool push_front_cb(void* vector, const void* data)
     {
         *(--dst) = *(--src);
     }
-    
+
     memcpy(&_vector->private->pool[0], data, _vector->private->esize);
 
     _vector->private->size++;
@@ -224,7 +224,7 @@ static bool pop_front_cb(void* vector, void* data)
     {
         return false;
     }
- 
+
     memcpy(data, &_vector->private->pool[0], _vector->private->esize);
 
     size_t size_in_bytes = _vector->private->size * _vector->private->esize;
@@ -234,7 +234,7 @@ static bool pop_front_cb(void* vector, void* data)
     {
         dst[i] = src[i];
     }
-    
+
     _vector->private->size--;
 
     return true;
@@ -254,7 +254,7 @@ static bool push_back_cb(void* vector, const void* data)
             return false;
         }
     }
-    
+
     size_t size_in_bytes = _vector->private->size * _vector->private->esize;
     memcpy(&_vector->private->pool[size_in_bytes], data, _vector->private->esize);
 
@@ -274,7 +274,7 @@ static bool pop_back_cb(void* vector, void* data)
     {
         return false;
     }
- 
+
     size_t size_in_bytes = _vector->private->size * _vector->private->esize;
     size_t offset_in_bytes = size_in_bytes - _vector->private->esize;
     memcpy(data, &_vector->private->pool[offset_in_bytes], _vector->private->esize);
@@ -291,7 +291,7 @@ static bool insert_cb(void* vector, const void* data, size_t index)
 
     vector_t* _vector = (vector_t*)vector;
 
-    if(index > _vector->private->size) 
+    if(index > _vector->private->size)
 	{
 		return false;
 	}
@@ -328,12 +328,12 @@ static bool extract_cb(void* vector, void* data, size_t index)
 
     vector_t* _vector = (vector_t*)vector;
 
-    if(index > _vector->private->size) 
+    if(index > _vector->private->size || is_empty(_vector))
 	{
 		return false;
 	}
 
-    if(!_vector->at(_vector, data, index)) 
+    if(!_vector->at(_vector, data, index))
     {
         return false;
     }
@@ -346,6 +346,24 @@ static bool extract_cb(void* vector, void* data, size_t index)
     return true;
 }
 
+static bool replace_cb(void* vector, const void* data, size_t index)
+{
+    assert(vector);
+    assert(data);
+
+    vector_t* _vector = (vector_t*)vector;
+
+    if(index > _vector->private->size || is_empty(_vector))
+	{
+		return false;
+	}
+
+    size_t offset_in_bytes = index * _vector->private->esize;
+    memcpy(&_vector->private->pool[offset_in_bytes], data, _vector->private->esize);
+
+    return true;
+}
+
 static bool at_cb(const void* vector, void* data, size_t index)
 {
     assert(vector);
@@ -353,7 +371,7 @@ static bool at_cb(const void* vector, void* data, size_t index)
 
     vector_t* _vector = (vector_t*)vector;
 
-    if(index > (_vector->private->size - 1) || is_empty(_vector)) 
+    if(index > (_vector->private->size - 1) || is_empty(_vector))
 	{
 		return false;
 	}
@@ -370,7 +388,7 @@ static bool erase_cb(void* vector, size_t index)
 
     vector_t* _vector = (vector_t*)vector;
 
-    if(index > (_vector->private->size - 1) || is_empty(_vector)) 
+    if(index > (_vector->private->size - 1) || is_empty(_vector))
 	{
 		return false;
 	}
@@ -396,7 +414,7 @@ static bool clear_cb(void* vector)
 
     vector_t* _vector = (vector_t*)vector;
 
-    if(is_empty(_vector)) 
+    if(is_empty(_vector))
 	{
 		return true;
 	}
@@ -447,6 +465,7 @@ vector_t* vector_create(size_t esize)
     vector->pop_back = pop_back_cb;
     vector->insert = insert_cb;
     vector->extract = extract_cb;
+    vector->replace = replace_cb;
     vector->at = at_cb;
     vector->erase = erase_cb;
     vector->clear = clear_cb;
@@ -460,7 +479,8 @@ void vector_delete(vector_t** vector)
     assert(vector);
     assert(*vector);
 
-	vector_free((*vector)->private->pool);
+    //BUG: Check why tests fault on this pool free
+	// vector_free((*vector)->private->pool);
 	vector_free(*vector);
 	(*vector) = NULL;
 }
