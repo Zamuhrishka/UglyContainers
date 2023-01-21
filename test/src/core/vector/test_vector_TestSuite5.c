@@ -115,6 +115,13 @@ void test_TestCase_9(void)
 
 void test_TestCase_10(void)
 {
+    uint32_t input = 0;
+    TEST_MESSAGE("[VECTOR_TEST]: replace from empty");
+    TEST_ASSERT_FALSE(vector->replace(vector, &input, 0));
+}
+
+void test_TestCase_11(void)
+{
     TEST_MESSAGE("[VECTOR_TEST]: clear empty");
     TEST_ASSERT_TRUE(vector->clear(vector));
 }

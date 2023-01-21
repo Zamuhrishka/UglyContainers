@@ -208,6 +208,25 @@ void test_TestCase_13(void)
 void test_TestCase_14(void)
 {
     struct test_vec_simple_struct input = {.a = 0x55555555, .b = 0x5555, .c = 0x55};
+    struct test_vec_simple_struct output = {};
+
+    TEST_MESSAGE("[VECTOR_TEST]: replace");
+
+    vector->insert(vector, &input, 0);
+
+    input.a++;
+    input.b++;
+    input.c++;
+    TEST_ASSERT_TRUE(vector->replace(vector, &input, 0));
+    TEST_ASSERT_TRUE(vector->at(vector, &output, 0));
+    TEST_ASSERT_EQUAL_UINT32(output.a, input.a);
+    TEST_ASSERT_EQUAL_UINT16(output.b, input.b);
+    TEST_ASSERT_EQUAL_UINT8(output.c, input.c);
+}
+
+void test_TestCase_15(void)
+{
+    struct test_vec_simple_struct input = {.a = 0x55555555, .b = 0x5555, .c = 0x55};
 
     TEST_MESSAGE("[VECTOR_TEST]: clear");
 

@@ -343,6 +343,34 @@ void test_TestCase_13(void)
 void test_TestCase_14(void)
 {
     uint32_t input[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
+    uint32_t expected[] = {11111, 11111, 33333, 33333, 55555, 55555, 77777, 77777, 99999, 99999, 10021, 90197, 907163, 562610, 1};
+    uint32_t values[] = {11111, 33333, 55555, 77777, 99999};
+    uint32_t output[sizeof(expected)/sizeof(uint32_t)] = {};
+
+    TEST_MESSAGE("[VECTOR_TEST]: replace");
+
+    for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
+    {
+        vector->insert(vector, &input[i], i);
+    }
+
+    TEST_ASSERT_TRUE(vector->replace(vector, &values[0], 0));
+    TEST_ASSERT_TRUE(vector->replace(vector, &values[1], 2));
+    TEST_ASSERT_TRUE(vector->replace(vector, &values[2], 4));
+    TEST_ASSERT_TRUE(vector->replace(vector, &values[3], 6));
+    TEST_ASSERT_TRUE(vector->replace(vector, &values[4], 8));
+
+    for (size_t i = 0; i < sizeof(expected)/sizeof(uint32_t); i++)
+    {
+        vector->at(vector, &output[i], i);
+    }
+
+    TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, output, sizeof(expected)/sizeof(uint32_t));
+}
+
+void test_TestCase_15(void)
+{
+    uint32_t input[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
     uint32_t expected[] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
     uint32_t output[sizeof(expected)/sizeof(uint32_t)] = {};
 
@@ -367,7 +395,7 @@ void test_TestCase_14(void)
     TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, output, sizeof(expected)/sizeof(uint32_t));
 }
 
-void test_TestCase_15(void)
+void test_TestCase_16(void)
 {
     uint32_t input[DEFAULT_BIGGER_CAPACITY] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
     uint32_t output[DEFAULT_BIGGER_CAPACITY] = {};
@@ -389,7 +417,7 @@ void test_TestCase_15(void)
     }
 }
 
-void test_TestCase_16(void)
+void test_TestCase_17(void)
 {
     uint32_t input[DEFAULT_BIGGER_CAPACITY] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
     uint32_t output[DEFAULT_BIGGER_CAPACITY] = {};
@@ -411,7 +439,7 @@ void test_TestCase_16(void)
     }
 }
 
-void test_TestCase_17(void)
+void test_TestCase_18(void)
 {
     uint32_t input[DEFAULT_BIGGER_CAPACITY] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
     uint32_t output[DEFAULT_BIGGER_CAPACITY] = {};
@@ -433,7 +461,7 @@ void test_TestCase_17(void)
     }
 }
 
-void test_TestCase_18(void)
+void test_TestCase_19(void)
 {
     uint32_t input[DEFAULT_BIGGER_CAPACITY] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
     uint32_t output[DEFAULT_BIGGER_CAPACITY] = {};
@@ -455,7 +483,7 @@ void test_TestCase_18(void)
     }
 }
 
-void test_TestCase_19(void)
+void test_TestCase_20(void)
 {
     uint32_t input[DEFAULT_BIGGER_CAPACITY] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
     uint32_t output[DEFAULT_BIGGER_CAPACITY] = {};
@@ -477,7 +505,7 @@ void test_TestCase_19(void)
     }
 }
 
-void test_TestCase_20(void)
+void test_TestCase_21(void)
 {
     uint32_t input[DEFAULT_BIGGER_CAPACITY] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
 
@@ -491,7 +519,7 @@ void test_TestCase_20(void)
     }
 }
 
-void test_TestCase_21(void)
+void test_TestCase_22(void)
 {
     uint32_t input[DEFAULT_BIGGER_CAPACITY] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
 
@@ -510,7 +538,7 @@ void test_TestCase_21(void)
     }
 }
 
-void test_TestCase_22(void)
+void test_TestCase_23(void)
 {
     uint32_t input[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
     uint32_t output = 0;
@@ -530,7 +558,7 @@ void test_TestCase_22(void)
     }
 }
 
-void test_TestCase_23(void)
+void test_TestCase_24(void)
 {
     uint32_t input[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
     uint32_t expected[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};

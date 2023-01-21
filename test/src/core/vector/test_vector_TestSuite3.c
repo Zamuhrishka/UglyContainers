@@ -198,6 +198,21 @@ void test_TestCase_13(void)
 
 void test_TestCase_14(void)
 {
+    uint32_t input = 0x55;
+    uint32_t output = 0;
+
+    TEST_MESSAGE("[VECTOR_TEST]: replace");
+
+    vector->insert(vector, &input, 0);
+
+    input++;
+    TEST_ASSERT_TRUE(vector->replace(vector, &input, 0));
+    TEST_ASSERT_TRUE(vector->at(vector, &output, 0));
+    TEST_ASSERT_EQUAL_UINT32(output, input);
+}
+
+void test_TestCase_15(void)
+{
     uint8_t input = 0x55555555;
 
     TEST_MESSAGE("[VECTOR_TEST]: clear");
