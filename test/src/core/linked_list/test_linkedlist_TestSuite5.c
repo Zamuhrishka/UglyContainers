@@ -114,6 +114,13 @@ void test_TestCase_9(void)
 
 void test_TestCase_10(void)
 {
+    uint32_t input = 0;
+    TEST_MESSAGE("[LL_TEST]: replace from empty");
+    TEST_ASSERT_FALSE(ll->replace(ll, &input, 0));
+}
+
+void test_TestCase_11(void)
+{
     TEST_MESSAGE("[LL_TEST]: clear empty");
     TEST_ASSERT_TRUE(ll->clear(ll));
 }

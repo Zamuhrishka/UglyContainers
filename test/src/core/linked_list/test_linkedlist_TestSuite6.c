@@ -63,7 +63,7 @@ void test_TestCase_1(void)
     {
         TEST_ASSERT_TRUE(ll->pop_front(ll, &output[i]));
     }
-    
+
     TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, output, sizeof(expected)/sizeof(uint32_t));
 }
 
@@ -84,7 +84,7 @@ void test_TestCase_2(void)
     {
         TEST_ASSERT_TRUE(ll->pop_back(ll, &output[i]));
     }
-    
+
     TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, output, sizeof(expected)/sizeof(uint32_t));
 }
 
@@ -105,7 +105,7 @@ void test_TestCase_3(void)
     {
         TEST_ASSERT_TRUE(ll->pop_back(ll, &output[i]));
     }
-    
+
     TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, output, sizeof(expected)/sizeof(uint32_t));
 }
 
@@ -126,7 +126,7 @@ void test_TestCase_4(void)
     {
         TEST_ASSERT_TRUE(ll->pop_front(ll, &output[i]));
     }
-    
+
     TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, output, sizeof(expected)/sizeof(uint32_t));
 }
 
@@ -148,7 +148,7 @@ void test_TestCase_5(void)
     {
         TEST_ASSERT_TRUE(ll->at(ll, &output[i], i));
     }
-    
+
     TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, output, sizeof(expected)/sizeof(uint32_t));
 }
 
@@ -169,7 +169,7 @@ void test_TestCase_6(void)
     {
         ll->at(ll, &output[i], i);
     }
-    
+
     TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, output, sizeof(expected)/sizeof(uint32_t));
 }
 
@@ -186,7 +186,7 @@ void test_TestCase_7(void)
         TEST_ASSERT_TRUE(ll->push_front(ll, &input[i]));
     }
 
-    uint32_t values[] = {11111, 33333, 55555, 77777, 99999};  
+    uint32_t values[] = {11111, 33333, 55555, 77777, 99999};
     TEST_ASSERT_TRUE(ll->insert(ll, &values[0], 1));
     TEST_ASSERT_TRUE(ll->insert(ll, &values[1], 3));
     TEST_ASSERT_TRUE(ll->insert(ll, &values[2], 5));
@@ -197,7 +197,7 @@ void test_TestCase_7(void)
     {
         ll->at(ll, &output[i], i);
     }
-    
+
     TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, output, sizeof(expected)/sizeof(uint32_t));
 }
 
@@ -206,7 +206,7 @@ void test_TestCase_8(void)
     uint32_t input[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
     uint32_t expected[] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
     uint32_t output[sizeof(expected)/sizeof(uint32_t)] = {};
-    uint32_t values[] = {11111, 33333, 55555, 77777, 99999}; 
+    uint32_t values[] = {11111, 33333, 55555, 77777, 99999};
     uint32_t extracted[sizeof(values)/sizeof(uint32_t)] = {};
 
     TEST_MESSAGE("[LL_TEST]: extract");
@@ -228,11 +228,39 @@ void test_TestCase_8(void)
     {
         ll->at(ll, &output[i], i);
     }
-    
+
     TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, output, sizeof(expected)/sizeof(uint32_t));
 }
 
 void test_TestCase_9(void)
+{
+    uint32_t input[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
+    uint32_t expected[] = {11111, 11111, 33333, 33333, 55555, 55555, 77777, 77777, 99999, 99999, 10021, 90197, 907163, 562610, 1};
+    uint32_t values[] = {11111, 33333, 55555, 77777, 99999};
+    uint32_t output[sizeof(expected)/sizeof(uint32_t)] = {};
+
+    TEST_MESSAGE("[LL_TEST]: replace");
+
+    for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
+    {
+        ll->insert(ll, &input[i], i);
+    }
+
+    TEST_ASSERT_TRUE(ll->replace(ll, &values[0], 0));
+    TEST_ASSERT_TRUE(ll->replace(ll, &values[1], 2));
+    TEST_ASSERT_TRUE(ll->replace(ll, &values[2], 4));
+    TEST_ASSERT_TRUE(ll->replace(ll, &values[3], 6));
+    TEST_ASSERT_TRUE(ll->replace(ll, &values[4], 8));
+
+    for (size_t i = 0; i < sizeof(expected)/sizeof(uint32_t); i++)
+    {
+        ll->at(ll, &output[i], i);
+    }
+
+    TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, output, sizeof(expected)/sizeof(uint32_t));
+}
+
+void test_TestCase_10(void)
 {
     uint32_t input[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
     uint32_t expected[] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
@@ -255,11 +283,11 @@ void test_TestCase_9(void)
     {
         ll->at(ll, &output[i], i);
     }
-    
+
     TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, output, sizeof(expected)/sizeof(uint32_t));
 }
 
-void test_TestCase_10(void)
+void test_TestCase_11(void)
 {
     uint32_t input[] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
     uint32_t output[sizeof(input)/sizeof(uint32_t)] = {};
@@ -270,18 +298,18 @@ void test_TestCase_10(void)
     {
         size_t size = ll->size(ll);
         TEST_ASSERT_EQUAL_UINT32(i, size);
-        ll->push_front(ll, &input[i]);        
+        ll->push_front(ll, &input[i]);
     }
 
     for (size_t i = 0; i < sizeof(output)/sizeof(uint32_t); i++)
     {
         size_t size = ll->size(ll);
         TEST_ASSERT_EQUAL_UINT32(sizeof(output)/sizeof(uint32_t) - i, size);
-        ll->pop_front(ll, &output[i]);        
+        ll->pop_front(ll, &output[i]);
     }
 }
 
-void test_TestCase_11(void)
+void test_TestCase_12(void)
 {
     uint32_t input[] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
     uint32_t output[sizeof(input)/sizeof(uint32_t)] = {};
@@ -292,18 +320,18 @@ void test_TestCase_11(void)
     {
         size_t size = ll->size(ll);
         TEST_ASSERT_EQUAL_UINT32(i, size);
-        ll->push_back(ll, &input[i]);        
+        ll->push_back(ll, &input[i]);
     }
 
     for (size_t i = 0; i < sizeof(output)/sizeof(uint32_t); i++)
     {
         size_t size = ll->size(ll);
         TEST_ASSERT_EQUAL_UINT32(sizeof(output)/sizeof(uint32_t) - i, size);
-        ll->pop_back(ll, &output[i]);        
+        ll->pop_back(ll, &output[i]);
     }
 }
 
-void test_TestCase_12(void)
+void test_TestCase_13(void)
 {
     uint32_t input[] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
     uint32_t output[sizeof(input)/sizeof(uint32_t)] = {};
@@ -314,18 +342,18 @@ void test_TestCase_12(void)
     {
         size_t size = ll->size(ll);
         TEST_ASSERT_EQUAL_UINT32(i, size);
-        ll->push_front(ll, &input[i]);        
+        ll->push_front(ll, &input[i]);
     }
 
     for (size_t i = 0; i < sizeof(output)/sizeof(uint32_t); i++)
     {
         size_t size = ll->size(ll);
         TEST_ASSERT_EQUAL_UINT32(sizeof(output)/sizeof(uint32_t) - i, size);
-        ll->pop_back(ll, &output[i]);        
+        ll->pop_back(ll, &output[i]);
     }
 }
 
-void test_TestCase_13(void)
+void test_TestCase_14(void)
 {
     uint32_t input[] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
     uint32_t output[sizeof(input)/sizeof(uint32_t)] = {};
@@ -336,18 +364,18 @@ void test_TestCase_13(void)
     {
         size_t size = ll->size(ll);
         TEST_ASSERT_EQUAL_UINT32(i, size);
-        ll->push_back(ll, &input[i]);        
+        ll->push_back(ll, &input[i]);
     }
 
     for (size_t i = 0; i < sizeof(output)/sizeof(uint32_t); i++)
     {
         size_t size = ll->size(ll);
         TEST_ASSERT_EQUAL_UINT32(sizeof(output)/sizeof(uint32_t) - i, size);
-        ll->pop_front(ll, &output[i]);        
+        ll->pop_front(ll, &output[i]);
     }
 }
 
-void test_TestCase_14(void)
+void test_TestCase_15(void)
 {
     uint32_t input[] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
     uint32_t output[sizeof(input)/sizeof(uint32_t)] = {};
@@ -358,18 +386,18 @@ void test_TestCase_14(void)
     {
         size_t size = ll->size(ll);
         TEST_ASSERT_EQUAL_UINT32(i, size);
-        ll->push_back(ll, &input[i]);        
+        ll->push_back(ll, &input[i]);
     }
 
     for (size_t i = 0; i < sizeof(output)/sizeof(uint32_t); i++)
     {
         size_t size = ll->size(ll);
         TEST_ASSERT_EQUAL_UINT32(sizeof(output)/sizeof(uint32_t), size);
-        ll->at(ll, &output[i], i);        
+        ll->at(ll, &output[i], i);
     }
 }
 
-void test_TestCase_15(void)
+void test_TestCase_16(void)
 {
     uint32_t input[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
 
@@ -383,7 +411,7 @@ void test_TestCase_15(void)
     }
 }
 
-void test_TestCase_16(void)
+void test_TestCase_17(void)
 {
     uint32_t input[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
 
@@ -398,11 +426,11 @@ void test_TestCase_16(void)
     {
         size_t size = ll->size(ll);
         TEST_ASSERT_EQUAL_UINT32(sizeof(input)/sizeof(uint32_t) - i, size);
-        ll->erase(ll, 0);   
+        ll->erase(ll, 0);
     }
 }
 
-void test_TestCase_17(void)
+void test_TestCase_18(void)
 {
     uint32_t input[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
     uint32_t output = 0;
@@ -418,11 +446,11 @@ void test_TestCase_17(void)
     {
         size_t size = ll->size(ll);
         TEST_ASSERT_EQUAL_UINT32(sizeof(input)/sizeof(uint32_t) - i, size);
-        ll->extract(ll, &output, 0);   
+        ll->extract(ll, &output, 0);
     }
 }
 
-void test_TestCase_18(void)
+void test_TestCase_19(void)
 {
     uint32_t input[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
     uint32_t expected[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
@@ -451,6 +479,6 @@ void test_TestCase_18(void)
     {
         ll->at(ll, &output[i], i);
     }
-    
+
     TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, output, sizeof(expected)/sizeof(uint32_t));
 }

@@ -144,6 +144,21 @@ void test_TestCase_9(void)
 
 void test_TestCase_10(void)
 {
+    uint32_t input = 0x55;
+    uint32_t output = 0;
+
+    TEST_MESSAGE("[LL_TEST]: replace");
+
+    ll->insert(ll, &input, 0);
+
+    input++;
+    TEST_ASSERT_TRUE(ll->replace(ll, &input, 0));
+    TEST_ASSERT_TRUE(ll->at(ll, &output, 0));
+    TEST_ASSERT_EQUAL_UINT32(output, input);
+}
+
+void test_TestCase_11(void)
+{
     uint32_t input = 0x55555555;
 
     TEST_MESSAGE("[LL_TEST]: clear");
