@@ -27,8 +27,7 @@ struct RingBuffer_tag
     container_t* container;
     volatile size_t tail;
     volatile size_t head;
-    volatile size_t max_size;
-    volatile bool overflow;
+    size_t max_size;
 } ;
 
 //_____ M A C R O S ___________________________________________________________
@@ -57,11 +56,26 @@ ring_buffer_t* rb_create(size_t size, size_t esize)
         return NULL;
     }
 
+    void* data = (void*)mem_allocate(esize);
+    if (NULL == data)
+    {
+        return NULL;
+    }
+
+    memset(data, 0, esize);
 
     rb->container = container_create(esize, CONTAINER_VECTOR_BASED);
     if (NULL == rb->container)
     {
         return NULL;
+    }
+
+    for (size_t i = 0; i < size; i++)
+    {
+        if(!container_push_back(rb->container, data))
+        {
+            return NULL;
+        }
     }
 
     rb->head = 0;
@@ -87,12 +101,11 @@ bool rb_add(ring_buffer_t* rb, const void* data)
 		return false;
 	}
 
-    if(!container_insert(rb->container, data, rb->head)) {
+    if(!container_replace(rb->container, data, rb->head)) {
         return false;
     }
 
-    rb->head = (rb->head == container_size((container_t*)rb->container)) ? 0 : (rb->head + 1);
-    // rb->head = (rb->head +1) % rb->max_size;
+    rb->head = (rb->head + 1) % rb->max_size;
 
 	return true;
 }
@@ -101,44 +114,51 @@ bool rb_get(ring_buffer_t* rb, void* data)
 {
     assert(rb);
 
-    if(!container_extract((container_t*)rb->container, data, rb->tail)) {
+    if(rb_is_empty(rb)) {
+		return false;
+	}
+
+    if(!container_at((container_t*)rb->container, data, rb->tail)) {
         return false;
     }
 
-    rb->tail = (rb->tail == container_size((container_t*)rb->container)) ? 0 : (rb->tail + 1);
-    // rb->tail = (rb->tail +1) % rb->max_size;
+    rb->tail = (rb->tail + 1) % rb->max_size;
 }
 
 bool rb_peek(const ring_buffer_t* rb, void* data)
 {
     assert(rb);
 
-   return container_at((container_t*)rb->container, data, rb->tail);
+    if(rb_is_empty(rb)) {
+		return false;
+	}
+
+    return container_at((container_t*)rb->container, data, rb->tail);
 }
 
 size_t rb_size(const ring_buffer_t* rb)
 {
     assert(rb);
-
-    return container_size((container_t*)rb->container);
+    return abs(rb->tail - rb->head);
 }
 
 bool rb_is_empty(const ring_buffer_t* rb)
 {
     assert(rb);
-
-    return (container_size((container_t*)rb->container) == 0);
+    return (abs(rb->tail - rb->head) == 0);
 }
 
 bool rb_is_full(const ring_buffer_t* rb)
 {
     assert(rb);
-
-    return (container_size((container_t*)rb->container) >= rb->max_size);
+    return (abs(rb->tail - rb->head) >= rb->max_size - 1);
 }
 
 bool rb_clear(ring_buffer_t* rb)
 {
     assert(rb);
-    container_clear((container_t*)rb->container);
+
+    rb->tail = rb->head = 0;
+
+    return true;
 }
