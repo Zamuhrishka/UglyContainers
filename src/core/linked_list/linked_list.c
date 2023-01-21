@@ -338,7 +338,7 @@ static bool insert_cb(void* list, const void* data, size_t index)
         }
 
         linked_list->private->size++;
-    } 
+    }
 
     return true;
 }
@@ -355,7 +355,7 @@ static bool extract_cb(void* list, void* data, size_t index)
         return false;
     }
 
-    if(!linked_list->at(linked_list, data, index)) 
+    if(!linked_list->at(linked_list, data, index))
     {
         return false;
     }
@@ -364,7 +364,25 @@ static bool extract_cb(void* list, void* data, size_t index)
     {
         return false;
     }
-   
+
+    return true;
+}
+
+static bool replace_cb(void* list, const void* data, size_t index)
+{
+    assert(list);
+    assert(data);
+
+    linked_list_t* linked_list = (linked_list_t*)list;
+
+    if(index > linked_list->private->size || is_empty(linked_list))
+	{
+		return false;
+	}
+
+    node_t* elm = get_nth(linked_list->private->head, index);
+    memcpy(elm->data, data, linked_list->private->esize);
+
     return true;
 }
 
@@ -456,6 +474,8 @@ static bool clear_cb(const void* list)
     linked_list->private->head = linked_list->private->tail = NULL;
     linked_list->private->size = 0;
     linked_list->private->esize = linked_list->private->esize;
+
+    return true;
 }
 
 
@@ -487,10 +507,11 @@ linked_list_t* linked_list_create(size_t esize)
     linked_list->pop_back = pop_back_cb;
     linked_list->insert = insert_cb;
     linked_list->extract = extract_cb;
+    linked_list->replace = replace_cb;
     linked_list->at = at_cb;
     linked_list->erase = erase_cb;
     linked_list->clear = clear_cb;
-    linked_list->size = size_cb;    
+    linked_list->size = size_cb;
 
     return linked_list;
 }

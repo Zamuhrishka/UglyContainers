@@ -27,10 +27,11 @@ typedef struct
         bool (*pop_front)(void* this, void* data);
         bool (*push_back)(void* this, const void* data);
         bool (*pop_back)(void* this, void* data);
-        bool (*insert)(void* this, const void* data, size_t position);
-        bool (*extract)(void* this, void* data, size_t position);
-        bool (*at)(const void* this, void* data, size_t position);
-        bool (*erase)(void* this, size_t position);
+        bool (*insert)(void* this, const void* data, size_t index);
+        bool (*extract)(void* this, void* data, size_t index);
+        bool (*replace)(void* this, const void* data, size_t index);
+        bool (*at)(const void* this, void* data, size_t index);
+        bool (*erase)(void* this, size_t index);
         bool (*clear)(void* this);
         size_t (*size)(const void* this);
     };
