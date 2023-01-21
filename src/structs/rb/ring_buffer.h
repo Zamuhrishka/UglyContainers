@@ -25,12 +25,11 @@ typedef struct RingBuffer_tag ring_buffer_t;
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 ring_buffer_t* rb_create(size_t size, size_t esize);
 void rb_delete(ring_buffer_t** rb);
-
 bool rb_is_empty(const ring_buffer_t* rb);
 bool rb_is_full(const ring_buffer_t* rb);
 bool rb_add(ring_buffer_t* rb, const void* data);
 bool rb_get(ring_buffer_t* rb, void* data);
-
 bool rb_peek(const ring_buffer_t* rb, void* data);
 size_t rb_size(const ring_buffer_t* rb);
 bool rb_clear(ring_buffer_t* rb);
+
