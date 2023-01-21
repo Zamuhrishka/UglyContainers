@@ -95,4 +95,3 @@ void test_TestCase_5(void)
     rb_add(rb, &data);
     TEST_ASSERT_TRUE(rb_peek(rb, &data));
 }
-
