@@ -235,6 +235,34 @@ void test_TestCase_8(void)
 void test_TestCase_9(void)
 {
     uint16_t input[] = {93, 11, 67, 33, 66, 55, 54, 77, 77, 99, 100, 90, 90, 56, 1};
+    uint16_t expected[] = {11, 11, 33, 33, 55, 55, 77, 77, 99, 99, 100, 90, 90, 56, 1};
+    uint16_t values[] = {11, 33, 55, 77, 99};
+    uint16_t output[sizeof(expected)/sizeof(uint16_t)] = {};
+
+    TEST_MESSAGE("[LL_TEST]: replace");
+
+    for (size_t i = 0; i < sizeof(input)/sizeof(uint16_t); i++)
+    {
+        ll->insert(ll, &input[i], i);
+    }
+
+    TEST_ASSERT_TRUE(ll->replace(ll, &values[0], 0));
+    TEST_ASSERT_TRUE(ll->replace(ll, &values[1], 2));
+    TEST_ASSERT_TRUE(ll->replace(ll, &values[2], 4));
+    TEST_ASSERT_TRUE(ll->replace(ll, &values[3], 6));
+    TEST_ASSERT_TRUE(ll->replace(ll, &values[4], 8));
+
+    for (size_t i = 0; i < sizeof(expected)/sizeof(uint16_t); i++)
+    {
+        ll->at(ll, &output[i], i);
+    }
+
+    TEST_ASSERT_EQUAL_UINT16_ARRAY(expected, output, sizeof(expected)/sizeof(uint16_t));
+}
+
+void test_TestCase_10(void)
+{
+    uint16_t input[] = {93, 11, 67, 33, 66, 55, 54, 77, 77, 99, 100, 90, 90, 56, 1};
     uint16_t expected[] = {93, 67, 66, 54, 77, 100, 90, 90, 56, 1};
     uint16_t output[sizeof(expected)/sizeof(uint16_t)] = {};
 
@@ -259,7 +287,7 @@ void test_TestCase_9(void)
     TEST_ASSERT_EQUAL_UINT16_ARRAY(expected, output, sizeof(expected)/sizeof(uint16_t));
 }
 
-void test_TestCase_10(void)
+void test_TestCase_11(void)
 {
     uint16_t input[] = {93, 67, 66, 54, 77, 100, 90, 90, 56, 1};
     uint16_t output[sizeof(input)/sizeof(uint16_t)] = {};
@@ -281,7 +309,7 @@ void test_TestCase_10(void)
     }
 }
 
-void test_TestCase_11(void)
+void test_TestCase_12(void)
 {
     uint16_t input[] = {93, 67, 66, 54, 77, 100, 90, 90, 56, 1};
     uint16_t output[sizeof(input)/sizeof(uint16_t)] = {};
@@ -303,7 +331,7 @@ void test_TestCase_11(void)
     }
 }
 
-void test_TestCase_12(void)
+void test_TestCase_13(void)
 {
     uint16_t input[] = {93, 67, 66, 54, 77, 100, 90, 90, 56, 1};
     uint16_t output[sizeof(input)/sizeof(uint16_t)] = {};
@@ -325,7 +353,7 @@ void test_TestCase_12(void)
     }
 }
 
-void test_TestCase_13(void)
+void test_TestCase_14(void)
 {
     uint16_t input[] = {93, 67, 66, 54, 77, 100, 90, 90, 56, 1};
     uint16_t output[sizeof(input)/sizeof(uint16_t)] = {};
@@ -347,7 +375,7 @@ void test_TestCase_13(void)
     }
 }
 
-void test_TestCase_14(void)
+void test_TestCase_15(void)
 {
     uint16_t input[] = {93, 67, 66, 54, 77, 100, 90, 90, 56, 1};
     uint16_t output[sizeof(input)/sizeof(uint16_t)] = {};
@@ -369,7 +397,7 @@ void test_TestCase_14(void)
     }
 }
 
-void test_TestCase_15(void)
+void test_TestCase_16(void)
 {
     uint16_t input[] = {93, 67, 66, 54, 77, 100, 90, 90, 56, 1};
 
@@ -383,7 +411,7 @@ void test_TestCase_15(void)
     }
 }
 
-void test_TestCase_16(void)
+void test_TestCase_17(void)
 {
     uint16_t input[] = {93, 67, 66, 54, 77, 100, 90, 90, 56, 1};
 
@@ -402,7 +430,7 @@ void test_TestCase_16(void)
     }
 }
 
-void test_TestCase_17(void)
+void test_TestCase_18(void)
 {
     uint16_t input[] = {93, 67, 66, 54, 77, 100, 90, 90, 56, 1};
     uint16_t output = 0;
@@ -422,7 +450,7 @@ void test_TestCase_17(void)
     }
 }
 
-void test_TestCase_18(void)
+void test_TestCase_19(void)
 {
     uint16_t input[] = {93, 11, 67, 33, 66, 55, 54, 77, 77, 99, 100, 90, 90, 56, 1};
     uint16_t expected[] = {93, 11, 67, 33, 66, 55, 54, 77, 77, 99, 100, 90, 90, 56, 1};

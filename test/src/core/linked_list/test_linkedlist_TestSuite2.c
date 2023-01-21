@@ -144,15 +144,30 @@ void test_TestCase_9(void)
 
 void test_TestCase_10(void)
 {
-    uint16_t input = 0x55555555;
+    uint16_t input = 0x55;
+    uint16_t output = 0;
+
+    TEST_MESSAGE("[LL_TEST]: replace");
+
+    ll->insert(ll, &input, 0);
+
+    input++;
+    TEST_ASSERT_TRUE(ll->replace(ll, &input, 0));
+    TEST_ASSERT_TRUE(ll->at(ll, &output, 0));
+    TEST_ASSERT_EQUAL_UINT16(output, input);
+}
+
+void test_TestCase_11(void)
+{
+    uint16_t input = 0x5555;
 
     TEST_MESSAGE("[LL_TEST]: clear");
 
     ll->insert(ll, &input, 0);
 
     size_t size = ll->size(ll);
-    TEST_ASSERT_EQUAL_UINT32(1, size);
+    TEST_ASSERT_EQUAL_UINT16(1, size);
     TEST_ASSERT_TRUE(ll->clear(ll));
     size = ll->size(ll);
-    TEST_ASSERT_EQUAL_UINT32(0, size);
+    TEST_ASSERT_EQUAL_UINT16(0, size);
 }

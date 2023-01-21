@@ -138,21 +138,36 @@ void test_TestCase_9(void)
     TEST_MESSAGE("[LL_TEST]: extract");
 
     ll->insert(ll, &input, 0);
-    
+
     TEST_ASSERT_TRUE(ll->extract(ll, &input, 0));
 }
 
 void test_TestCase_10(void)
 {
-    uint8_t input = 0x55555555;
+    uint8_t input = 0x55;
+    uint8_t output = 0;
+
+    TEST_MESSAGE("[LL_TEST]: replace");
+
+    ll->insert(ll, &input, 0);
+
+    input++;
+    TEST_ASSERT_TRUE(ll->replace(ll, &input, 0));
+    TEST_ASSERT_TRUE(ll->at(ll, &output, 0));
+    TEST_ASSERT_EQUAL_UINT8(output, input);
+}
+
+void test_TestCase_11(void)
+{
+    uint8_t input = 0x55;
 
     TEST_MESSAGE("[LL_TEST]: clear");
 
     ll->insert(ll, &input, 0);
 
     size_t size = ll->size(ll);
-    TEST_ASSERT_EQUAL_UINT32(1, size);
+    TEST_ASSERT_EQUAL_UINT8(1, size);
     TEST_ASSERT_TRUE(ll->clear(ll));
     size = ll->size(ll);
-    TEST_ASSERT_EQUAL_UINT32(0, size);
+    TEST_ASSERT_EQUAL_UINT8(0, size);
 }
