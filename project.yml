@@ -42,7 +42,6 @@
   :test_preprocess:
     - *common_defines
     - TEST
-  :release:
 
 :cmock:
   :mock_prefix: mock_
@@ -59,6 +58,8 @@
     bool: UINT8
 
 :gcov:
+  :utilities:
+    - gcovr           # Use gcovr to create the specified reports (default).
   :reports:
     - HtmlDetailed
   :gcovr:
