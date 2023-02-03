@@ -129,6 +129,14 @@ static inline node_t* get_nth(node_t* head, size_t index)
     return head;
 }
 
+static bool resize_cb(void* list, size_t new_size)
+{
+    assert(list);
+
+    //\warning: The linked list core struct doesn`t support this method
+    return false;
+}
+
 static bool push_front_cb(void* list, const void* data)
 {
     assert(list);
@@ -521,6 +529,7 @@ linked_list_t* linked_list_create(size_t esize)
     linked_list->private->size = 0;
     linked_list->private->esize = esize;
 
+    linked_list->resize = resize_cb;
     linked_list->push_front = push_front_cb;
     linked_list->pop_front = pop_front_cb;
     linked_list->push_back = push_back_cb;

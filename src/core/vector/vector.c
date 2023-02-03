@@ -64,7 +64,7 @@ static inline vector_t* vector_allocate(void)
     return vector;
 }
 
-static inline bool vector_resize(vector_t *vector)
+static inline bool vector_reallocate(vector_t *vector)
 {
 	size_t new_size_in_bytes = (vector->private->size * vector->private->esize) + (RESIZE_FACTOR * vector->private->esize);
 
@@ -179,6 +179,19 @@ static bool is_free_space_for_element(const vector_t *vector)
     return (free_space_in_bytes >= vector->private->esize);
 }
 
+static bool resize_cb(void* vector, size_t new_size)
+{
+    assert(vector);
+
+    vector_t* _vector = (vector_t*)vector;
+
+    if(_vector->private->size >= new_size)
+    {
+        return true;
+    }
+
+    return vector_reallocate(_vector);
+}
 
 static bool push_front_cb(void* vector, const void* data)
 {
@@ -192,7 +205,7 @@ static bool push_front_cb(void* vector, const void* data)
 
     if (!is_free_space_for_element(_vector))
     {
-        if(!vector_resize(_vector))
+        if(!vector_reallocate(_vector))
         {
             return false;
         }
@@ -249,7 +262,7 @@ static bool push_back_cb(void* vector, const void* data)
 
     if (!is_free_space_for_element(_vector))
     {
-        if(!vector_resize(_vector))
+        if(!vector_reallocate(_vector))
         {
             return false;
         }
@@ -298,7 +311,7 @@ static bool insert_cb(void* vector, const void* data, size_t index)
 
     if (!is_free_space_for_element(_vector))
     {
-        if(!vector_resize(_vector))
+        if(!vector_reallocate(_vector))
         {
             return false;
         }
@@ -474,6 +487,7 @@ vector_t* vector_create(size_t esize)
         return NULL;
     }
 
+    vector->resize = resize_cb;
     vector->push_front = push_front_cb;
     vector->pop_front = pop_front_cb;
     vector->push_back = push_back_cb;

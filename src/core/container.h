@@ -41,6 +41,7 @@ typedef enum ContainerType_tag {
 void container_alloc_init(allocate_fn_t alloc_cb, free_fn_t free_cb);
 container_t* container_create(size_t esize, container_type_e type);
 void container_delete(container_t** list);
+bool container_resize(container_t* container, size_t new_size);
 bool container_push_front(container_t* container, const void* data);
 bool container_pop_front(container_t* container, void* data);
 bool container_push_back(container_t* container, const void* data);
