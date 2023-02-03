@@ -457,6 +457,26 @@ static bool erase_cb(void* list, size_t index)
     return true;
 }
 
+static void* peek_cb(void* list, size_t index)
+{
+    assert(list);
+
+    linked_list_t* linked_list = (linked_list_t*)list;
+
+    if (index > linked_list->private->size)
+    {
+        return false;
+    }
+
+    node_t* elm = get_nth(linked_list->private->head, index);
+    if (NULL == elm)
+    {
+        return false;
+    }
+
+    return elm->data;
+}
+
 static bool clear_cb(const void* list)
 {
     assert(list);
@@ -510,6 +530,7 @@ linked_list_t* linked_list_create(size_t esize)
     linked_list->replace = replace_cb;
     linked_list->at = at_cb;
     linked_list->erase = erase_cb;
+    linked_list->peek = peek_cb;
     linked_list->clear = clear_cb;
     linked_list->size = size_cb;
 

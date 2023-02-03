@@ -408,6 +408,21 @@ static bool erase_cb(void* vector, size_t index)
     return true;
 }
 
+static void* peek_cb(void* vector, size_t index)
+{
+    assert(vector);
+
+    vector_t* _vector = (vector_t*)vector;
+
+    if(index > (_vector->private->size - 1) || is_empty(_vector))
+	{
+		return false;
+	}
+
+    size_t offset_in_bytes = index * _vector->private->esize;
+    return &_vector->private->pool[offset_in_bytes];
+}
+
 static bool clear_cb(void* vector)
 {
     assert(vector);
@@ -468,6 +483,7 @@ vector_t* vector_create(size_t esize)
     vector->replace = replace_cb;
     vector->at = at_cb;
     vector->erase = erase_cb;
+    vector->peek = peek_cb;
     vector->clear = clear_cb;
     vector->size = size_cb;
 
