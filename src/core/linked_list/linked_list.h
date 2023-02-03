@@ -23,6 +23,7 @@ typedef struct
     private_t* private;
     struct
     {
+        bool (*resize)(void* this, size_t new_size);
         bool (*push_front)(void* this, const void* data);
         bool (*pop_front)(void* this, void* data);
         bool (*push_back)(void* this, const void* data);

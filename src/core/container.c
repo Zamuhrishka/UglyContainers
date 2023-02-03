@@ -116,6 +116,16 @@ void container_delete(container_t** container)
     (*container) = NULL;
 }
 
+bool container_resize(container_t* container, size_t new_size)
+{
+    assert(container);
+
+    return ((CONTAINER_LINKED_LIST_BASED == container->type) ? \
+        ((linked_list_t*)container->core)->resize(((linked_list_t*)container->core), new_size) :  \
+        ((CONTAINER_VECTOR_BASED == container->type) ? ((vector_t*)container->core)->resize(((vector_t*)container->core), new_size) : \
+        false));
+}
+
 bool container_push_front(container_t* container, const void* data)
 {
     assert(container);
