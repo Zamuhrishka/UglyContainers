@@ -214,6 +214,16 @@ bool container_erase(container_t* container, size_t index)
         false));
 }
 
+void* container_peek(const container_t* container, size_t index)
+{
+    assert(container);
+
+    return ((CONTAINER_LINKED_LIST_BASED == container->type) ? \
+        ((linked_list_t*)container->core)->peek(((linked_list_t*)container->core), index) :  \
+        ((CONTAINER_VECTOR_BASED == container->type) ? ((vector_t*)container->core)->peek(((vector_t*)container->core), index) : \
+        NULL));
+}
+
 size_t container_clear(const container_t* container)
 {
     assert(container);

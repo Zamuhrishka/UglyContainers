@@ -31,6 +31,7 @@ typedef struct
         bool (*replace)(void* this, const void* data, size_t index);
         bool (*at)(const void* this, void* data, size_t index);
         bool (*erase)(void* this, size_t index);
+        void* (*peek)(void* this, size_t index);
         bool (*clear)(void* this);
         size_t (*size)(const void* this);
     };

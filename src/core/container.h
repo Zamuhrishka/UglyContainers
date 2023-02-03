@@ -50,5 +50,6 @@ bool container_extract(container_t* container, void* data, size_t index);
 bool container_replace(container_t* container, const void* data, size_t index);
 bool container_at(const container_t* container, void* data, size_t index);
 bool container_erase(container_t* container, size_t index);
+void* container_peek(const container_t* container, size_t index);
 size_t container_clear(const container_t* container);
 size_t container_size(const container_t* container);
