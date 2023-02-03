@@ -239,3 +239,21 @@ void test_TestCase_16(void)
     TEST_ASSERT_TRUE(output);
     TEST_ASSERT_EQUAL_UINT8(input, *output);
 }
+
+void test_TestCase_17(void)
+{
+    uint8_t input = 0x55;
+
+    TEST_MESSAGE("[VECTOR_TEST]: resize");
+
+    vector->insert(vector, &input, 0);
+
+    size_t size = vector->size(vector);
+    TEST_ASSERT_EQUAL_UINT8(1, size);
+
+    TEST_ASSERT_TRUE(vector->resize(vector, DEFAULT_BIGGER_CAPACITY));
+    for (size_t i = 0; i < DEFAULT_BIGGER_CAPACITY; i++)
+    {
+        TEST_ASSERT_TRUE(vector->insert(vector, &input, 0));
+    }
+}
