@@ -188,3 +188,19 @@ void test_TestCase_11(void)
     size = ll->size(ll);
     TEST_ASSERT_EQUAL_UINT32(0, size);
 }
+
+void test_TestCase_12(void)
+{
+    struct test_ll_simple_struct input = {.a = 0x55555555, .b = 0x5555, .c = 0x55};
+    struct test_ll_simple_struct* output = NULL;
+
+    TEST_MESSAGE("[LL_TEST]: peek");
+
+    ll->insert(ll, &input, 0);
+
+    output = (struct test_ll_simple_struct*)ll->peek(ll, 0);
+    TEST_ASSERT_TRUE(output);
+    TEST_ASSERT_EQUAL_UINT32(output->a, input.a);
+    TEST_ASSERT_EQUAL_UINT16(output->b, input.b);
+    TEST_ASSERT_EQUAL_UINT8(output->c, input.c);
+}

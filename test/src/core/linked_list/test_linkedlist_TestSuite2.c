@@ -171,3 +171,17 @@ void test_TestCase_11(void)
     size = ll->size(ll);
     TEST_ASSERT_EQUAL_UINT16(0, size);
 }
+
+void test_TestCase_12(void)
+{
+    uint16_t input = 0x5555;
+    uint16_t* output = NULL;
+
+    TEST_MESSAGE("[LL_TEST]: peek");
+
+    ll->insert(ll, &input, 0);
+
+    output = (uint16_t*)ll->peek(ll, 0);
+    TEST_ASSERT_TRUE(output);
+    TEST_ASSERT_EQUAL_UINT16(input, *output);
+}
