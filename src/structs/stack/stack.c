@@ -31,7 +31,7 @@ stack_t* stack_create(size_t esize)
 {
     assert(0 != esize);
 
-    stack_t* stack = container_create(esize, CONTAINER_VECTOR_BASED);
+    stack_t* stack = container_create(esize, /*CONTAINER_VECTOR_BASED*/CONTAINER_LINKED_LIST_BASED);
     if (NULL == stack)
     {
         return NULL;
