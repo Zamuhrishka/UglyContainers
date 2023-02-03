@@ -213,7 +213,7 @@ void test_TestCase_14(void)
 
 void test_TestCase_15(void)
 {
-    uint8_t input = 0x55555555;
+    uint32_t input = 0x55555555;
 
     TEST_MESSAGE("[VECTOR_TEST]: clear");
 
@@ -224,4 +224,18 @@ void test_TestCase_15(void)
     TEST_ASSERT_TRUE(vector->clear(vector));
     size = vector->size(vector);
     TEST_ASSERT_EQUAL_UINT32(0, size);
+}
+
+void test_TestCase_16(void)
+{
+    uint32_t input = 0x55555555;
+    uint32_t* output = NULL;
+
+    TEST_MESSAGE("[VECTOR_TEST]: peek");
+
+    vector->insert(vector, &input, 0);
+
+    output = (uint32_t*)vector->peek(vector, 0);
+    TEST_ASSERT_TRUE(output);
+    TEST_ASSERT_EQUAL_UINT32(input, *output);
 }

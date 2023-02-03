@@ -171,3 +171,17 @@ void test_TestCase_11(void)
     size = ll->size(ll);
     TEST_ASSERT_EQUAL_UINT8(0, size);
 }
+
+void test_TestCase_12(void)
+{
+    uint8_t input = 0x55;
+    uint8_t* output = NULL;
+
+    TEST_MESSAGE("[LL_TEST]: peek");
+
+    ll->insert(ll, &input, 0);
+
+    output = (uint8_t*)ll->peek(ll, 0);
+    TEST_ASSERT_TRUE(output);
+    TEST_ASSERT_EQUAL_UINT8(input, *output);
+}

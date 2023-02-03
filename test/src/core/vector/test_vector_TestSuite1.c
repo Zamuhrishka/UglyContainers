@@ -225,3 +225,17 @@ void test_TestCase_15(void)
     size = vector->size(vector);
     TEST_ASSERT_EQUAL_UINT8(0, size);
 }
+
+void test_TestCase_16(void)
+{
+    uint8_t input = 0x55;
+    uint8_t* output = NULL;
+
+    TEST_MESSAGE("[VECTOR_TEST]: peek");
+
+    vector->insert(vector, &input, 0);
+
+    output = (uint8_t*)vector->peek(vector, 0);
+    TEST_ASSERT_TRUE(output);
+    TEST_ASSERT_EQUAL_UINT8(input, *output);
+}

@@ -590,3 +590,26 @@ void test_TestCase_24(void)
 
     TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, output, sizeof(expected)/sizeof(uint32_t));
 }
+
+void test_TestCase_25(void)
+{
+    uint32_t input[] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
+    uint32_t expected[] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
+    uint32_t output[sizeof(expected)/sizeof(uint32_t)] = {};
+
+    TEST_MESSAGE("[VECTOR_TEST]: peek");
+
+    for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
+    {
+        TEST_ASSERT_TRUE(vector->push_back(vector, &input[i]));
+    }
+
+    for (size_t i = 0; i < sizeof(expected)/sizeof(uint32_t); i++)
+    {
+        uint32_t* out = vector->peek(vector, i);
+        TEST_ASSERT_TRUE(out);
+        output[i] = *out;
+    }
+
+    TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, output, sizeof(expected)/sizeof(uint32_t));
+}
