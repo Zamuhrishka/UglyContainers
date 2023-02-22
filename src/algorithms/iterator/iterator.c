@@ -25,6 +25,7 @@ struct Iterator_tag
 //_____ P R I V A T E  F U N C T I O N S_______________________________________
 
 //_____ P U B L I C  F U N C T I O N S_________________________________________
+#if 0
 iterator_t* iterator_create(const container_t* container, bool is_move)
 {
     assert(container);
@@ -55,7 +56,7 @@ bool iterator_next(const iterator_t* iterator)
 
 bool iterator_get(const iterator_t* iterator, void* data)
 {
-    assert(container);
+    assert(iterator);
     assert(data);
 
     bool status = container_at(iterator->container, data, iterator->current_index);
@@ -68,3 +69,4 @@ bool iterator_get(const iterator_t* iterator, void* data)
 
     return true;
 }
+#endif
