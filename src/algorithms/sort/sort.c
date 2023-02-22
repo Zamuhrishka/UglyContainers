@@ -18,7 +18,7 @@
 //_____ P R I V A T E  F U N C T I O N S_______________________________________
 
 //_____ P U B L I C  F U N C T I O N S_________________________________________
-void sort(container_t* container, sort_dir_e direction, cmp_t (cmp*)(void*, void*))
-{
+// void sort(container_t* container, sort_dir_e direction, cmp_t (cmp*)(void*, void*))
+// {
 
-}
+// }

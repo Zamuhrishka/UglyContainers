@@ -17,14 +17,14 @@
 /**
 *  \brief
 */
-typedef enum SortDir_tag {
-    SORT_ASCENDING = 0,
-    SORT_DESCENDING,
-} sort_dir_e;
+// typedef enum SortDir_tag {
+//     SORT_ASCENDING = 0,
+//     SORT_DESCENDING,
+// } sort_dir_e;
 
 //_____ M A C R O S ___________________________________________________________
 
 //_____ V A R I A B L E S _____________________________________________________
 
 //_____ P U B L I C  F U N C T I O N S_________________________________________
-void sort(container_t* container, sort_dir_e direction, cmp_t (cmp*)(void*, void*));
+// void sort(container_t* container, sort_dir_e direction, cmp_t (cmp*)(void*, void*));
