@@ -30,27 +30,27 @@ static void (*mem_free)(void* pointer) = free;
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 void allocation_cb_register(allocate_fn_t alloc_cb)
 {
-    assert(alloc_cb);
-    mem_allocate = alloc_cb;
+  assert(alloc_cb);
+  mem_allocate = alloc_cb;
 }
 
 void free_cb_register(free_fn_t free_cb)
 {
-    assert(free_cb);
-    mem_free = free_cb;
+  assert(free_cb);
+  mem_free = free_cb;
 }
 
 allocate_fn_t get_allocator(void)
 {
-    return mem_allocate;
+  return mem_allocate;
 }
 
 free_fn_t get_free(void)
 {
-    return mem_free;
+  return mem_free;
 }
 
 bool is_allocator_valid(void)
 {
-    return (mem_allocate != NULL && mem_free != NULL);
+  return (mem_allocate != NULL && mem_free != NULL);
 }
