@@ -43,12 +43,14 @@ static inline vector_t* vector_allocate(void)
     free_fn_t mem_free = get_free();
 
     // TODO: Add some align checking?
-    vector_t* vector = (vector_t*)mem_allocate(sizeof(vector_t));
+    //NOTE: Apply **SIZEOF TO VARIABLES** idiom
+    vector_t* vector = (vector_t*)mem_allocate(sizeof *vector);
     if (NULL == vector)
     {
         return NULL;
     }
 
+    //TODO: Apply **SIZEOF TO VARIABLES** idiom
     vector->private = (private_t*)mem_allocate(sizeof(private_t));
     if (NULL == vector->private)
     {
@@ -64,9 +66,9 @@ static inline vector_t* vector_allocate(void)
     return vector;
 }
 
-static inline bool vector_reallocate(vector_t *vector)
+static inline bool vector_reallocate(vector_t *vector, size_t new_size)
 {
-	size_t new_size_in_bytes = (vector->private->size * vector->private->esize) + (RESIZE_FACTOR * vector->private->esize);
+	size_t new_size_in_bytes = (vector->private->size * vector->private->esize) + (new_size * vector->private->esize);
 
     allocate_fn_t mem_allocate = get_allocator();
     assert(mem_allocate);
@@ -190,7 +192,7 @@ static bool resize_cb(void* vector, size_t new_size)
         return true;
     }
 
-    return vector_reallocate(_vector);
+    return vector_reallocate(_vector, new_size);
 }
 
 static bool push_front_cb(void* vector, const void* data)
@@ -205,7 +207,7 @@ static bool push_front_cb(void* vector, const void* data)
 
     if (!is_free_space_for_element(_vector))
     {
-        if(!vector_reallocate(_vector))
+        if(!vector_reallocate(_vector, RESIZE_FACTOR))
         {
             return false;
         }
@@ -262,7 +264,7 @@ static bool push_back_cb(void* vector, const void* data)
 
     if (!is_free_space_for_element(_vector))
     {
-        if(!vector_reallocate(_vector))
+        if(!vector_reallocate(_vector, RESIZE_FACTOR))
         {
             return false;
         }
@@ -311,7 +313,7 @@ static bool insert_cb(void* vector, const void* data, size_t index)
 
     if (!is_free_space_for_element(_vector))
     {
-        if(!vector_reallocate(_vector))
+        if(!vector_reallocate(_vector, RESIZE_FACTOR))
         {
             return false;
         }

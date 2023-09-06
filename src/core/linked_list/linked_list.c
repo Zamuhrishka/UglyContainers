@@ -51,12 +51,14 @@ static inline node_t* node_allocate(size_t data_size)
     allocate_fn_t mem_allocate = get_allocator();
     assert(mem_allocate);
 
-    node_t* tmp = (node_t*)mem_allocate(sizeof(node_t));
+    //NOTE: Apply **SIZEOF TO VARIABLES** idiom
+    node_t* tmp = (node_t*)mem_allocate(sizeof *tmp);
     if (NULL == tmp)
     {
         return NULL;
     }
 
+    //TODO: Apply **SIZEOF TO VARIABLES** idiom
     tmp->data = mem_allocate(data_size);
     if (NULL == tmp->data)
     {
@@ -101,12 +103,14 @@ static inline linked_list_t* list_allocate(void)
     free_fn_t mem_free = get_free();
 
     // TODO: Add some align checking?
-    linked_list_t* linked_list = (linked_list_t*)mem_allocate(sizeof(linked_list_t));
+    //NOTE: Apply **SIZEOF TO VARIABLES** idiom
+    linked_list_t* linked_list = (linked_list_t*)mem_allocate(sizeof *linked_list);
     if (NULL == linked_list)
     {
         return NULL;
     }
 
+    //TODO: Apply **SIZEOF TO VARIABLES** idiom
     linked_list->private = (private_t*)mem_allocate(sizeof(private_t));
     if (NULL == linked_list->private)
     {
