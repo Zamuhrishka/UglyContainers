@@ -2,7 +2,7 @@
  * @file    test_bst_TestSuite1.c
  * @author  Aleksander Kovalchuk (aliaksander.kavalchuk@gmail.com)
  * @brief   Test cases for the binary search tree traversal functions
- *          implemented in bt.h.
+ *          implemented in bst.h.
  * @date    2023-02-05
  */
 
@@ -16,7 +16,7 @@
 #include "core/container.h"
 #include "core/linked_list/linked_list.h"
 #include "core/vector/vector.h"
-#include "structs/bt/bt.h"
+#include "structs/bst/bst.h"
 #include "contants.h"
 //_____ C O N F I G S  ________________________________________________________
 
@@ -25,7 +25,7 @@
 //_____ M A C R O S ___________________________________________________________
 
 //_____ V A R I A B L E S _____________________________________________________
-static bt_t* bst = NULL;
+static bst_t* bst = NULL;
 static uint8_t input[] = { 8, 3, 10, 1, 6, 14, 4, 7, 13 };
 static uint8_t output[sizeof(input)/sizeof(input[0])] = {};
 static size_t offset = 0;
@@ -45,16 +45,16 @@ void callback(void* data)
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 void setUp(void)
 {
-    bst = bt_create(sizeof(uint8_t), compare_u8);
+    bst = bst_create(sizeof(uint8_t), compare_u8);
     for (size_t i = 0; i < sizeof(input)/sizeof(input[0]); i++)
     {
-        bt_insert(bst, &input[i]);
+        bst_insert(bst, &input[i]);
     }
 }
 
 void tearDown(void)
 {
-    bt_delete(bst);
+    bst_delete(bst);
 }
 
 void test_init(void)
@@ -80,7 +80,7 @@ void test_TestCase_1(void)
 
     TEST_MESSAGE("Pre-Order Traversal Test");
 
-    bt_pre_order_traversal(bst, callback);
+    bst_pre_order_traversal(bst, callback);
 
     for (size_t i = 0; i < sizeof(expected)/sizeof(expected[0]); i++)
     {
@@ -99,7 +99,7 @@ void test_TestCase_2(void)
 
     TEST_MESSAGE("Post-Order Traversal Test");
 
-    bt_post_order_traversal(bst, callback);
+    bst_post_order_traversal(bst, callback);
 
     for (size_t i = 0; i < sizeof(expected)/sizeof(expected[0]); i++)
     {
@@ -118,7 +118,7 @@ void test_TestCase_3(void)
 
     TEST_MESSAGE("In-Order Traversal Test");
 
-    bt_in_order_traversal(bst, callback);
+    bst_in_order_traversal(bst, callback);
 
     for (size_t i = 0; i < sizeof(expected)/sizeof(expected[0]); i++)
     {

@@ -15,7 +15,7 @@
 #include "core/container.h"
 #include "core/linked_list/linked_list.h"
 #include "core/vector/vector.h"
-#include "structs/bt/bt.h"
+#include "structs/bst/bst.h"
 #include "contants.h"
 //_____ C O N F I G S  ________________________________________________________
 
@@ -24,7 +24,7 @@
 //_____ M A C R O S ___________________________________________________________
 
 //_____ V A R I A B L E S _____________________________________________________
-static bt_t* bst = NULL;
+static bst_t* bst = NULL;
 static uint8_t input[] = { 8, 3, 10, 2, 6, 14, 4, 7, 13, 16, 17 };
 static uint8_t output[sizeof(input)/sizeof(input[0])] = {};
 static size_t offset = 0;
@@ -39,18 +39,18 @@ static cmp_t compare_u8(void* value1, void* value2)
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 void setUp(void)
 {
-    bst = bt_create(sizeof(uint8_t), compare_u8);
+    bst = bst_create(sizeof(uint8_t), compare_u8);
     TEST_ASSERT_NOT_NULL(bst);
 
     for (size_t i = 0; i < sizeof(input)/sizeof(input[0]); i++)
     {
-        TEST_ASSERT_TRUE(bt_insert(bst, &input[i]));
+        TEST_ASSERT_TRUE(bst_insert(bst, &input[i]));
     }
 }
 
 void tearDown(void)
 {
-    bt_delete(bst);
+    bst_delete(bst);
 }
 
 void test_init(void)
@@ -74,7 +74,7 @@ void test_TestCase_0(void)
 void test_TestCase_1(void)
 {
     TEST_MESSAGE("Simple Min Test");
-    uint8_t* min = bt_min(bst);
+    uint8_t* min = bst_min(bst);
     TEST_ASSERT_EQUAL_UINT8(2, *min);
 }
 
@@ -85,7 +85,7 @@ void test_TestCase_1(void)
 void test_TestCase_2(void)
 {
     TEST_MESSAGE("Simple Max Test");
-    uint8_t* max = bt_max(bst);
+    uint8_t* max = bst_max(bst);
     TEST_ASSERT_EQUAL_UINT8(17, *max);
 }
 
@@ -98,9 +98,9 @@ void test_TestCase_3(void)
     TEST_MESSAGE("Insert New Min Element Test");
 
     uint8_t new_min = 1;
-    TEST_ASSERT_TRUE(bt_insert(bst, &new_min));
+    TEST_ASSERT_TRUE(bst_insert(bst, &new_min));
 
-    uint8_t* output = bt_min(bst);
+    uint8_t* output = bst_min(bst);
     TEST_ASSERT_EQUAL_UINT8(new_min, *output);
 }
 
@@ -113,9 +113,9 @@ void test_TestCase_4(void)
     TEST_MESSAGE("Insert New Max Element Test");
 
     uint8_t new_max = 100;
-    TEST_ASSERT_TRUE(bt_insert(bst, &new_max));
+    TEST_ASSERT_TRUE(bst_insert(bst, &new_max));
 
-    uint8_t* output = bt_max(bst);
+    uint8_t* output = bst_max(bst);
     TEST_ASSERT_EQUAL_UINT8(new_max, *output);
 }
 
@@ -128,9 +128,9 @@ void test_TestCase_5(void)
     TEST_MESSAGE("Insert New Min Element Test");
 
     uint8_t old_min = 2;
-    TEST_ASSERT_TRUE(bt_remove(bst, &old_min));
+    TEST_ASSERT_TRUE(bst_remove(bst, &old_min));
 
-    uint8_t* output = bt_min(bst);
+    uint8_t* output = bst_min(bst);
     TEST_ASSERT_EQUAL_UINT8(3, *output);
 }
 
@@ -143,8 +143,8 @@ void test_TestCase_6(void)
     TEST_MESSAGE("Insert New Max Element Test");
 
     uint8_t old_max = 17;
-    TEST_ASSERT_TRUE(bt_remove(bst, &old_max));
+    TEST_ASSERT_TRUE(bst_remove(bst, &old_max));
 
-    uint8_t* output = bt_max(bst);
+    uint8_t* output = bst_max(bst);
     TEST_ASSERT_EQUAL_UINT8(16, *output);
 }

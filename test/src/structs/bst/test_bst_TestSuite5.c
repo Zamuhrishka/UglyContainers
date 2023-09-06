@@ -15,7 +15,7 @@
 #include "core/container.h"
 #include "core/linked_list/linked_list.h"
 #include "core/vector/vector.h"
-#include "structs/bt/bt.h"
+#include "structs/bst/bst.h"
 #include "contants.h"
 //_____ C O N F I G S  ________________________________________________________
 
@@ -24,7 +24,7 @@
 //_____ M A C R O S ___________________________________________________________
 
 //_____ V A R I A B L E S _____________________________________________________
-static bt_t* bst = NULL;
+static bst_t* bst = NULL;
 static uint8_t input[] = { 8, 3, 10, 2, 6, 14, 4, 7, 13 };
 static uint8_t output[sizeof(input)/sizeof(input[0])] = {};
 static size_t offset = 0;
@@ -39,18 +39,18 @@ static cmp_t compare_u8(void* value1, void* value2)
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 void setUp(void)
 {
-    bst = bt_create(sizeof(uint8_t), compare_u8);
+    bst = bst_create(sizeof(uint8_t), compare_u8);
     TEST_ASSERT_NOT_NULL(bst);
 
     for (size_t i = 0; i < sizeof(input)/sizeof(input[0]); i++)
     {
-        TEST_ASSERT_TRUE(bt_insert(bst, &input[i]));
+        TEST_ASSERT_TRUE(bst_insert(bst, &input[i]));
     }
 }
 
 void tearDown(void)
 {
-    bt_delete(bst);
+    bst_delete(bst);
 }
 
 void test_init(void)
@@ -77,7 +77,7 @@ void test_TestCase_1(void)
 
     for (size_t i = 0; i < sizeof(input)/sizeof(input[0]); i++)
     {
-        TEST_ASSERT_TRUE(bt_search(bst, &input[i]));
+        TEST_ASSERT_TRUE(bst_search(bst, &input[i]));
     }
 }
 
@@ -92,6 +92,6 @@ void test_TestCase_2(void)
     uint8_t _input[] = { 18, 30, 100, 20, 61, 141, 48, 76, 130 };
     for (size_t i = 0; i < sizeof(_input)/sizeof(_input[0]); i++)
     {
-        TEST_ASSERT_FALSE(bt_search(bst, &_input[i]));
+        TEST_ASSERT_FALSE(bst_search(bst, &_input[i]));
     }
 }
