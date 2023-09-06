@@ -1,7 +1,7 @@
-
+#pragma once
 
 typedef enum {
-    EQUAL   =   0,
-    HIGH    =   1,
-    LOW     =   2,
+    EQ  =   0,
+    GT  =   1,
+    LE  =   -1,
 }   cmp_t;
