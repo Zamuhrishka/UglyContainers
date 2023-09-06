@@ -7,12 +7,10 @@
 
 #pragma once
 
-
 //_____ I N C L U D E S _______________________________________________________
-#include "status_codes.h"
-
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
+
 //_____ C O N F I G S  ________________________________________________________
 
 //_____ D E F I N I T I O N S _________________________________________________
@@ -32,4 +30,3 @@ bool rb_get(ring_buffer_t* rb, void* data);
 bool rb_peek(const ring_buffer_t* rb, void* data);
 size_t rb_size(const ring_buffer_t* rb);
 bool rb_clear(ring_buffer_t* rb);
-
