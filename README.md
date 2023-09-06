@@ -1,4 +1,4 @@
-# fwContainers
+# Ugly Containers
 
 
 ## Info
@@ -12,39 +12,18 @@
 - test `void* container_peek(const container_t* container, size_t index)` function
 - implement `bool container_resize(ontainer_t* container, size_t new_size)` function
 - test `bool container_resize(ontainer_t* container, size_t new_size)` function
-- refactoring of `dict`
-- testing `dict`
-- refactoring of `set`
-- testing `set`
-- implement separate core hash table structure
-- testing core hash table structure
-
-## Big ToDo
-
-- Implement of Hash Table (https://www.youtube.com/watch?v=2Ti5yvumFTU&list=PL9IEJIKnBJjFiudyP6wSXmykrn67Ykqib&index=4)
+- FIFO блокируется при переполнении, в отличие от кольцевого буфера
+- Rework all for using status codes
+- Replace standard assert on special library assert QC_ASSERT()
+- Add algorithms: sort, find, print, fromArray, toArray, iterator
 - Implemet to data copy modes: deep copy, simple copy
 - Add Unit tests
 - Add thread safety (use atomic access and mutex)
 - Split core on dynamic and static types
 - Think about `volatile`
-- FIFO блокируется при переполнении, в отличие от кольцевого буфера
-- Add algoruthms: sort, find, print, fromArray, toArray, iterator
-- Rework all for using status codes
 - В Java используется похожий подход, но массив растет медленнее. Размер нового массива определяется следующим образом: size = (size * 3) / 2 + 1;
-- Replace standard assert on special library assert QC_ASSERT()
-- [Set](https://tproger.ru/translations/sets-for-beginners/)
 
-## Allocators
-
-- [Аллокаторы памяти](https://habr.com/ru/post/505632/)
-- [Менеджмент памяти или как реже стрелять себе в ногу](https://habr.com/ru/post/473294/)
-- [Происхождение и эволюция аллокатора памяти в С](https://habr.com/ru/post/707032/)
-- [tlsf](https://github.com/mattconte/tlsf)
-- [Malloc-Implementations](https://github.com/emeryberger/Malloc-Implementations)
-- [tinyalloc](https://github.com/thi-ng/tinyalloc)
-- [umm_malloc](https://github.com/dimonomid/umm_malloc)
-
-## LINKS
+## Examples
 
 - [qlibc](https://github.com/wolkykim/qlibc)
 - [c-algorithms](https://github.com/fragglet/c-algorithms/tree/master/src)
@@ -53,9 +32,20 @@
 - [fifofast](https://github.com/nqtronix/fifofast)
 - [Используем черную магию для создания быстрого кольцевого буфера](https://habr.com/ru/company/otus/blog/557310/)
 
+### Set
 
-## Names
+- [Set](https://tproger.ru/translations/sets-for-beginners/)
 
-- Quasi Containers (QC)/Quasi Collections (QC)/Quasi Collections C (QCC)
-- Ugly Containers (UC)
-- Imaginary Containers (IC)
+### Hash Table
+
+- Implement of Hash Table (https://www.youtube.com/watch?v=2Ti5yvumFTU&list=PL9IEJIKnBJjFiudyP6wSXmykrn67Ykqib&index=4)
+
+### Allocators
+
+- [Аллокаторы памяти](https://habr.com/ru/post/505632/)
+- [Менеджмент памяти или как реже стрелять себе в ногу](https://habr.com/ru/post/473294/)
+- [Происхождение и эволюция аллокатора памяти в С](https://habr.com/ru/post/707032/)
+- [tlsf](https://github.com/mattconte/tlsf)
+- [Malloc-Implementations](https://github.com/emeryberger/Malloc-Implementations)
+- [tinyalloc](https://github.com/thi-ng/tinyalloc)
+- [umm_malloc](https://github.com/dimonomid/umm_malloc)
