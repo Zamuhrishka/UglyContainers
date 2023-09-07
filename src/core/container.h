@@ -11,9 +11,9 @@
 #include "config.h"
 
 // #if CONTAINER_TYPE == LINKED_LIST
-    #include "linked_list/linked_list.h"
+#include "linked_list/linked_list.h"
 // #elif CONTAINER_TYPE == VECTOR
-    #include "vector/vector.h"
+#include "vector/vector.h"
 // #else
 //     #error "You have to define core container type by set #CONTAINER_TYPE=="
 // #endif
@@ -26,11 +26,12 @@ struct Container_tag;
 typedef struct Container_tag container_t;
 
 /**
-*  \brief ContainerType
-*/
-typedef enum ContainerType_tag {
-    CONTAINER_LINKED_LIST_BASED = 0,						/**<   */
-    CONTAINER_VECTOR_BASED = 1,						        /**<   */
+ *  \brief ContainerType
+ */
+typedef enum ContainerType_tag
+{
+  CONTAINER_LINKED_LIST_BASED = 0, /**<   */
+  CONTAINER_VECTOR_BASED = 1,      /**<   */
 } container_type_e;
 
 //_____ M A C R O S ___________________________________________________________
