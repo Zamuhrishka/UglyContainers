@@ -29,66 +29,66 @@
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 stack_t* stack_create(size_t esize)
 {
-    assert(0 != esize);
+  assert(0 != esize);
 
-    stack_t* stack = container_create(esize, /*CONTAINER_VECTOR_BASED*/CONTAINER_LINKED_LIST_BASED);
-    if (NULL == stack)
-    {
-        return NULL;
-    }
+  stack_t* stack = container_create(esize, CONTAINER_VECTOR_BASED /*CONTAINER_LINKED_LIST_BASED*/);
+  if (NULL == stack)
+  {
+    return NULL;
+  }
 
-    return stack;
+  return stack;
 }
 
 void stack_delete(stack_t** stack)
 {
-    assert(*stack);
-    assert(stack);
+  assert(*stack);
+  assert(stack);
 
-    container_delete((container_t**)stack);
+  container_delete((container_t**)stack);
 }
 
 bool stack_push(stack_t* stack, const void* data)
 {
-    assert(NULL != stack);
-    assert(NULL != data);
+  assert(NULL != stack);
+  assert(NULL != data);
 
-    return container_push_back((container_t*)stack, data);
+  return container_push_back((container_t*)stack, data);
 }
 
 bool stack_pop(stack_t* stack, void* data)
 {
-    assert(NULL != stack);
-    assert(NULL != data);
+  assert(NULL != stack);
+  assert(NULL != data);
 
-    return container_pop_back((container_t*)stack, data);
+  return container_pop_back((container_t*)stack, data);
 }
 
 bool stack_peek(const stack_t* stack, void* data)
 {
-    assert(NULL != stack);
-    assert(NULL != data);
+  assert(NULL != stack);
+  assert(NULL != data);
 
-    return container_at((container_t*)stack, data, container_size((container_t*)stack) - 1);
+  return container_at((container_t*)stack, data, container_size((container_t*)stack) - 1);
 }
 
 size_t stack_size(const stack_t* stack)
 {
-    assert(NULL != stack);
+  assert(NULL != stack);
 
-    return container_size((container_t*)stack);
+  return container_size((container_t*)stack);
 }
 
 bool stack_empty(const stack_t* stack)
 {
-    assert(stack);
-    size_t size = container_size((container_t*)stack);
-	return (size == 0);
+  assert(stack);
+  size_t size = container_size((container_t*)stack);
+  return (size == 0);
 }
 
 size_t stack_clear(stack_t* stack)
 {
-    assert(NULL != stack);
+  assert(NULL != stack);
 
-    return container_clear((container_t*)stack);
+  return container_clear((container_t*)stack);
 }
