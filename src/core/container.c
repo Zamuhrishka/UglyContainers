@@ -47,7 +47,6 @@ container_t* container_create(size_t esize, container_type_e type)
   allocate_fn_t mem_allocate = get_allocator();
   free_fn_t mem_free = get_free();
 
-  // NOTE: Apply **SIZEOF TO VARIABLES** idiom
   container_t* container = (container_t*)mem_allocate(sizeof *container);
   if (container == NULL)
   {
