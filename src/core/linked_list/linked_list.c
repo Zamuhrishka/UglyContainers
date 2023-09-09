@@ -51,14 +51,12 @@ static inline node_t* node_allocate(size_t data_size)
   allocate_fn_t mem_allocate = get_allocator();
   assert(mem_allocate);
 
-  // NOTE: Apply **SIZEOF TO VARIABLES** idiom
   node_t* tmp = (node_t*)mem_allocate(sizeof *tmp);
   if (NULL == tmp)
   {
     return NULL;
   }
 
-  // TODO: Apply **SIZEOF TO VARIABLES** idiom
   tmp->data = mem_allocate(data_size);
   if (NULL == tmp->data)
   {
@@ -102,16 +100,13 @@ static inline linked_list_t* list_allocate(void)
   allocate_fn_t mem_allocate = get_allocator();
   free_fn_t mem_free = get_free();
 
-  // TODO: Add some align checking?
-  // NOTE: Apply **SIZEOF TO VARIABLES** idiom
   linked_list_t* linked_list = (linked_list_t*)mem_allocate(sizeof *linked_list);
   if (NULL == linked_list)
   {
     return NULL;
   }
 
-  // TODO: Apply **SIZEOF TO VARIABLES** idiom
-  linked_list->private = (private_t*)mem_allocate(sizeof(private_t));
+  linked_list->private = (private_t*)mem_allocate(sizeof(*linked_list->private));
   if (NULL == linked_list->private)
   {
     mem_free(linked_list);
@@ -138,7 +133,7 @@ static bool resize_cb(void* list, size_t new_size)
   assert(list);
 
   //\warning: The linked list core struct doesn`t support this method
-  return false;
+  return true;
 }
 
 static bool push_front_cb(void* list, const void* data)
@@ -148,7 +143,6 @@ static bool push_front_cb(void* list, const void* data)
 
   linked_list_t* linked_list = (linked_list_t*)list;
 
-  // TODO: Add some align checking?
   node_t* tmp = node_allocate(linked_list->private->esize);
   if (NULL == tmp)
   {
@@ -226,7 +220,6 @@ static bool push_back_cb(void* list, const void* data)
 
   linked_list_t* linked_list = (linked_list_t*)list;
 
-  // TODO: Add some align checking?
   node_t* tmp = node_allocate(linked_list->private->esize);
   if (NULL == tmp)
   {
