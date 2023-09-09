@@ -22,6 +22,7 @@
 - Split core on dynamic and static types
 - Think about `volatile`
 - В Java используется похожий подход, но массив растет медленнее. Размер нового массива определяется следующим образом: size = (size * 3) / 2 + 1;
+- Check code by memory sanitazer
 
 ## Examples
 
