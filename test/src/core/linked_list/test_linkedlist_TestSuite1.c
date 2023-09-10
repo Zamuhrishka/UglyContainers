@@ -38,7 +38,7 @@ void test_init(void)
 }
 
 /**
- * \brief Test case to verify linked list creation
+ * \brief Test case to verify creation
  */
 void test_TestCase_0(void)
 {
@@ -47,7 +47,7 @@ void test_TestCase_0(void)
 }
 
 /**
- * @brief The unit test verifies the push front linked list`s method.
+ * @brief The unit test verifies the push front method.
  */
 void test_TestCase_1(void)
 {
@@ -57,7 +57,7 @@ void test_TestCase_1(void)
 }
 
 /**
- * @brief The unit test verifies the pop front linked list`s method.
+ * @brief The unit test verifies the pop front method.
  */
 void test_TestCase_2(void)
 {
@@ -73,7 +73,7 @@ void test_TestCase_2(void)
 }
 
 /**
- * @brief The unit test verifies the push back linked list`s method.
+ * @brief The unit test verifies the push back method.
  */
 void test_TestCase_3(void)
 {
@@ -83,7 +83,7 @@ void test_TestCase_3(void)
 }
 
 /**
- * @brief The unit test verifies the pop back linked list`s method.
+ * @brief The unit test verifies the pop back method.
  */
 void test_TestCase_4(void)
 {
@@ -99,7 +99,7 @@ void test_TestCase_4(void)
 }
 
 /**
- * @brief The unit test verifies the insert linked list`s method.
+ * @brief The unit test verifies the insert method.
  */
 void test_TestCase_5(void)
 {
@@ -110,7 +110,7 @@ void test_TestCase_5(void)
 }
 
 /**
- * @brief The unit test verifies the at linked list`s method.
+ * @brief The unit test verifies the at method.
  */
 void test_TestCase_6(void)
 {
@@ -126,7 +126,7 @@ void test_TestCase_6(void)
 }
 
 /**
- * @brief The unit test verifies the erase linked list`s method.
+ * @brief The unit test verifies the erase method.
  */
 void test_TestCase_7(void)
 {
@@ -140,7 +140,7 @@ void test_TestCase_7(void)
 }
 
 /**
- * @brief The unit test verifies the size linked list`s method.
+ * @brief The unit test verifies the size method.
  */
 void test_TestCase_8(void)
 {
@@ -155,7 +155,7 @@ void test_TestCase_8(void)
 }
 
 /**
- * @brief The unit test verifies the extract linked list`s method.
+ * @brief The unit test verifies the extract method.
  */
 void test_TestCase_9(void)
 {
@@ -169,7 +169,7 @@ void test_TestCase_9(void)
 }
 
 /**
- * @brief The unit test verifies the replace linked list`s method.
+ * @brief The unit test verifies the replace method.
  */
 void test_TestCase_10(void)
 {
@@ -187,7 +187,7 @@ void test_TestCase_10(void)
 }
 
 /**
- * @brief The unit test verifies the clear linked list`s method.
+ * @brief The unit test verifies the clear method.
  */
 void test_TestCase_11(void)
 {
@@ -205,7 +205,7 @@ void test_TestCase_11(void)
 }
 
 /**
- * @brief The unit test verifies the peek linked list`s method.
+ * @brief The unit test verifies the peek method.
  */
 void test_TestCase_12(void)
 {
@@ -222,7 +222,7 @@ void test_TestCase_12(void)
 }
 
 /**
- * @brief The unit test verifies the resize linked list`s method.
+ * @brief The unit test verifies the resize method.
  */
 void test_TestCase_13(void)
 {
