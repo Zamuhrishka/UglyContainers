@@ -8,10 +8,6 @@
 
 ## Small ToDo
 
-- implement `void* container_peek(const container_t* container, size_t index)` function
-- test `void* container_peek(const container_t* container, size_t index)` function
-- implement `bool container_resize(ontainer_t* container, size_t new_size)` function
-- test `bool container_resize(ontainer_t* container, size_t new_size)` function
 - FIFO блокируется при переполнении, в отличие от кольцевого буфера
 - Rework all for using status codes
 - Replace standard assert on special library assert QC_ASSERT()
