@@ -41,7 +41,7 @@ void test_init(void)
  */
 void test_TestCase_0(void)
 {
-  TEST_MESSAGE("[LL_TEST]: clear");
+  TEST_MESSAGE("[LL_TEST]: creation");
   TEST_ASSERT_NOT_NULL(ll);
 }
 
