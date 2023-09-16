@@ -38,9 +38,7 @@ typedef struct
   };
 } vector_t;
 //_____ M A C R O S ___________________________________________________________
-
 //_____ V A R I A B L E S _____________________________________________________
-
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 vector_t* vector_create(size_t esize);
 void vector_delete(vector_t** vector);
