@@ -13,8 +13,6 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
-
-#include "allocator_if.h"
 //_____ C O N F I G S  ________________________________________________________
 //_____ D E F I N I T I O N S _________________________________________________
 //_____ M A C R O S ___________________________________________________________
@@ -30,13 +28,7 @@ queue_t* queue_create(size_t esize)
 {
   assert(0 != esize);
 
-  queue_t* queue = container_create(esize, CONTAINER_LINKED_LIST_BASED);
-  if (NULL == queue)
-  {
-    return NULL;
-  }
-
-  return queue;
+  return (queue_t*)container_create(esize, CONTAINER_LINKED_LIST_BASED);
 }
 
 /**
@@ -60,6 +52,7 @@ void queue_delete(queue_t** queue)
 bool queue_empty(const queue_t* queue)
 {
   assert(queue);
+
   size_t size = container_size((container_t*)queue);
   return (size == 0);
 }
@@ -111,6 +104,7 @@ bool queue_peek(const queue_t* queue, void* data)
 size_t queue_size(const queue_t* queue)
 {
   assert(NULL != queue);
+
   return container_size((container_t*)queue);
 }
 
@@ -122,5 +116,6 @@ size_t queue_size(const queue_t* queue)
 bool queue_clear(queue_t* queue)
 {
   assert(NULL != queue);
+
   return container_clear((container_t*)queue);
 }
