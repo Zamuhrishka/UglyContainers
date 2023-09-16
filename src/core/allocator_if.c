@@ -8,7 +8,7 @@
 //_____ I N C L U D E S _______________________________________________________
 #include "allocator_if.h"
 
-#include <assert.h>
+#include "common/uc_assert.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -30,13 +30,13 @@ static void (*mem_free)(void* pointer) = free;
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 void allocation_cb_register(allocate_fn_t alloc_cb)
 {
-  assert(alloc_cb);
+  UC_ASSERT(alloc_cb);
   mem_allocate = alloc_cb;
 }
 
 void free_cb_register(free_fn_t free_cb)
 {
-  assert(free_cb);
+  UC_ASSERT(free_cb);
   mem_free = free_cb;
 }
 

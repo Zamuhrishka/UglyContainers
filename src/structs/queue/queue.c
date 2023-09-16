@@ -6,9 +6,9 @@
  */
 
 //_____ I N C L U D E S _______________________________________________________
+#include "common/uc_assert.h"
 #include "queue.h"
 
-#include <assert.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -26,7 +26,7 @@
  */
 queue_t* queue_create(size_t esize)
 {
-  assert(0 != esize);
+  UC_ASSERT(0 != esize);
 
   return (queue_t*)container_create(esize, CONTAINER_LINKED_LIST_BASED);
 }
@@ -38,8 +38,8 @@ queue_t* queue_create(size_t esize)
  */
 void queue_delete(queue_t** queue)
 {
-  assert(*queue);
-  assert(queue);
+  UC_ASSERT(queue);
+  UC_ASSERT(*queue);
 
   container_delete((container_t**)queue);
 }
@@ -51,7 +51,7 @@ void queue_delete(queue_t** queue)
  */
 bool queue_empty(const queue_t* queue)
 {
-  assert(queue);
+  UC_ASSERT(queue);
 
   size_t size = container_size((container_t*)queue);
   return (size == 0);
@@ -64,8 +64,8 @@ bool queue_empty(const queue_t* queue)
  */
 bool queue_add(queue_t* queue, const void* data)
 {
-  assert(queue);
-  assert(data);
+  UC_ASSERT(queue);
+  UC_ASSERT(data);
 
   return container_push_back((container_t*)queue, data);
 }
@@ -77,8 +77,8 @@ bool queue_add(queue_t* queue, const void* data)
  */
 bool queue_get(queue_t* queue, void* data)
 {
-  assert(NULL != queue);
-  assert(NULL != data);
+  UC_ASSERT(NULL != queue);
+  UC_ASSERT(NULL != data);
 
   return container_pop_front((container_t*)queue, data);
 }
@@ -90,8 +90,8 @@ bool queue_get(queue_t* queue, void* data)
  */
 bool queue_peek(const queue_t* queue, void* data)
 {
-  assert(NULL != queue);
-  assert(NULL != data);
+  UC_ASSERT(NULL != queue);
+  UC_ASSERT(NULL != data);
 
   return container_at((container_t*)queue, data, 0);
 }
@@ -103,7 +103,7 @@ bool queue_peek(const queue_t* queue, void* data)
  */
 size_t queue_size(const queue_t* queue)
 {
-  assert(NULL != queue);
+  UC_ASSERT(NULL != queue);
 
   return container_size((container_t*)queue);
 }
@@ -115,7 +115,7 @@ size_t queue_size(const queue_t* queue)
  */
 bool queue_clear(queue_t* queue)
 {
-  assert(NULL != queue);
+  UC_ASSERT(NULL != queue);
 
   return container_clear((container_t*)queue);
 }
