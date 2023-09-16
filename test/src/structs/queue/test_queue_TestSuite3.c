@@ -8,8 +8,8 @@
 //_____ I N C L U D E S _______________________________________________________
 #include "unity.h"
 
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 #include "core/allocator_if.h"
 #include "core/container.h"
@@ -30,109 +30,117 @@ static queue_t* queue = NULL;
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 void setUp(void)
 {
-    queue = queue_create(sizeof(uint32_t));
+  queue = queue_create(sizeof(uint32_t));
 }
 
 void tearDown(void)
 {
-    queue_delete(&queue);
+  queue_delete(&queue);
 }
 
 void test_init(void)
 {
-    TEST_MESSAGE("Queue Complex Tests");
+  TEST_MESSAGE("Queue Complex Tests");
 }
 
 void test_TestCase_0(void)
 {
-    TEST_MESSAGE("[QUEUE_TEST]: create");
-    TEST_ASSERT_NOT_NULL(queue);
+  TEST_MESSAGE("[QUEUE_TEST]: create");
+  TEST_ASSERT_NOT_NULL(queue);
 }
 
 void test_TestCase_1(void)
 {
-	uint32_t input[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
-    uint32_t expected[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
-    uint32_t output[sizeof(expected)/sizeof(uint32_t)] = {};
+  uint32_t input[] = {93274,  11111, 67793, 33333, 66,     55555,  54519, 77777,
+                      771535, 99999, 10021, 90197, 907163, 562610, 1};
+  uint32_t expected[] = {93274,  11111, 67793, 33333, 66,     55555,  54519, 77777,
+                         771535, 99999, 10021, 90197, 907163, 562610, 1};
+  uint32_t output[sizeof(expected) / sizeof(uint32_t)] = {};
 
-    TEST_MESSAGE("[QUEUE_TEST]: enqueue/dequeue");
+  TEST_MESSAGE("[QUEUE_TEST]: enqueue/dequeue");
 
-    for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
-    {
-        TEST_ASSERT_TRUE(queue_enqueue(queue, &input[i]));
-    }
+  for (size_t i = 0; i < sizeof(input) / sizeof(uint32_t); i++)
+  {
+    TEST_ASSERT_TRUE(queue_add(queue, &input[i]));
+  }
 
-    for (size_t i = 0; i < sizeof(expected)/sizeof(uint32_t); i++)
-    {
-        TEST_ASSERT_TRUE(queue_dequeue(queue, &output[i]));
-    }
+  for (size_t i = 0; i < sizeof(expected) / sizeof(uint32_t); i++)
+  {
+    TEST_ASSERT_TRUE(queue_get(queue, &output[i]));
+  }
 
-    TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, output, sizeof(expected)/sizeof(uint32_t));
+  TEST_ASSERT_EQUAL_UINT32_ARRAY(expected, output, sizeof(expected) / sizeof(uint32_t));
 }
 
 void test_TestCase_2(void)
 {
-	uint32_t input[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
-    uint32_t expected[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
-    uint32_t output = 0;
+  uint32_t input[] = {93274,  11111, 67793, 33333, 66,     55555,  54519, 77777,
+                      771535, 99999, 10021, 90197, 907163, 562610, 1};
+  uint32_t expected[] = {93274,  11111, 67793, 33333, 66,     55555,  54519, 77777,
+                         771535, 99999, 10021, 90197, 907163, 562610, 1};
+  uint32_t output = 0;
 
-    TEST_MESSAGE("[QUEUE_TEST]: enqueue/peek");
+  TEST_MESSAGE("[QUEUE_TEST]: enqueue/peek");
 
-    for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
-    {
-        TEST_ASSERT_TRUE(queue_enqueue(queue, &input[i]));
-    }
+  for (size_t i = 0; i < sizeof(input) / sizeof(uint32_t); i++)
+  {
+    TEST_ASSERT_TRUE(queue_add(queue, &input[i]));
+  }
 
-    for (size_t i = 0; i < sizeof(expected)/sizeof(uint32_t); i++)
-    {
-        TEST_ASSERT_TRUE(queue_peek(queue, &output));
-        TEST_ASSERT_EQUAL_UINT32(expected[i], output);
-        queue_dequeue(queue, &output);
-    }
+  for (size_t i = 0; i < sizeof(expected) / sizeof(uint32_t); i++)
+  {
+    TEST_ASSERT_TRUE(queue_peek(queue, &output));
+    TEST_ASSERT_EQUAL_UINT32(expected[i], output);
+    queue_get(queue, &output);
+  }
 }
 
 void test_TestCase_3(void)
 {
-	uint32_t input[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
-    uint32_t expected[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
-    uint32_t output[sizeof(expected)/sizeof(uint32_t)] = {};
+  uint32_t input[] = {93274,  11111, 67793, 33333, 66,     55555,  54519, 77777,
+                      771535, 99999, 10021, 90197, 907163, 562610, 1};
+  uint32_t expected[] = {93274,  11111, 67793, 33333, 66,     55555,  54519, 77777,
+                         771535, 99999, 10021, 90197, 907163, 562610, 1};
+  uint32_t output[sizeof(expected) / sizeof(uint32_t)] = {};
 
-    TEST_MESSAGE("[QUEUE_TEST]: size #1");
+  TEST_MESSAGE("[QUEUE_TEST]: size #1");
 
-    for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
-    {
-        size_t size = queue_size(queue);
-        TEST_ASSERT_EQUAL_UINT32(i, size);
-        queue_enqueue(queue, &input[i]);
-    }
+  for (size_t i = 0; i < sizeof(input) / sizeof(uint32_t); i++)
+  {
+    size_t size = queue_size(queue);
+    TEST_ASSERT_EQUAL_UINT32(i, size);
+    queue_add(queue, &input[i]);
+  }
 
-    for (size_t i = 0; i < sizeof(expected)/sizeof(uint32_t); i++)
-    {
-        size_t size = queue_size(queue);
-        TEST_ASSERT_EQUAL_UINT32(sizeof(input)/sizeof(uint32_t), size);
-        queue_peek(queue, &output[i]);
-    }
+  for (size_t i = 0; i < sizeof(expected) / sizeof(uint32_t); i++)
+  {
+    size_t size = queue_size(queue);
+    TEST_ASSERT_EQUAL_UINT32(sizeof(input) / sizeof(uint32_t), size);
+    queue_peek(queue, &output[i]);
+  }
 }
 
 void test_TestCase_4(void)
 {
-	uint32_t input[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
-    uint32_t expected[] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999, 10021, 90197, 907163, 562610, 1};
-    uint32_t output[sizeof(expected)/sizeof(uint32_t)] = {};
+  uint32_t input[] = {93274,  11111, 67793, 33333, 66,     55555,  54519, 77777,
+                      771535, 99999, 10021, 90197, 907163, 562610, 1};
+  uint32_t expected[] = {93274,  11111, 67793, 33333, 66,     55555,  54519, 77777,
+                         771535, 99999, 10021, 90197, 907163, 562610, 1};
+  uint32_t output[sizeof(expected) / sizeof(uint32_t)] = {};
 
-    TEST_MESSAGE("[QUEUE_TEST]: size #2");
+  TEST_MESSAGE("[QUEUE_TEST]: size #2");
 
-    for (size_t i = 0; i < sizeof(input)/sizeof(uint32_t); i++)
-    {
-        size_t size = queue_size(queue);
-        TEST_ASSERT_EQUAL_UINT32(i, size);
-        queue_enqueue(queue, &input[i]);
-    }
+  for (size_t i = 0; i < sizeof(input) / sizeof(uint32_t); i++)
+  {
+    size_t size = queue_size(queue);
+    TEST_ASSERT_EQUAL_UINT32(i, size);
+    queue_add(queue, &input[i]);
+  }
 
-    for (size_t i = 0; i < sizeof(expected)/sizeof(uint32_t); i++)
-    {
-        size_t size = queue_size(queue);
-        TEST_ASSERT_EQUAL_UINT32(sizeof(input)/sizeof(uint32_t) - i, size);
-        queue_dequeue(queue, &output[i]);
-    }
+  for (size_t i = 0; i < sizeof(expected) / sizeof(uint32_t); i++)
+  {
+    size_t size = queue_size(queue);
+    TEST_ASSERT_EQUAL_UINT32(sizeof(input) / sizeof(uint32_t) - i, size);
+    queue_get(queue, &output[i]);
+  }
 }

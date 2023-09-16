@@ -62,7 +62,7 @@ bool queue_empty(const queue_t* queue)
  *
  * Detailed description see in queue.h
  */
-bool queue_enqueue(queue_t* queue, const void* data)
+bool queue_add(queue_t* queue, const void* data)
 {
   assert(queue);
   assert(data);
@@ -75,7 +75,7 @@ bool queue_enqueue(queue_t* queue, const void* data)
  *
  * Detailed description see in queue.h
  */
-bool queue_dequeue(queue_t* queue, void* data)
+bool queue_get(queue_t* queue, void* data)
 {
   assert(NULL != queue);
   assert(NULL != data);

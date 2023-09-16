@@ -52,7 +52,7 @@ bool queue_empty(const queue_t* queue);
  * \param[out] data Pointer to a variable where the dequeued element will be stored.
  * \return true if the operation was successful, false otherwise.
  */
-bool queue_dequeue(queue_t* queue, void* data);
+bool queue_get(queue_t* queue, void* data);
 
 /**
  * \brief Adds an element to the queue.
@@ -61,7 +61,7 @@ bool queue_dequeue(queue_t* queue, void* data);
  * \param[in] data Pointer to the variable to be enqueued.
  * \return true if the operation was successful, false otherwise.
  */
-bool queue_enqueue(queue_t* queue, const void* data);
+bool queue_add(queue_t* queue, const void* data);
 
 /**
  * \brief Retrieves the element from the queue without removing it.
