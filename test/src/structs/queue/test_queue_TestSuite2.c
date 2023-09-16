@@ -8,8 +8,9 @@
 //_____ I N C L U D E S _______________________________________________________
 #include "unity.h"
 
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
+
 
 #include "core/allocator_if.h"
 #include "core/container.h"
@@ -30,38 +31,38 @@ static queue_t* queue = NULL;
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 void setUp(void)
 {
-    queue = queue_create(sizeof(uint32_t));
+  queue = queue_create(sizeof(uint32_t));
 }
 
 void tearDown(void)
 {
-    queue_delete(&queue);
+  queue_delete(&queue);
 }
 
 void test_init(void)
 {
-    TEST_MESSAGE("Queue Limits Tests");
+  TEST_MESSAGE("Queue Limits Tests");
 }
 
 void test_TestCase_0(void)
 {
-    TEST_MESSAGE("[QUEUE_TEST]: create");
-    TEST_ASSERT_NOT_NULL(queue);
+  TEST_MESSAGE("[QUEUE_TEST]: create");
+  TEST_ASSERT_NOT_NULL(queue);
 }
 
 void test_TestCase_1(void)
 {
-	uint16_t data = 0x55;
+  uint16_t data = 0x55;
 
-    TEST_MESSAGE("[QUEUE_TEST]: dequeue empty");
-    TEST_ASSERT_FALSE(queue_dequeue(queue, &data));
+  TEST_MESSAGE("[QUEUE_TEST]: dequeue empty");
+  TEST_ASSERT_FALSE(queue_get(queue, &data));
 }
 
 void test_TestCase_2(void)
 {
-	uint16_t data = 0x55;
+  uint16_t data = 0x55;
 
-    TEST_MESSAGE("[QUEUE_TEST]: size for empty");
-    size_t size = queue_size(queue);
-    TEST_ASSERT_EQUAL_UINT32(0, size);
+  TEST_MESSAGE("[QUEUE_TEST]: size for empty");
+  size_t size = queue_size(queue);
+  TEST_ASSERT_EQUAL_UINT32(0, size);
 }
