@@ -1,6 +1,6 @@
 ---
 :project:
-  :use_exceptions: FALSE
+  :use_exceptions: TRUE
   :use_mocks: FALSE
   :use_test_preprocessor: TRUE
   :use_preprocessor_directives: FALSE
