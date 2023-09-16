@@ -26,11 +26,8 @@ struct Private_tag
   volatile size_t size;     /// Stores elements number
   volatile size_t capacity; /// Max size of pool in bytes
 };
-
 //_____ M A C R O S ___________________________________________________________
-
 //_____ V A R I A B L E S _____________________________________________________
-
 //_____ P R I V A T E  F U N C T I O N S_______________________________________
 static inline vector_t* vector_allocate(void)
 {
@@ -42,15 +39,12 @@ static inline vector_t* vector_allocate(void)
   allocate_fn_t mem_allocate = get_allocator();
   free_fn_t mem_free = get_free();
 
-  // TODO: Add some align checking?
-  // NOTE: Apply **SIZEOF TO VARIABLES** idiom
   vector_t* vector = (vector_t*)mem_allocate(sizeof *vector);
   if (NULL == vector)
   {
     return NULL;
   }
 
-  // TODO: Apply **SIZEOF TO VARIABLES** idiom
   vector->private = (private_t*)mem_allocate(sizeof(private_t));
   if (NULL == vector->private)
   {
@@ -158,25 +152,21 @@ static inline void* pool_allocate(size_t size_in_bytes)
 
 static bool is_empty(const vector_t* vector)
 {
-  // assert(vector);
   return (vector->private->size == 0);
 }
 
 static bool is_full(const vector_t* vector)
 {
-  // assert(vector);
   return (vector->private->size == vector->private->capacity);
 }
 
 static size_t free_space(const vector_t* vector)
 {
-  // assert(vector);
   return (vector->private->capacity - (vector->private->size * vector->private->esize));
 }
 
 static bool is_free_space_for_element(const vector_t* vector)
 {
-  // assert(vector);
   size_t free_space_in_bytes = free_space(vector);
   return (free_space_in_bytes >= vector->private->esize);
 }
