@@ -8,7 +8,7 @@
 //_____ I N C L U D E S _______________________________________________________
 #include "vector.h"
 
-#include <assert.h>
+#include "common/uc_assert.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -65,9 +65,9 @@ static inline bool vector_reallocate(vector_t* vector, size_t new_size)
   size_t new_size_in_bytes = (vector->private->size * vector->private->esize) + (new_size * vector->private->esize);
 
   allocate_fn_t mem_allocate = get_allocator();
-  assert(mem_allocate);
+  UC_ASSERT(mem_allocate);
   free_fn_t mem_free = get_free();
-  assert(mem_free);
+  UC_ASSERT(mem_free);
 
   void* data = mem_allocate(new_size_in_bytes);
   if (NULL == data)
@@ -100,9 +100,9 @@ static inline bool vector_decrease(vector_t *vector)
 	size_t new_size_in_bytes = current_size_in_bytes - resize_factor_size_in_bytes;
 
     allocate_fn_t mem_allocate = get_allocator();
-    assert(mem_allocate);
+    UC_ASSERT(mem_allocate);
     free_fn_t mem_free = get_free();
-    assert(mem_free);
+    UC_ASSERT(mem_free);
 
     void* data = mem_allocate(new_size_in_bytes);
     if (NULL == data)
@@ -124,10 +124,10 @@ static inline bool vector_decrease(vector_t *vector)
 
 static inline void vector_free(vector_t* vector)
 {
-  assert(vector);
+  UC_ASSERT(vector);
 
   free_fn_t mem_free = get_free();
-  assert(mem_free);
+  UC_ASSERT(mem_free);
 
   mem_free(vector->private->pool);
   mem_free(vector->private);
@@ -137,7 +137,7 @@ static inline void vector_free(vector_t* vector)
 static inline void* pool_allocate(size_t size_in_bytes)
 {
   allocate_fn_t mem_allocate = get_allocator();
-  assert(mem_allocate);
+  UC_ASSERT(mem_allocate);
 
   void* pool = mem_allocate(size_in_bytes);
   if (NULL == pool)
@@ -173,7 +173,7 @@ static bool is_free_space_for_element(const vector_t* vector)
 
 static bool resize_cb(void* vector, size_t new_size)
 {
-  assert(vector);
+  UC_ASSERT(vector);
 
   vector_t* _vector = (vector_t*)vector;
 
@@ -187,11 +187,11 @@ static bool resize_cb(void* vector, size_t new_size)
 
 static bool push_front_cb(void* vector, const void* data)
 {
-  assert(vector);
-  assert(data);
+  UC_ASSERT(vector);
+  UC_ASSERT(data);
 
   allocate_fn_t mem_allocate = get_allocator();
-  assert(mem_allocate);
+  UC_ASSERT(mem_allocate);
 
   vector_t* _vector = (vector_t*)vector;
 
@@ -220,8 +220,8 @@ static bool push_front_cb(void* vector, const void* data)
 
 static bool pop_front_cb(void* vector, void* data)
 {
-  assert(vector);
-  assert(data);
+  UC_ASSERT(vector);
+  UC_ASSERT(data);
 
   vector_t* _vector = (vector_t*)vector;
 
@@ -247,8 +247,8 @@ static bool pop_front_cb(void* vector, void* data)
 
 static bool push_back_cb(void* vector, const void* data)
 {
-  assert(vector);
-  assert(data);
+  UC_ASSERT(vector);
+  UC_ASSERT(data);
 
   vector_t* _vector = (vector_t*)vector;
 
@@ -270,8 +270,8 @@ static bool push_back_cb(void* vector, const void* data)
 
 static bool pop_back_cb(void* vector, void* data)
 {
-  assert(vector);
-  assert(data);
+  UC_ASSERT(vector);
+  UC_ASSERT(data);
 
   vector_t* _vector = (vector_t*)vector;
 
@@ -291,8 +291,8 @@ static bool pop_back_cb(void* vector, void* data)
 
 static bool insert_cb(void* vector, const void* data, size_t index)
 {
-  assert(vector);
-  assert(data);
+  UC_ASSERT(vector);
+  UC_ASSERT(data);
 
   vector_t* _vector = (vector_t*)vector;
 
@@ -328,8 +328,8 @@ static bool insert_cb(void* vector, const void* data, size_t index)
 
 static bool extract_cb(void* vector, void* data, size_t index)
 {
-  assert(vector);
-  assert(data);
+  UC_ASSERT(vector);
+  UC_ASSERT(data);
 
   vector_t* _vector = (vector_t*)vector;
 
@@ -353,8 +353,8 @@ static bool extract_cb(void* vector, void* data, size_t index)
 
 static bool replace_cb(void* vector, const void* data, size_t index)
 {
-  assert(vector);
-  assert(data);
+  UC_ASSERT(vector);
+  UC_ASSERT(data);
 
   vector_t* _vector = (vector_t*)vector;
 
@@ -371,8 +371,8 @@ static bool replace_cb(void* vector, const void* data, size_t index)
 
 static bool at_cb(const void* vector, void* data, size_t index)
 {
-  assert(vector);
-  assert(data);
+  UC_ASSERT(vector);
+  UC_ASSERT(data);
 
   vector_t* _vector = (vector_t*)vector;
 
@@ -389,7 +389,7 @@ static bool at_cb(const void* vector, void* data, size_t index)
 
 static bool erase_cb(void* vector, size_t index)
 {
-  assert(vector);
+  UC_ASSERT(vector);
 
   vector_t* _vector = (vector_t*)vector;
 
@@ -415,7 +415,7 @@ static bool erase_cb(void* vector, size_t index)
 
 static void* peek_cb(void* vector, size_t index)
 {
-  assert(vector);
+  UC_ASSERT(vector);
 
   vector_t* _vector = (vector_t*)vector;
 
@@ -430,7 +430,7 @@ static void* peek_cb(void* vector, size_t index)
 
 static bool clear_cb(void* vector)
 {
-  assert(vector);
+  UC_ASSERT(vector);
 
   vector_t* _vector = (vector_t*)vector;
 
@@ -453,7 +453,7 @@ static bool clear_cb(void* vector)
 
 static size_t size_cb(const void* vector)
 {
-  assert(vector);
+  UC_ASSERT(vector);
 
   return ((vector_t*)vector)->private->size;
 }
@@ -461,7 +461,7 @@ static size_t size_cb(const void* vector)
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 vector_t* vector_create(size_t esize)
 {
-  assert(0 != esize);
+  UC_ASSERT(0 != esize);
 
   vector_t* vector = vector_allocate();
   if (NULL == vector)
@@ -498,8 +498,8 @@ vector_t* vector_create(size_t esize)
 
 void vector_delete(vector_t** vector)
 {
-  assert(vector);
-  assert(*vector);
+  UC_ASSERT(vector);
+  UC_ASSERT(*vector);
 
   // BUG: Check why tests fault on this pool free
   // vector_free((*vector)->private->pool);

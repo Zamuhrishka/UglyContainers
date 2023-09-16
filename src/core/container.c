@@ -8,7 +8,7 @@
 //_____ I N C L U D E S _______________________________________________________
 #include "container.h"
 
-#include <assert.h>
+#include "common/uc_assert.h"
 
 #include "allocator_if.h"
 //_____ C O N F I G S  ________________________________________________________
@@ -28,8 +28,8 @@ struct Container_tag
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 void container_alloc_init(allocate_fn_t alloc_cb, free_fn_t free_cb)
 {
-  assert(alloc_cb);
-  assert(free_cb);
+  UC_ASSERT(alloc_cb);
+  UC_ASSERT(free_cb);
 
   allocation_cb_register(alloc_cb);
   free_cb_register(free_cb);
@@ -37,7 +37,7 @@ void container_alloc_init(allocate_fn_t alloc_cb, free_fn_t free_cb)
 
 container_t* container_create(size_t esize, container_type_e type)
 {
-  assert(0 != esize);
+  UC_ASSERT(0 != esize);
 
   if (!is_allocator_valid())
   {
@@ -70,9 +70,9 @@ container_t* container_create(size_t esize, container_type_e type)
 #if 0
 container_t* container_from_array(void *arr, size_t size, size_t esize)
 {
-    assert(0 != esize);
-    assert(0 != size);
-    assert(arr);
+    UC_ASSERT(0 != esize);
+    UC_ASSERT(0 != size);
+    UC_ASSERT(arr);
 
     container_t* container = container_create(esize);
     if(NULL == container)
@@ -91,8 +91,8 @@ container_t* container_from_array(void *arr, size_t size, size_t esize)
 
 void container_delete(container_t** container)
 {
-  assert(container);
-  assert(*container);
+  UC_ASSERT(container);
+  UC_ASSERT(*container);
 
   if (!is_allocator_valid())
   {
@@ -118,7 +118,7 @@ void container_delete(container_t** container)
 
 bool container_resize(container_t* container, size_t new_size)
 {
-  assert(container);
+  UC_ASSERT(container);
 
   return ((CONTAINER_LINKED_LIST_BASED == container->type)
               ? ((linked_list_t*)container->core)->resize(((linked_list_t*)container->core), new_size)
@@ -129,8 +129,8 @@ bool container_resize(container_t* container, size_t new_size)
 
 bool container_push_front(container_t* container, const void* data)
 {
-  assert(container);
-  assert(data);
+  UC_ASSERT(container);
+  UC_ASSERT(data);
 
   return ((CONTAINER_LINKED_LIST_BASED == container->type)
               ? ((linked_list_t*)container->core)->push_front(((linked_list_t*)container->core), data)
@@ -141,8 +141,8 @@ bool container_push_front(container_t* container, const void* data)
 
 bool container_pop_front(container_t* container, void* data)
 {
-  assert(container);
-  assert(data);
+  UC_ASSERT(container);
+  UC_ASSERT(data);
 
   return ((CONTAINER_LINKED_LIST_BASED == container->type)
               ? ((linked_list_t*)container->core)->pop_front(((linked_list_t*)container->core), data)
@@ -153,8 +153,8 @@ bool container_pop_front(container_t* container, void* data)
 
 bool container_push_back(container_t* container, const void* data)
 {
-  assert(container);
-  assert(data);
+  UC_ASSERT(container);
+  UC_ASSERT(data);
 
   return ((CONTAINER_LINKED_LIST_BASED == container->type)
               ? ((linked_list_t*)container->core)->push_back(((linked_list_t*)container->core), data)
@@ -165,8 +165,8 @@ bool container_push_back(container_t* container, const void* data)
 
 bool container_pop_back(container_t* container, void* data)
 {
-  assert(container);
-  assert(data);
+  UC_ASSERT(container);
+  UC_ASSERT(data);
 
   return ((CONTAINER_LINKED_LIST_BASED == container->type)
               ? ((linked_list_t*)container->core)->pop_back(((linked_list_t*)container->core), data)
@@ -177,8 +177,8 @@ bool container_pop_back(container_t* container, void* data)
 
 bool container_insert(container_t* container, const void* data, size_t index)
 {
-  assert(container);
-  assert(data);
+  UC_ASSERT(container);
+  UC_ASSERT(data);
 
   return ((CONTAINER_LINKED_LIST_BASED == container->type)
               ? ((linked_list_t*)container->core)->insert(((linked_list_t*)container->core), data, index)
@@ -189,8 +189,8 @@ bool container_insert(container_t* container, const void* data, size_t index)
 
 bool container_extract(container_t* container, void* data, size_t index)
 {
-  assert(container);
-  assert(data);
+  UC_ASSERT(container);
+  UC_ASSERT(data);
 
   return ((CONTAINER_LINKED_LIST_BASED == container->type)
               ? ((linked_list_t*)container->core)->extract(((linked_list_t*)container->core), data, index)
@@ -201,8 +201,8 @@ bool container_extract(container_t* container, void* data, size_t index)
 
 bool container_replace(container_t* container, const void* data, size_t index)
 {
-  assert(container);
-  assert(data);
+  UC_ASSERT(container);
+  UC_ASSERT(data);
 
   return ((CONTAINER_LINKED_LIST_BASED == container->type)
               ? ((linked_list_t*)container->core)->replace(((linked_list_t*)container->core), data, index)
@@ -213,8 +213,8 @@ bool container_replace(container_t* container, const void* data, size_t index)
 
 bool container_at(const container_t* container, void* data, size_t index)
 {
-  assert(container);
-  assert(data);
+  UC_ASSERT(container);
+  UC_ASSERT(data);
 
   return ((CONTAINER_LINKED_LIST_BASED == container->type)
               ? ((linked_list_t*)container->core)->at(((linked_list_t*)container->core), data, index)
@@ -225,7 +225,7 @@ bool container_at(const container_t* container, void* data, size_t index)
 
 bool container_erase(container_t* container, size_t index)
 {
-  assert(container);
+  UC_ASSERT(container);
 
   return ((CONTAINER_LINKED_LIST_BASED == container->type)
               ? ((linked_list_t*)container->core)->erase(((linked_list_t*)container->core), index)
@@ -236,7 +236,7 @@ bool container_erase(container_t* container, size_t index)
 
 void* container_peek(const container_t* container, size_t index)
 {
-  assert(container);
+  UC_ASSERT(container);
 
   return ((CONTAINER_LINKED_LIST_BASED == container->type)
               ? ((linked_list_t*)container->core)->peek(((linked_list_t*)container->core), index)
@@ -247,7 +247,7 @@ void* container_peek(const container_t* container, size_t index)
 
 size_t container_clear(const container_t* container)
 {
-  assert(container);
+  UC_ASSERT(container);
 
   return ((CONTAINER_LINKED_LIST_BASED == container->type)
               ? ((linked_list_t*)container->core)->clear(((linked_list_t*)container->core))
@@ -258,7 +258,7 @@ size_t container_clear(const container_t* container)
 
 size_t container_size(const container_t* container)
 {
-  assert(container);
+  UC_ASSERT(container);
 
   return ((CONTAINER_LINKED_LIST_BASED == container->type)
               ? ((linked_list_t*)container->core)->size(((linked_list_t*)container->core))

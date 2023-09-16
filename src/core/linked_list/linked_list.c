@@ -9,7 +9,7 @@
 //_____ I N C L U D E S _______________________________________________________
 #include "linked_list.h"
 
-#include <assert.h>
+#include "common/uc_assert.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -49,7 +49,7 @@ static inline bool is_empty(linked_list_t* linked_list)
 static inline node_t* node_allocate(size_t data_size)
 {
   allocate_fn_t mem_allocate = get_allocator();
-  assert(mem_allocate);
+  UC_ASSERT(mem_allocate);
 
   node_t* tmp = (node_t*)mem_allocate(sizeof *tmp);
   if (NULL == tmp)
@@ -61,7 +61,7 @@ static inline node_t* node_allocate(size_t data_size)
   if (NULL == tmp->data)
   {
     free_fn_t mem_free = get_free();
-    assert(mem_free);
+    UC_ASSERT(mem_free);
     mem_free(tmp);
     return NULL;
   }
@@ -71,10 +71,10 @@ static inline node_t* node_allocate(size_t data_size)
 
 static inline void node_free(node_t* node)
 {
-  assert(node);
+  UC_ASSERT(node);
 
   free_fn_t mem_free = get_free();
-  assert(mem_free);
+  UC_ASSERT(mem_free);
 
   mem_free(node->data);
   mem_free(node);
@@ -82,10 +82,10 @@ static inline void node_free(node_t* node)
 
 static inline void list_free(linked_list_t* linked_list)
 {
-  assert(linked_list);
+  UC_ASSERT(linked_list);
 
   free_fn_t mem_free = get_free();
-  assert(mem_free);
+  UC_ASSERT(mem_free);
 
   mem_free(linked_list);
 }
@@ -130,7 +130,7 @@ static inline node_t* get_nth(node_t* head, size_t index)
 
 static bool resize_cb(void* list, size_t new_size)
 {
-  assert(list);
+  UC_ASSERT(list);
 
   //\warning: The linked list core struct doesn`t support this method
   return true;
@@ -138,8 +138,8 @@ static bool resize_cb(void* list, size_t new_size)
 
 static bool push_front_cb(void* list, const void* data)
 {
-  assert(list);
-  assert(data);
+  UC_ASSERT(list);
+  UC_ASSERT(data);
 
   linked_list_t* linked_list = (linked_list_t*)list;
 
@@ -176,8 +176,8 @@ static bool push_front_cb(void* list, const void* data)
 
 static bool pop_front_cb(void* list, void* data)
 {
-  assert(list);
-  assert(data);
+  UC_ASSERT(list);
+  UC_ASSERT(data);
 
   linked_list_t* linked_list = (linked_list_t*)list;
 
@@ -215,8 +215,8 @@ static bool pop_front_cb(void* list, void* data)
 
 static bool push_back_cb(void* list, const void* data)
 {
-  assert(list);
-  assert(data);
+  UC_ASSERT(list);
+  UC_ASSERT(data);
 
   linked_list_t* linked_list = (linked_list_t*)list;
 
@@ -253,8 +253,8 @@ static bool push_back_cb(void* list, const void* data)
 
 static bool pop_back_cb(void* list, void* data)
 {
-  assert(list);
-  assert(data);
+  UC_ASSERT(list);
+  UC_ASSERT(data);
 
   linked_list_t* linked_list = (linked_list_t*)list;
 
@@ -292,8 +292,8 @@ static bool pop_back_cb(void* list, void* data)
 
 static bool insert_cb(void* list, const void* data, size_t index)
 {
-  assert(list);
-  assert(data);
+  UC_ASSERT(list);
+  UC_ASSERT(data);
 
   linked_list_t* linked_list = (linked_list_t*)list;
 
@@ -350,8 +350,8 @@ static bool insert_cb(void* list, const void* data, size_t index)
 
 static bool extract_cb(void* list, void* data, size_t index)
 {
-  assert(list);
-  assert(data);
+  UC_ASSERT(list);
+  UC_ASSERT(data);
 
   linked_list_t* linked_list = (linked_list_t*)list;
 
@@ -375,8 +375,8 @@ static bool extract_cb(void* list, void* data, size_t index)
 
 static bool replace_cb(void* list, const void* data, size_t index)
 {
-  assert(list);
-  assert(data);
+  UC_ASSERT(list);
+  UC_ASSERT(data);
 
   linked_list_t* linked_list = (linked_list_t*)list;
 
@@ -393,8 +393,8 @@ static bool replace_cb(void* list, const void* data, size_t index)
 
 static bool at_cb(const void* list, void* data, size_t index)
 {
-  assert(list);
-  assert(data);
+  UC_ASSERT(list);
+  UC_ASSERT(data);
 
   linked_list_t* linked_list = (linked_list_t*)list;
 
@@ -416,7 +416,7 @@ static bool at_cb(const void* list, void* data, size_t index)
 
 static bool erase_cb(void* list, size_t index)
 {
-  assert(list);
+  UC_ASSERT(list);
 
   linked_list_t* linked_list = (linked_list_t*)list;
 
@@ -464,7 +464,7 @@ static bool erase_cb(void* list, size_t index)
 
 static void* peek_cb(void* list, size_t index)
 {
-  assert(list);
+  UC_ASSERT(list);
 
   linked_list_t* linked_list = (linked_list_t*)list;
 
@@ -484,7 +484,7 @@ static void* peek_cb(void* list, size_t index)
 
 static bool clear_cb(const void* list)
 {
-  assert(list);
+  UC_ASSERT(list);
 
   linked_list_t* linked_list = (linked_list_t*)list;
 
@@ -506,7 +506,7 @@ static bool clear_cb(const void* list)
 
 static size_t size_cb(const void* list)
 {
-  assert(list);
+  UC_ASSERT(list);
 
   return ((linked_list_t*)list)->private->size;
 }
@@ -514,7 +514,7 @@ static size_t size_cb(const void* list)
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 linked_list_t* linked_list_create(size_t esize)
 {
-  assert(0 != esize);
+  UC_ASSERT(0 != esize);
 
   linked_list_t* linked_list = list_allocate();
   if (NULL == linked_list)
@@ -545,8 +545,8 @@ linked_list_t* linked_list_create(size_t esize)
 
 void linked_list_delete(linked_list_t** list)
 {
-  assert(list);
-  assert(*list);
+  UC_ASSERT(list);
+  UC_ASSERT(*list);
 
   node_t* tmp = (*list)->private->head;
 
