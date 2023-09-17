@@ -17,7 +17,6 @@
 #include "allocator_if.h"
 #include "core/container.h"
 //_____ C O N F I G S  ________________________________________________________
-
 //_____ D E F I N I T I O N S _________________________________________________
 /**
  *  \brief
@@ -29,14 +28,15 @@ struct RingBuffer_tag
   volatile size_t head;
   size_t max_size;
 };
-
 //_____ M A C R O S ___________________________________________________________
-
 //_____ V A R I A B L E S _____________________________________________________
-
 //_____ P R I V A T E  F U N C T I O N S_______________________________________
-
 //_____ P U B L I C  F U N C T I O N S_________________________________________
+/**
+ * \brief Initializes and returns a new ring buffer.
+ *
+ * Detailed description see in stack.h
+ */
 ring_buffer_t* rb_create(size_t size, size_t esize)
 {
   UC_ASSERT(0 != esize);
@@ -85,17 +85,30 @@ ring_buffer_t* rb_create(size_t size, size_t esize)
   return rb;
 }
 
+/**
+ * \brief Frees up the memory associated with the ring buffer.
+ *
+ * Detailed description see in stack.h
+ */
 void rb_delete(ring_buffer_t** rb)
 {
-  UC_ASSERT(*rb);
   UC_ASSERT(rb);
+  UC_ASSERT(*rb);
+  UC_ASSERT((*rb)->container);
 
   container_delete((container_t**)(*rb)->container);
 }
 
+/**
+ * \brief Adds an element to the ring buffer.
+ *
+ * Detailed description see in stack.h
+ */
 bool rb_add(ring_buffer_t* rb, const void* data)
 {
   UC_ASSERT(rb);
+  UC_ASSERT(rb->container);
+  UC_ASSERT(data);
 
   if (rb_is_full(rb))
   {
@@ -112,9 +125,16 @@ bool rb_add(ring_buffer_t* rb, const void* data)
   return true;
 }
 
+/**
+ * \brief Removes an element from the ring buffer and returns it.
+ *
+ * Detailed description see in stack.h
+ */
 bool rb_get(ring_buffer_t* rb, void* data)
 {
   UC_ASSERT(rb);
+  UC_ASSERT(rb->container);
+  UC_ASSERT(data);
 
   if (rb_is_empty(rb))
   {
@@ -129,9 +149,16 @@ bool rb_get(ring_buffer_t* rb, void* data)
   rb->tail = (rb->tail + 1) % rb->max_size;
 }
 
+/**
+ * \brief Retrieves an element from the ring buffer without removing it.
+ *
+ * Detailed description see in stack.h
+ */
 bool rb_peek(const ring_buffer_t* rb, void* data)
 {
   UC_ASSERT(rb);
+  UC_ASSERT(rb->container);
+  UC_ASSERT(data);
 
   if (rb_is_empty(rb))
   {
@@ -141,24 +168,44 @@ bool rb_peek(const ring_buffer_t* rb, void* data)
   return container_at((container_t*)rb->container, data, rb->tail);
 }
 
+/**
+ * \brief Returns the number of elements in the ring buffer.
+ *
+ * Detailed description see in stack.h
+ */
 size_t rb_size(const ring_buffer_t* rb)
 {
   UC_ASSERT(rb);
   return abs(rb->tail - rb->head);
 }
 
+/**
+ * \brief Checks if the ring buffer is empty.
+ *
+ * Detailed description see in stack.h
+ */
 bool rb_is_empty(const ring_buffer_t* rb)
 {
   UC_ASSERT(rb);
   return (abs(rb->tail - rb->head) == 0);
 }
 
+/**
+ * \brief Checks if the ring buffer is full.
+ *
+ * Detailed description see in stack.h
+ */
 bool rb_is_full(const ring_buffer_t* rb)
 {
   UC_ASSERT(rb);
   return (abs(rb->tail - rb->head) >= rb->max_size - 1);
 }
 
+/**
+ * \brief Clears all the elements from the ring buffer.
+ *
+ * Detailed description see in stack.h
+ */
 bool rb_clear(ring_buffer_t* rb)
 {
   UC_ASSERT(rb);
