@@ -15,7 +15,6 @@
 #include "core/container.h"
 //_____ C O N F I G S  ________________________________________________________
 //_____ D E F I N I T I O N S _________________________________________________
-// typedef container_t stack_t;
 struct stack_tag;
 typedef struct stack_tag stack_t;
 //_____ M A C R O S ___________________________________________________________
