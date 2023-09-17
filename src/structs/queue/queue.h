@@ -10,25 +10,24 @@
 //_____ I N C L U D E S _______________________________________________________
 #include "stdbool.h"
 #include "stdint.h"
-#include "stdlib.h"
-
-#include "core/container.h"
 //_____ C O N F I G S  ________________________________________________________
 //_____ D E F I N I T I O N S _________________________________________________
-/**
- * \brief Alias for the `container_t` type representing a queue.
- */
-typedef container_t queue_t;
+struct queue_tag;
+typedef struct queue_tag queue_t;
 //_____ M A C R O S ___________________________________________________________
 //_____ V A R I A B L E S _____________________________________________________
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 /**
  * \brief Initializes and returns a new queue.
  *
+ * \param[in] size The size in elements of this queue or 0 if you won`t limit size of queue.
  * \param[in] esize The size in bytes of the single element that this queue will store.
+ *
+ * \note if the `size` argument equals 0 then the queue would be unlimited by size.
+ *
  * \return Pointer to the newly created queue or NULL.
  */
-queue_t* queue_create(size_t esize);
+queue_t* queue_create(size_t size, size_t esize);
 
 /**
  * \brief Frees up the memory associated with the queue.
@@ -44,6 +43,14 @@ void queue_delete(queue_t** queue);
  * \return true if the queue is empty, false otherwise.
  */
 bool queue_empty(const queue_t* queue);
+
+/**
+ * \brief Checks if the queue is full.
+ *
+ * \param[in] queue Pointer to the queue.
+ * \return true if the queue is full, false otherwise.
+ */
+bool queue_full(const queue_t* queue);
 
 /**
  * \brief Removes an element from the queue and returns it.
