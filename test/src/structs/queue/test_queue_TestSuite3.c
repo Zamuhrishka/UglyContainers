@@ -18,6 +18,8 @@
 #include "core/vector/vector.h"
 #include "structs/queue/queue.h"
 //_____ C O N F I G S  ________________________________________________________
+#define TEST_QUEUE_LEN 32
+#define TEST_UNLIMITED_QUEUE 0
 //_____ D E F I N I T I O N S _________________________________________________
 //_____ M A C R O S ___________________________________________________________
 //_____ V A R I A B L E S _____________________________________________________
@@ -26,7 +28,7 @@ static queue_t* queue = NULL;
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 void setUp(void)
 {
-  queue = queue_create(sizeof(uint32_t));
+  queue = queue_create(TEST_QUEUE_LEN, sizeof(uint32_t));
 }
 
 void tearDown(void)
@@ -172,4 +174,30 @@ void test_TestCase_4(void)
     TEST_ASSERT_EQUAL_UINT32(sizeof(input) / sizeof(uint32_t) - i, size);
     queue_get(queue, &output[i]);
   }
+}
+
+/**
+ * @brief Tests the behavior of the `queue_add` method when attempting to enqueue to an unlimited queue.
+ *
+ * This unit test is designed to validate the behavior of the `queue_add` method when items are enqueued to a queue that
+ * has been initialized as "unlimited" in terms of its capacity. The primary goal is to ensure that the queue can handle
+ * a large number of enqueue operations beyond its nominal capacity without reporting any errors or issues.
+ *
+ * If all enqueue operations succeed and the queue can be properly deallocated, it indicates that the queue's add and
+ * delete operations function as expected even for an "unlimited" queue.
+ */
+void test_TestCase_5(void)
+{
+  uint16_t data = 0x55;
+
+  TEST_MESSAGE("[QUEUE_TEST]: add to unlimited queue");
+
+  queue_t* u_queue = queue_create(TEST_UNLIMITED_QUEUE, sizeof(uint32_t));
+
+  for (size_t i = 0; i < TEST_QUEUE_LEN * 10; i++)
+  {
+    TEST_ASSERT_TRUE(queue_add(u_queue, &data));
+  }
+
+  queue_delete(&u_queue);
 }

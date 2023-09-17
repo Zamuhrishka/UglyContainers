@@ -17,7 +17,7 @@
 #include "core/vector/vector.h"
 #include "structs/queue/queue.h"
 //_____ C O N F I G S  ________________________________________________________
-
+#define TEST_QUEUE_LEN 10
 //_____ D E F I N I T I O N S _________________________________________________
 //_____ M A C R O S ___________________________________________________________
 //_____ V A R I A B L E S _____________________________________________________
@@ -26,7 +26,7 @@ static queue_t* queue = NULL;
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 void setUp(void)
 {
-  queue = queue_create(sizeof(uint32_t));
+  queue = queue_create(TEST_QUEUE_LEN, sizeof(uint32_t));
 }
 
 void tearDown(void)
@@ -50,8 +50,29 @@ void test_TestCase_1(void)
 {
   uint16_t data = 0x55;
 
-  TEST_MESSAGE("[QUEUE_TEST]: dequeue empty");
+  TEST_MESSAGE("[QUEUE_TEST]: get empty");
   TEST_ASSERT_FALSE(queue_get(queue, &data));
+}
+
+/**
+ * @brief Tests the behavior of the `queue_add` method when attempting to enqueue to an full queue.
+ *
+ * This unit test specifically evaluates the corner case scenario where the `queue_add` method is invoked
+ * on an full queue. The expected behavior in this situation is for the `queue_add` method to return
+ * `false`, indicating that there's no data to enqueue.
+ */
+void test_TestCase_2(void)
+{
+  uint16_t data = 0x55;
+
+  TEST_MESSAGE("[QUEUE_TEST]: add full");
+
+  for (size_t i = 0; i < TEST_QUEUE_LEN; i++)
+  {
+    TEST_ASSERT_TRUE(queue_add(queue, &data));
+  }
+
+  TEST_ASSERT_FALSE(queue_add(queue, &data));
 }
 
 /**
@@ -61,7 +82,7 @@ void test_TestCase_1(void)
  * when the queue is empty. The expected behavior is for the method to return a size of `0`, indicating
  * that there are no elements in the queue.
  */
-void test_TestCase_2(void)
+void test_TestCase_3(void)
 {
   uint16_t data = 0x55;
 
@@ -76,7 +97,7 @@ void test_TestCase_2(void)
  * This unit test is designed to validate the correct error handling of the `queue_create` method, specifically
  * when it is provided with an invalid size argument of `0`.
  */
-void test_TestCase_3(void)
+void test_TestCase_4(void)
 {
   CEXCEPTION_T e;
 
@@ -84,7 +105,7 @@ void test_TestCase_3(void)
 
   Try
   {
-    queue_t* q = queue_create(0);
+    queue_t* q = queue_create(TEST_QUEUE_LEN, 0);
     TEST_FAIL_MESSAGE("Should have thrown!");
   }
   Catch(e)
@@ -99,7 +120,7 @@ void test_TestCase_3(void)
  * This unit test is designed to validate the correct error handling of the `queue_delete` method, specifically
  * when it is provided with an invalid queue double pointer argument of `NULL`.
  */
-void test_TestCase_4(void)
+void test_TestCase_5(void)
 {
   CEXCEPTION_T e;
 
@@ -122,7 +143,7 @@ void test_TestCase_4(void)
  * This unit test is designed to validate the correct error handling of the `queue_empty` method, specifically
  * when it is provided with an invalid queue pointer argument of `NULL`.
  */
-void test_TestCase_5(void)
+void test_TestCase_6(void)
 {
   CEXCEPTION_T e;
 
@@ -145,7 +166,7 @@ void test_TestCase_5(void)
  * This unit test is designed to validate the correct error handling of the `queue_add` method, specifically
  * when it is provided with an invalid queue pointer argument of `NULL`.
  */
-void test_TestCase_6(void)
+void test_TestCase_7(void)
 {
   CEXCEPTION_T e;
   uint32_t data = 0x55;
@@ -169,7 +190,7 @@ void test_TestCase_6(void)
  * This unit test is designed to validate the correct error handling of the `queue_add` method, specifically
  * when it is provided with an invalid data pointer argument of `NULL`.
  */
-void test_TestCase_7(void)
+void test_TestCase_8(void)
 {
   CEXCEPTION_T e;
 
@@ -192,7 +213,7 @@ void test_TestCase_7(void)
  * This unit test is designed to validate the correct error handling of the `queue_get` method, specifically
  * when it is provided with an invalid queue pointer argument of `NULL`.
  */
-void test_TestCase_8(void)
+void test_TestCase_9(void)
 {
   CEXCEPTION_T e;
   uint32_t data = 0x55;
@@ -216,7 +237,7 @@ void test_TestCase_8(void)
  * This unit test is designed to validate the correct error handling of the `queue_get` method, specifically
  * when it is provided with an invalid data pointer argument of `NULL`.
  */
-void test_TestCase_9(void)
+void test_TestCase_10(void)
 {
   CEXCEPTION_T e;
 
@@ -239,7 +260,7 @@ void test_TestCase_9(void)
  * This unit test is designed to validate the correct error handling of the `queue_peek` method, specifically
  * when it is provided with an invalid queue pointer argument of `NULL`.
  */
-void test_TestCase_10(void)
+void test_TestCase_11(void)
 {
   CEXCEPTION_T e;
   uint32_t data = 0x55;
@@ -263,7 +284,7 @@ void test_TestCase_10(void)
  * This unit test is designed to validate the correct error handling of the `queue_peek` method, specifically
  * when it is provided with an invalid data pointer argument of `NULL`.
  */
-void test_TestCase_11(void)
+void test_TestCase_12(void)
 {
   CEXCEPTION_T e;
 
@@ -286,7 +307,7 @@ void test_TestCase_11(void)
  * This unit test is designed to validate the correct error handling of the `queue_size` method, specifically
  * when it is provided with an invalid queue pointer argument of `NULL`.
  */
-void test_TestCase_12(void)
+void test_TestCase_13(void)
 {
   CEXCEPTION_T e;
 
@@ -309,7 +330,7 @@ void test_TestCase_12(void)
  * This unit test is designed to validate the correct error handling of the `queue_clear` method, specifically
  * when it is provided with an invalid queue pointer argument of `NULL`.
  */
-void test_TestCase_13(void)
+void test_TestCase_14(void)
 {
   CEXCEPTION_T e;
 
