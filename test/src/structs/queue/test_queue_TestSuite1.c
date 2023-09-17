@@ -19,6 +19,7 @@
 #include "core/vector/vector.h"
 #include "structs/queue/queue.h"
 //_____ C O N F I G S  ________________________________________________________
+#define TEST_QUEUE_LEN 10
 //_____ D E F I N I T I O N S _________________________________________________
 //_____ M A C R O S ___________________________________________________________
 //_____ V A R I A B L E S _____________________________________________________
@@ -27,7 +28,7 @@ static queue_t* queue = NULL;
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 void setUp(void)
 {
-  queue = queue_create(sizeof(uint32_t));
+  queue = queue_create(TEST_QUEUE_LEN, sizeof(uint32_t));
 }
 
 void tearDown(void)
@@ -83,13 +84,35 @@ void test_TestCase_2(void)
 }
 
 /**
+ * @brief Tests the functionality of the `queue_full` method for a queue.
+ *
+ * This unit test aims to validate the correct operation of the `queue_full` method.
+ * The test checks whether the queue correctly reports its full status before and
+ * after an item has been full enqueued.
+ */
+void test_TestCase_3(void)
+{
+  uint32_t data = 0x55;
+
+  TEST_MESSAGE("[QUEUE_TEST]: is full");
+  TEST_ASSERT_FALSE(queue_full(queue));
+
+  for (size_t i = 0; i < TEST_QUEUE_LEN; i++)
+  {
+    queue_add(queue, &data);
+  }
+
+  TEST_ASSERT_TRUE(queue_full(queue));
+}
+
+/**
  * @brief Tests the functionality of the `queue_size` method for a queue.
  *
  * This unit test is designed to validate the correct operation of the `queue_size` method.
  * The primary objective is to confirm that the queue correctly reports its size after an item
  * has been enqueued.
  */
-void test_TestCase_3(void)
+void test_TestCase_4(void)
 {
   uint32_t data = 0x55;
 
@@ -106,7 +129,7 @@ void test_TestCase_3(void)
  * items. The primary objective is to ensure that the queue can successfully dequeue an item that has been previously
  * enqueued.
  */
-void test_TestCase_4(void)
+void test_TestCase_5(void)
 {
   uint32_t data = 0x55;
 
@@ -123,7 +146,7 @@ void test_TestCase_4(void)
  * that the method can successfully retrieve the front item and indicate the operation's success without modifying the
  * queue's state.
  */
-void test_TestCase_5(void)
+void test_TestCase_6(void)
 {
   uint32_t data = 0x55;
 
@@ -139,7 +162,7 @@ void test_TestCase_5(void)
  * emptying the entire queue, removing all its elements. The test aims to ensure that after invoking the `queue_clear`
  * method, the queue becomes empty and its size is set to zero.
  */
-void test_TestCase_6(void)
+void test_TestCase_7(void)
 {
   uint32_t data = 0x55;
 
