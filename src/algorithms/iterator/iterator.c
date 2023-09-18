@@ -8,15 +8,15 @@
 //_____ I N C L U D E S _______________________________________________________
 #include "iterator.h"
 
-#include "core/allocator_if.h"
+#include "interface/allocator_if.h"
 //_____ C O N F I G S  ________________________________________________________
 
 //_____ D E F I N I T I O N S _________________________________________________
 struct Iterator_tag
 {
-    void* container;
-    size_t current_index;
-    size_t size;
+  void* container;
+  size_t current_index;
+  size_t size;
 };
 //_____ M A C R O S ___________________________________________________________
 
