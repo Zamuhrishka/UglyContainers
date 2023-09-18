@@ -1,8 +1,18 @@
 /**
- * @file
- * @author Aleksander Kovalchuk (aliaksander.kavalchuk@gmail.com)
- * @brief
- * @date 2023-01-14
+ * \file    container.c
+ * \author  Aleksander Kovalchuk (aliaksander.kavalchuk@gmail.com)
+ * \brief   Universal data storage container.
+ *
+ * This file contains function prototypes for working with a universal container.
+ * The container can be implemented based on a linked list or a vector.
+ * The provided functions allow for basic operations on the container,
+ * such as adding, removing, extracting, and replacing elements.
+ *
+ * For correct operation with the container, before using the container functions,
+ * it's necessary to initialize memory allocation and deallocation functions using
+ * the `container_alloc_init` function.
+ *
+ * \date  2023-01-14
  */
 
 //_____ I N C L U D E S _______________________________________________________
@@ -10,9 +20,10 @@
 
 #include "common/uc_assert.h"
 
-#include "interface/allocator_if.h"
+#include "linked_list/linked_list.h"
+#include "vector/vector.h"
+// #include "interface/allocator_if.h"
 //_____ C O N F I G S  ________________________________________________________
-
 //_____ D E F I N I T I O N S _________________________________________________
 struct Container_tag
 {
@@ -20,12 +31,14 @@ struct Container_tag
   container_type_e type;
 };
 //_____ M A C R O S ___________________________________________________________
-
 //_____ V A R I A B L E S _____________________________________________________
-
 //_____ P R I V A T E  F U N C T I O N S_______________________________________
-
 //_____ P U B L I C  F U N C T I O N S_________________________________________
+/**
+ * \brief Initializes the container allocator with custom memory functions.
+ *
+ * Detailed description see in container.h
+ */
 void container_alloc_init(allocate_fn_t alloc_cb, free_fn_t free_cb)
 {
   UC_ASSERT(alloc_cb);
@@ -35,6 +48,11 @@ void container_alloc_init(allocate_fn_t alloc_cb, free_fn_t free_cb)
   free_cb_register(free_cb);
 }
 
+/**
+ * \brief Creates a new container of a specified type.
+ *
+ * Detailed description see in container.h
+ */
 container_t* container_create(size_t esize, container_type_e type)
 {
   UC_ASSERT(0 != esize);
@@ -89,6 +107,11 @@ container_t* container_from_array(void *arr, size_t size, size_t esize)
 }
 #endif
 
+/**
+ * \brief Frees up the memory associated with the container.
+ *
+ * Detailed description see in container.h
+ */
 void container_delete(container_t** container)
 {
   UC_ASSERT(container);
@@ -116,6 +139,11 @@ void container_delete(container_t** container)
   (*container) = NULL;
 }
 
+/**
+ * \brief Resizes the container to a new size.
+ *
+ * Detailed description see in container.h
+ */
 bool container_resize(container_t* container, size_t new_size)
 {
   UC_ASSERT(container);
@@ -127,6 +155,11 @@ bool container_resize(container_t* container, size_t new_size)
                      : false));
 }
 
+/**
+ * \brief Pushes an element to the front of the container.
+ *
+ * Detailed description see in container.h
+ */
 bool container_push_front(container_t* container, const void* data)
 {
   UC_ASSERT(container);
@@ -139,6 +172,11 @@ bool container_push_front(container_t* container, const void* data)
                      : false));
 }
 
+/**
+ * \brief Pops an element from the front of the container.
+ *
+ * Detailed description see in container.h
+ */
 bool container_pop_front(container_t* container, void* data)
 {
   UC_ASSERT(container);
@@ -151,6 +189,11 @@ bool container_pop_front(container_t* container, void* data)
                      : false));
 }
 
+/**
+ * \brief Pushes an element to the back of the container.
+ *
+ * Detailed description see in container.h
+ */
 bool container_push_back(container_t* container, const void* data)
 {
   UC_ASSERT(container);
@@ -163,6 +206,11 @@ bool container_push_back(container_t* container, const void* data)
                      : false));
 }
 
+/**
+ * \brief Pops an element from the back of the container.
+ *
+ * Detailed description see in container.h
+ */
 bool container_pop_back(container_t* container, void* data)
 {
   UC_ASSERT(container);
@@ -175,6 +223,11 @@ bool container_pop_back(container_t* container, void* data)
                      : false));
 }
 
+/**
+ * \brief Inserts an element at a specified index in the container.
+ *
+ * Detailed description see in container.h
+ */
 bool container_insert(container_t* container, const void* data, size_t index)
 {
   UC_ASSERT(container);
@@ -187,6 +240,11 @@ bool container_insert(container_t* container, const void* data, size_t index)
                      : false));
 }
 
+/**
+ * \brief Extracts an element from a specified index in the container.
+ *
+ * Detailed description see in container.h
+ */
 bool container_extract(container_t* container, void* data, size_t index)
 {
   UC_ASSERT(container);
@@ -199,6 +257,11 @@ bool container_extract(container_t* container, void* data, size_t index)
                      : false));
 }
 
+/**
+ * \brief Replaces an element at a specified index in the container.
+ *
+ * Detailed description see in container.h
+ */
 bool container_replace(container_t* container, const void* data, size_t index)
 {
   UC_ASSERT(container);
@@ -211,6 +274,11 @@ bool container_replace(container_t* container, const void* data, size_t index)
                      : false));
 }
 
+/**
+ * \brief Retrieves an element from a specified index in the container.
+ *
+ * Detailed description see in container.h
+ */
 bool container_at(const container_t* container, void* data, size_t index)
 {
   UC_ASSERT(container);
@@ -223,6 +291,11 @@ bool container_at(const container_t* container, void* data, size_t index)
                      : false));
 }
 
+/**
+ * \brief Erases an element at a specified index in the container.
+ *
+ * Detailed description see in container.h
+ */
 bool container_erase(container_t* container, size_t index)
 {
   UC_ASSERT(container);
@@ -234,6 +307,11 @@ bool container_erase(container_t* container, size_t index)
                      : false));
 }
 
+/**
+ * \brief Peeks at an element at a specified index in the container without removing it.
+ *
+ * Detailed description see in container.h
+ */
 void* container_peek(const container_t* container, size_t index)
 {
   UC_ASSERT(container);
@@ -245,6 +323,11 @@ void* container_peek(const container_t* container, size_t index)
                      : NULL));
 }
 
+/**
+ * \brief Clears all the elements from the container.
+ *
+ * Detailed description see in container.h
+ */
 size_t container_clear(const container_t* container)
 {
   UC_ASSERT(container);
@@ -256,6 +339,11 @@ size_t container_clear(const container_t* container)
                      : false));
 }
 
+/**
+ * \brief Returns the number of elements in the container.
+ *
+ * Detailed description see in container.h
+ */
 size_t container_size(const container_t* container)
 {
   UC_ASSERT(container);
