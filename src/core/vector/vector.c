@@ -1,8 +1,13 @@
 /**
- * @file
- * @author Aleksander Kovalchuk (aliaksander.kavalchuk@gmail.com)
- * @brief
- * @date 2023-01-14
+ * \file vector.c
+ * \author Aleksander Kovalchuk (aliaksander.kavalchuk@gmail.com)
+ * \brief Vector type data structure and associated function pointers.
+ *
+ *  This file defines the `vector_t` structure, which represents a vector-based container.
+ *  The structure encapsulates private data members and provides function pointers
+ *  to operations that can be performed on the vector.
+ *  To use a particular implementation, set the function pointers to the appropriate functions.
+ * \date 2023-01-14
  */
 
 //_____ I N C L U D E S _______________________________________________________
@@ -459,6 +464,11 @@ static size_t size_cb(const void* vector)
 }
 
 //_____ P U B L I C  F U N C T I O N S_________________________________________
+/**
+ * \brief Creates a new vector with a specified element size.
+ *
+ * Detailed description see in vector.h
+ */
 vector_t* vector_create(size_t esize)
 {
   UC_ASSERT(0 != esize);
@@ -496,13 +506,17 @@ vector_t* vector_create(size_t esize)
   return vector;
 }
 
+/**
+ * \brief Frees up the memory associated with the vector.
+ *
+ * Detailed description see in vector.h
+ */
 void vector_delete(vector_t** vector)
 {
   UC_ASSERT(vector);
   UC_ASSERT(*vector);
+  UC_ASSERT((*vector)->private->pool);
 
-  // BUG: Check why tests fault on this pool free
-  // vector_free((*vector)->private->pool);
   vector_free(*vector);
   (*vector) = NULL;
 }
