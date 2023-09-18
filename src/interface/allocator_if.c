@@ -6,7 +6,7 @@
  */
 
 //_____ I N C L U D E S _______________________________________________________
-#include "allocator_if.h"
+#include "interface/allocator_if.h"
 
 #include "common/uc_assert.h"
 #include <stdbool.h>

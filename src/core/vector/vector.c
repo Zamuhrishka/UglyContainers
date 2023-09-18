@@ -14,7 +14,7 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "allocator_if.h"
+#include "interface/allocator_if.h"
 //_____ C O N F I G S  ________________________________________________________
 #define DEFAULT_CAPACITY 10
 #define RESIZE_FACTOR DEFAULT_CAPACITY
