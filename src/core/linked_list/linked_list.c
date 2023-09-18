@@ -512,6 +512,11 @@ static size_t size_cb(const void* list)
 }
 
 //_____ P U B L I C  F U N C T I O N S_________________________________________
+/**
+ * \brief Creates a new linked list with a specified element size.
+ *
+ * Detailed description see in linked_list.h
+ */
 linked_list_t* linked_list_create(size_t esize)
 {
   UC_ASSERT(0 != esize);
@@ -543,6 +548,11 @@ linked_list_t* linked_list_create(size_t esize)
   return linked_list;
 }
 
+/**
+ * \brief Frees up the memory associated with the linked list.
+ *
+ * Detailed description see in linked_list.h
+ */
 void linked_list_delete(linked_list_t** list)
 {
   UC_ASSERT(list);
