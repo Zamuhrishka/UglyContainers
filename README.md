@@ -1,6 +1,15 @@
 # Ugly Containers
 
 
+
+
+
+
+
+
+
+
+
 ## Info
 
 - [Building HashMap from Scratch in C for Sum Of Two Problem Solving on LeetCode](https://medium.com/@alexey.medvecky/building-hashmap-from-scratch-in-c-for-sum-of-two-problem-solving-on-leetcode-ab3d81f9ab65)
@@ -8,17 +17,18 @@
 
 ## Small ToDo
 
-- FIFO блокируется при переполнении, в отличие от кольцевого буфера
-- Rework all for using status codes
-- Replace standard assert on special library assert QC_ASSERT()
-- Add algorithms: sort, find, print, fromArray, toArray, iterator
-- Implemet to data copy modes: deep copy, simple copy
-- Add Unit tests
-- Add thread safety (use atomic access and mutex)
-- Split core on dynamic and static types
-- Think about `volatile`
-- В Java используется похожий подход, но массив растет медленнее. Размер нового массива определяется следующим образом: size = (size * 3) / 2 + 1;
-- Check code by memory sanitazer
+[] Add some wrapper macro for structures
+[] FIFO блокируется при переполнении, в отличие от кольцевого буфера
+[] Add decrease memory function for Vector
+[] Rework all for using status codes
+[x] Replace standard assert on special library assert QC_ASSERT()
+[] Add algorithms: sort, find, print, fromArray, toArray, iterator
+[] Implemet to data copy modes: deep copy, simple copy
+[] Add thread safety (use atomic access and mutex)
+[] Split core on dynamic and static types
+[] Think about `volatile`
+[] В Java используется похожий подход, но массив растет медленнее. Размер нового массива определяется следующим образом: size = (size * 3) / 2 + 1;
+[] Check code by memory sanitazer
 
 ## Examples
 
