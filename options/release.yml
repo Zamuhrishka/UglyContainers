@@ -1,0 +1,16 @@
+:defines:
+  :common: &common_defines
+  :test:
+    - *common_defines
+    - TEST
+  :test_preprocess:
+    - *common_defines
+    - TEST
+  :release:
+    - NDEBUG
+
+:flags:
+  :release:
+    :compile:
+      :*:
+        - -O1

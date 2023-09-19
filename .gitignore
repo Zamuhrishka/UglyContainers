@@ -68,7 +68,7 @@ tools/
 #Files
 src/main.c
 !project_x86.yml
-!options\debug.yml
-!options\release.yml
+!options/debug.yml
+!options/release.yml
 !ceedling.cmd
 !rakefile.rb
