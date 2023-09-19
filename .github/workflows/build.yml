@@ -6,15 +6,12 @@ on:
       - develop
       - master
 jobs:
-  build-and-tests:
+  build:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    # - name: Ceedling Check1
-    #   run: ceedling help
-    
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
@@ -24,6 +21,10 @@ jobs:
       run: |
         gem install ceedling
 
-    - name: Ceedling Check2
+    - name: Ceedling Check
       run: ceedling help
+
+    - name: Build
+      run: ceedling project:project_x86 options:debug release
+      
 
