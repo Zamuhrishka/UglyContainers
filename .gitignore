@@ -66,7 +66,6 @@ linker/
 tools/
 
 #Files
-src/main.c
 !project_x86.yml
 !options/debug.yml
 !options/release.yml
