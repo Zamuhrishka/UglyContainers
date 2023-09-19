@@ -1,0 +1,13 @@
+name: UglyContainerBuild
+
+on:
+  push:
+    branches: 
+      - develop
+      - master
+jobs:
+  build_x86:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Pring Hello World
+      run: echo "Hello World!"
