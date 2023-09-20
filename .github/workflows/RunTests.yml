@@ -1,8 +1,8 @@
-name: UglyContainerBuild
+name: UnitTest
 
 on:
   push:
-    branches: 
+    branches:
       - develop
       - master
 jobs:
@@ -21,10 +21,5 @@ jobs:
       run: |
         gem install ceedling
 
-    - name: Ceedling Check
-      run: ceedling help
-
     - name: Tests
       run: ceedling test:all
-      
-
