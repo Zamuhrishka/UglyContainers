@@ -3,10 +3,9 @@ name: UnitTest
 on:
   push:
     branches:
-      - develop
       - master
 jobs:
-  build:
+  unit_tests:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
