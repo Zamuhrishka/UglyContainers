@@ -1,7 +1,6 @@
 # Ugly Containers
 
-Status of Unit Tests:<br>
-<img src="https://github.com/Zamuhrishka/UglyContainers/workflows/UnitTest/badge.svg?branch=master"><br>
+<br><img src="https://github.com/Zamuhrishka/UglyContainers/workflows/UnitTest/badge.svg?branch=master"><br>
 
 
 
