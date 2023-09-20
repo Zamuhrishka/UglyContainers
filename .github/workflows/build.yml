@@ -24,7 +24,7 @@ jobs:
     - name: Ceedling Check
       run: ceedling help
 
-    - name: Build
-      run: ceedling project:project_x86 options:debug release
+    - name: Tests
+      run: ceedling test:all
       
 
