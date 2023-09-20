@@ -116,11 +116,7 @@ void container_delete(container_t** container)
 {
   UC_ASSERT(container);
   UC_ASSERT(*container);
-
-  if (!is_allocator_valid())
-  {
-    return false;
-  }
+  UC_ASSERT(is_allocator_valid());
 
   free_fn_t mem_free = get_free();
 

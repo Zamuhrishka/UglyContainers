@@ -15,7 +15,7 @@
 //_____ C O N F I G S  ________________________________________________________
 //_____ D E F I N I T I O N S _________________________________________________
 typedef void* (*allocate_fn_t)(size_t size);
-typedef void (*free_fn_t)(void* pointer);
+typedef void (*free_fn_t)(volatile void* pointer);
 //_____ M A C R O S ___________________________________________________________
 //_____ V A R I A B L E S _____________________________________________________
 //_____ P U B L I C  F U N C T I O N S_________________________________________

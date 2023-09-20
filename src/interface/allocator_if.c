@@ -21,7 +21,7 @@
 static void* (*mem_allocate)(size_t size) = malloc;
 
 /// Pointer to the memory free function
-static void (*mem_free)(void* pointer) = free;
+static void (*mem_free)(volatile void* pointer) = free;
 //_____ P R I V A T E  F U N C T I O N S_______________________________________
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 /**
