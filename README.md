@@ -1,5 +1,7 @@
 # Ugly Containers
 
+Status of Last Deployment:<br>
+<img src="https://github.com/Zamuhrishka/UglyContainers/workflows/UnitTests/badge.svg?branch=master"><br>
 
 
 
