@@ -8,9 +8,10 @@
 #pragma once
 
 //_____ I N C L U D E S _______________________________________________________
-#include "stdbool.h"
-#include "stdint.h"
-#include "stdlib.h"
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <stdlib.h>
 
 #include "core/container.h"
 //_____ C O N F I G S  ________________________________________________________
