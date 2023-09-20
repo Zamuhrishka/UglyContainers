@@ -25,6 +25,6 @@ jobs:
       run: ceedling help
 
     - name: Tests
-      run: ceedling tests:all
+      run: ceedling test:all
       
 
