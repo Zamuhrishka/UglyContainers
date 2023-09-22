@@ -11,6 +11,7 @@
 #include "unity.h"
 
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 
 #include "interface/allocator_if.h"
@@ -19,9 +20,9 @@
 //_____ D E F I N I T I O N S _________________________________________________
 struct test_ll_simple_struct
 {
-  uint32_t a;
-  uint16_t b;
-  uint8_t c;
+  size_t a;
+  size_t b;
+  size_t c;
 };
 //_____ M A C R O S ___________________________________________________________
 //_____ V A R I A B L E S _____________________________________________________
@@ -58,7 +59,7 @@ void test_TestCase_0(void)
  */
 void test_TestCase_1(void)
 {
-  TEST_IGNORE_MESSAGE("This TestSuite failed in github action! Need to figure out why.");
+  // TEST_IGNORE_MESSAGE("This TestSuite failed in github action! Need to figure out why.");
   struct test_ll_simple_struct input[] = {
       {.a = 0x93939393, .b = 0x9393, .c = 0x93}, {.a = 0x67676767, .b = 0x6767, .c = 0x67},
       {.a = 0x66666666, .b = 0x6666, .c = 0x66}, {.a = 0x54545454, .b = 0x5454, .c = 0x54},
@@ -91,6 +92,8 @@ void test_TestCase_1(void)
   }
 
   TEST_ASSERT_EQUAL_MEMORY_ARRAY(expected, output, sizeof(struct test_ll_simple_struct), num);
+
+  // TEST_ASSERT_EQUAL_MEMORY(&expected, &output, sizeof(struct test_ll_simple_struct));
 }
 
 /**
