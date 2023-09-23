@@ -4,6 +4,10 @@
 
 The primary goal of writing this library was an attempt to study data structures and algorithms. As is commonly known, the best way to learn something is to implement it. However, implementing data structures in languages like Python and C++ isn't as intriguing, as these languages already have built-in data structures. Therefore, C was chosen as the main development language. Another reason for this choice was the ambition to create a convenient and universal library for working with data structures and algorithms.
 
+## Disclaimer
+
+**This library has been developed primarily for educational purposes. It is not designed to be thread-safe, nor is its reliability guaranteed for use in critical or production environments. Any use of this library in projects is at the sole risk and discretion of the user. The author(s) of this library shall not be held liable for any consequences arising from its use.**
+
 ## Project Structure
 
 The project consists of the following modules:
