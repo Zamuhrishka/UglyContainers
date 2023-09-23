@@ -2,60 +2,130 @@
 
 # Ugly Containers
 
+The primary goal of writing this library was an attempt to study data structures and algorithms. As is commonly known, the best way to learn something is to implement it. However, implementing data structures in languages like Python and C++ isn't as intriguing, as these languages already have built-in data structures. Therefore, C was chosen as the main development language. Another reason for this choice was the ambition to create a convenient and universal library for working with data structures and algorithms.
 
+## Disclaimer
 
+**This library has been developed primarily for educational purposes. It is not designed to be thread-safe, nor is its reliability guaranteed for use in critical or production environments. Any use of this library in projects is at the sole risk and discretion of the user. The author(s) of this library shall not be held liable for any consequences arising from its use.**
 
+## Project Structure
 
+The project consists of the following modules:
 
+- core
+- interface
+- structs
+- algorithms
 
+### Core Module
 
+This is the central module of the entire library which implements the universal container for data storage.
 
+A universal container holds user data and provides the necessary operations to work with this data:
 
+- `resize`: Changes the size of the container.
+- `push_front`: Adds an element to the beginning of the container.
+- `pop_front`: Removes an element from the beginning of the container.
+- `push_back`: Adds an element to the end of the container.
+- `pop_back`: Removes an element from the end of the container.
+- `insert`:  Inserts an element at a specified index.
+- `extract`: Extracts an element from a specified index.
+- `replace`: Replaces an element at a specified index.
+- `at`: Returns the element at a specified index without removing it.
+- `erase`: Deletes the element at a specified index.
+- `peek`: Returns a pointer to the element at a specified index without removing it.
+- `clear`: Clears the container of all elements.
+- `size`: Returns the number of elements in the container.
 
+These functions cover almost the entire range of operations necessary for working with a data container.
 
-## Info
+The container is termed universal for two reasons:
 
-- [Building HashMap from Scratch in C for Sum Of Two Problem Solving on LeetCode](https://medium.com/@alexey.medvecky/building-hashmap-from-scratch-in-c-for-sum-of-two-problem-solving-on-leetcode-ab3d81f9ab65)
--
+- It can store any type of data: `bool`, `uint8_t`, `uint16_t`, `uint32_t`, structures, etc. However, the container cannot store mixed data types. The universality of data type storage is achieved by working with data through `void` pointers and specifying the size of stored data in bytes via the `esize` argument. Here are examples of creating containers for different data types:
 
-## Small ToDo
+```c
+container_t* container = container_create(sizeof(bool), CONTAINER_LINKED_LIST_BASED);
+container_t* container = container_create(sizeof(uint8_t), CONTAINER_LINKED_LIST_BASED);
+container_t* container = container_create(sizeof(uint32_t), CONTAINER_LINKED_LIST_BASED);
+```
 
-[] Add some wrapper macro for structures
-[] FIFO блокируется при переполнении, в отличие от кольцевого буфера
-[] Add decrease memory function for Vector
-[] Rework all for using status codes
-[x] Replace standard assert on special library assert QC_ASSERT()
-[] Add algorithms: sort, find, print, fromArray, toArray, iterator
-[] Implemet to data copy modes: deep copy, simple copy
-[] Add thread safety (use atomic access and mutex)
-[] Split core on dynamic and static types
-[] Think about `volatile`
-[] В Java используется похожий подход, но массив растет медленнее. Размер нового массива определяется следующим образом: size = (size * 3) / 2 + 1;
-[] Check code by memory sanitazer
+Working with data through `void` pointers would look like this:
 
-## Examples
+```c
+uint8_t input = 0x55;
+bool status = container_push_front(container, (void*)&input);
+```
 
-- [qlibc](https://github.com/wolkykim/qlibc)
-- [c-algorithms](https://github.com/fragglet/c-algorithms/tree/master/src)
-- [C-Macro-Collections](https://github.com/LeoVen/C-Macro-Collections)
-- [sc](https://github.com/tezc/sc)
-- [fifofast](https://github.com/nqtronix/fifofast)
-- [Используем черную магию для создания быстрого кольцевого буфера](https://habr.com/ru/company/otus/blog/557310/)
+![Alt text](docs/container_important.png)
 
-### Set
+- A universal container can be implemented based on either a linked list or a vector. The specific type is chosen when creating the container using the second type argument, which can take two values: `CONTAINER_LINKED_LIST_BASED` and  `CONTAINER_VECTOR_BASED`.
 
-- [Set](https://tproger.ru/translations/sets-for-beginners/)
+```c
+container_t* container = container_create(sizeof(uint8_t), CONTAINER_LINKED_LIST_BASED);
+container_t* container = container_create(sizeof(uint8_t), CONTAINER_VECTOR_BASED);
+```
 
-### Hash Table
+This decision was made because, for different data structures like queues and stacks, it's convenient to choose different containers: for queues, a doubly linked list is **typically** the best fit, while for stacks, a vector is preferred. To offer users greater flexibility in choosing a container for a specific data structure, while maintaining a unified interface, the decision was made to combine the operation of linked lists and vectors through a single container interface, allowing the user to choose which of the two containers best suits their needs.
 
-- Implement of Hash Table (https://www.youtube.com/watch?v=2Ti5yvumFTU&list=PL9IEJIKnBJjFiudyP6wSXmykrn67Ykqib&index=4)
+Thus, the `Core` module consists of the `container` module, which provides an interface for working with the container, and sub-modules: `linked_list` and `vector`, which implement the container for data storage and ensure the operation of all necessary operations based on the specific data structure: linked list or vector.
 
-### Allocators
+### Interface Module
 
-- [Аллокаторы памяти](https://habr.com/ru/post/505632/)
-- [Менеджмент памяти или как реже стрелять себе в ногу](https://habr.com/ru/post/473294/)
-- [Происхождение и эволюция аллокатора памяти в С](https://habr.com/ru/post/707032/)
-- [tlsf](https://github.com/mattconte/tlsf)
-- [Malloc-Implementations](https://github.com/emeryberger/Malloc-Implementations)
-- [tinyalloc](https://github.com/thi-ng/tinyalloc)
-- [umm_malloc](https://github.com/dimonomid/umm_malloc)
+This module contains various interfaces for integrating external libraries.
+
+#### Allocator Interface
+
+The Ugly Containers uses dynamic memory allocation and accordingly requires an allocator to work. This interface is used specifically for connecting external allocators.
+By default the Ugly Containers uses the allocator of the standard C library and if you are satisfied with it, you don't need to do anything. However, if you want to use an allocator other than the standard one, you need to use the allocator registration functions from this interface:
+
+```c
+allocation_cb_register(custom_alloc_function);
+free_cb_register(custom_free_function);
+```
+
+![Alt text](docs/alloc_warning.png)
+
+### Structs
+
+This module contains implementations of data structures based on the containers of the `Core` module.
+
+#### Queue
+
+Implementation of a queue based on a container linked list.
+
+```c
+queue_t* queue = queue_create(10, sizeof(uint32_t));
+
+uint32_t data = 0x55;
+bool status = queue_add(queue, &data);
+status = queue_get(queue, &data);
+```
+
+#### Stack
+
+Stack implementation based on container vector.
+
+```c
+stack_t* stack = rb_create(10, sizeof(uint32_t));
+
+uint32_t data = 0x55;
+bool status = stack_push(queue, &data);
+status = stack_pop(queue, &data);
+```
+
+#### Ring Buffer
+
+Implementation of a ring buffer based on container vector.
+
+```c
+ring_buffer_t* rb = stack_create(10, sizeof(uint32_t));
+
+uint32_t data = 0x55;
+bool status = rb_add(queue, &data);
+status = rb_get(queue, &data);
+```
+
+## Unit Tests
+
+All unit tests locate in the `test` directory and were written by using [Ceedling framework](https://github.com/ThrowTheSwitch/Ceedling).
+So for run unit tests you need to install this framework using instruction from framework [repository](https://github.com/ThrowTheSwitch/Ceedling) and execute command `ceedling test:all`.
