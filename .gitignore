@@ -60,12 +60,9 @@ build/
 linker/
 .vscode/
 tools/
+options/
+vendor
 
 #Files
-!project_x86.yml
-!options/debug.yml
-!options/release.yml
-!ceedling.cmd
-!rakefile.rb
 Todo.md
 /docs/linked_list.md
