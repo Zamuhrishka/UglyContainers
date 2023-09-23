@@ -62,6 +62,8 @@ linker/
 tools/
 options/
 vendor
+test/src/algorithms/
+src/algorithms/
 
 #Files
 Todo.md
