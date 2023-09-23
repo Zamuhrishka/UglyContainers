@@ -22,12 +22,11 @@
 
 #include "linked_list/linked_list.h"
 #include "vector/vector.h"
-// #include "interface/allocator_if.h"
 //_____ C O N F I G S  ________________________________________________________
 //_____ D E F I N I T I O N S _________________________________________________
 struct Container_tag
 {
-  void* core;
+  void *core;
   container_type_e type;
 };
 //_____ M A C R O S ___________________________________________________________
@@ -53,7 +52,7 @@ void container_alloc_init(allocate_fn_t alloc_cb, free_fn_t free_cb)
  *
  * Detailed description see in container.h
  */
-container_t* container_create(size_t esize, container_type_e type)
+container_t *container_create(size_t esize, container_type_e type)
 {
   UC_ASSERT(0 != esize);
 
@@ -65,7 +64,7 @@ container_t* container_create(size_t esize, container_type_e type)
   allocate_fn_t mem_allocate = get_allocator();
   free_fn_t mem_free = get_free();
 
-  container_t* container = (container_t*)mem_allocate(sizeof *container);
+  container_t *container = (container_t *)mem_allocate(sizeof *container);
   if (container == NULL)
   {
     return NULL;
@@ -73,8 +72,8 @@ container_t* container_create(size_t esize, container_type_e type)
 
   container->type = type;
   container->core =
-      ((CONTAINER_LINKED_LIST_BASED == type) ? (void*)linked_list_create(esize)
-                                             : ((CONTAINER_VECTOR_BASED == type) ? (void*)vector_create(esize) : NULL));
+    ((CONTAINER_LINKED_LIST_BASED == type) ? (void *)linked_list_create(esize)
+                                           : ((CONTAINER_VECTOR_BASED == type) ? (void *)vector_create(esize) : NULL));
 
   if (container->core == NULL)
   {
@@ -112,7 +111,7 @@ container_t* container_from_array(void *arr, size_t size, size_t esize)
  *
  * Detailed description see in container.h
  */
-void container_delete(container_t** container)
+void container_delete(container_t **container)
 {
   UC_ASSERT(container);
   UC_ASSERT(*container);
@@ -122,12 +121,12 @@ void container_delete(container_t** container)
 
   if (CONTAINER_LINKED_LIST_BASED == (*container)->type)
   {
-    linked_list_t* pointer = (linked_list_t*)((*container)->core);
+    linked_list_t *pointer = (linked_list_t *)((*container)->core);
     linked_list_delete(&pointer);
   }
   else if (CONTAINER_VECTOR_BASED == (*container)->type)
   {
-    vector_t* pointer = (vector_t*)((*container)->core);
+    vector_t *pointer = (vector_t *)((*container)->core);
     vector_delete(&pointer);
   }
 
@@ -140,15 +139,15 @@ void container_delete(container_t** container)
  *
  * Detailed description see in container.h
  */
-bool container_resize(container_t* container, size_t new_size)
+bool container_resize(container_t *container, size_t new_size)
 {
   UC_ASSERT(container);
 
   return ((CONTAINER_LINKED_LIST_BASED == container->type)
-              ? ((linked_list_t*)container->core)->resize(((linked_list_t*)container->core), new_size)
-              : ((CONTAINER_VECTOR_BASED == container->type)
-                     ? ((vector_t*)container->core)->resize(((vector_t*)container->core), new_size)
-                     : false));
+            ? ((linked_list_t *)container->core)->resize(((linked_list_t *)container->core), new_size)
+            : ((CONTAINER_VECTOR_BASED == container->type)
+                 ? ((vector_t *)container->core)->resize(((vector_t *)container->core), new_size)
+                 : false));
 }
 
 /**
@@ -156,16 +155,16 @@ bool container_resize(container_t* container, size_t new_size)
  *
  * Detailed description see in container.h
  */
-bool container_push_front(container_t* container, const void* data)
+bool container_push_front(container_t *container, const void *data)
 {
   UC_ASSERT(container);
   UC_ASSERT(data);
 
   return ((CONTAINER_LINKED_LIST_BASED == container->type)
-              ? ((linked_list_t*)container->core)->push_front(((linked_list_t*)container->core), data)
-              : ((CONTAINER_VECTOR_BASED == container->type)
-                     ? ((vector_t*)container->core)->push_front(((vector_t*)container->core), data)
-                     : false));
+            ? ((linked_list_t *)container->core)->push_front(((linked_list_t *)container->core), data)
+            : ((CONTAINER_VECTOR_BASED == container->type)
+                 ? ((vector_t *)container->core)->push_front(((vector_t *)container->core), data)
+                 : false));
 }
 
 /**
@@ -173,16 +172,16 @@ bool container_push_front(container_t* container, const void* data)
  *
  * Detailed description see in container.h
  */
-bool container_pop_front(container_t* container, void* data)
+bool container_pop_front(container_t *container, void *data)
 {
   UC_ASSERT(container);
   UC_ASSERT(data);
 
   return ((CONTAINER_LINKED_LIST_BASED == container->type)
-              ? ((linked_list_t*)container->core)->pop_front(((linked_list_t*)container->core), data)
-              : ((CONTAINER_VECTOR_BASED == container->type)
-                     ? ((vector_t*)container->core)->pop_front(((vector_t*)container->core), data)
-                     : false));
+            ? ((linked_list_t *)container->core)->pop_front(((linked_list_t *)container->core), data)
+            : ((CONTAINER_VECTOR_BASED == container->type)
+                 ? ((vector_t *)container->core)->pop_front(((vector_t *)container->core), data)
+                 : false));
 }
 
 /**
@@ -190,16 +189,16 @@ bool container_pop_front(container_t* container, void* data)
  *
  * Detailed description see in container.h
  */
-bool container_push_back(container_t* container, const void* data)
+bool container_push_back(container_t *container, const void *data)
 {
   UC_ASSERT(container);
   UC_ASSERT(data);
 
   return ((CONTAINER_LINKED_LIST_BASED == container->type)
-              ? ((linked_list_t*)container->core)->push_back(((linked_list_t*)container->core), data)
-              : ((CONTAINER_VECTOR_BASED == container->type)
-                     ? ((vector_t*)container->core)->push_back(((vector_t*)container->core), data)
-                     : false));
+            ? ((linked_list_t *)container->core)->push_back(((linked_list_t *)container->core), data)
+            : ((CONTAINER_VECTOR_BASED == container->type)
+                 ? ((vector_t *)container->core)->push_back(((vector_t *)container->core), data)
+                 : false));
 }
 
 /**
@@ -207,16 +206,16 @@ bool container_push_back(container_t* container, const void* data)
  *
  * Detailed description see in container.h
  */
-bool container_pop_back(container_t* container, void* data)
+bool container_pop_back(container_t *container, void *data)
 {
   UC_ASSERT(container);
   UC_ASSERT(data);
 
   return ((CONTAINER_LINKED_LIST_BASED == container->type)
-              ? ((linked_list_t*)container->core)->pop_back(((linked_list_t*)container->core), data)
-              : ((CONTAINER_VECTOR_BASED == container->type)
-                     ? ((vector_t*)container->core)->pop_back(((vector_t*)container->core), data)
-                     : false));
+            ? ((linked_list_t *)container->core)->pop_back(((linked_list_t *)container->core), data)
+            : ((CONTAINER_VECTOR_BASED == container->type)
+                 ? ((vector_t *)container->core)->pop_back(((vector_t *)container->core), data)
+                 : false));
 }
 
 /**
@@ -224,16 +223,16 @@ bool container_pop_back(container_t* container, void* data)
  *
  * Detailed description see in container.h
  */
-bool container_insert(container_t* container, const void* data, size_t index)
+bool container_insert(container_t *container, const void *data, size_t index)
 {
   UC_ASSERT(container);
   UC_ASSERT(data);
 
   return ((CONTAINER_LINKED_LIST_BASED == container->type)
-              ? ((linked_list_t*)container->core)->insert(((linked_list_t*)container->core), data, index)
-              : ((CONTAINER_VECTOR_BASED == container->type)
-                     ? ((vector_t*)container->core)->insert(((vector_t*)container->core), data, index)
-                     : false));
+            ? ((linked_list_t *)container->core)->insert(((linked_list_t *)container->core), data, index)
+            : ((CONTAINER_VECTOR_BASED == container->type)
+                 ? ((vector_t *)container->core)->insert(((vector_t *)container->core), data, index)
+                 : false));
 }
 
 /**
@@ -241,16 +240,16 @@ bool container_insert(container_t* container, const void* data, size_t index)
  *
  * Detailed description see in container.h
  */
-bool container_extract(container_t* container, void* data, size_t index)
+bool container_extract(container_t *container, void *data, size_t index)
 {
   UC_ASSERT(container);
   UC_ASSERT(data);
 
   return ((CONTAINER_LINKED_LIST_BASED == container->type)
-              ? ((linked_list_t*)container->core)->extract(((linked_list_t*)container->core), data, index)
-              : ((CONTAINER_VECTOR_BASED == container->type)
-                     ? ((vector_t*)container->core)->extract(((vector_t*)container->core), data, index)
-                     : false));
+            ? ((linked_list_t *)container->core)->extract(((linked_list_t *)container->core), data, index)
+            : ((CONTAINER_VECTOR_BASED == container->type)
+                 ? ((vector_t *)container->core)->extract(((vector_t *)container->core), data, index)
+                 : false));
 }
 
 /**
@@ -258,16 +257,16 @@ bool container_extract(container_t* container, void* data, size_t index)
  *
  * Detailed description see in container.h
  */
-bool container_replace(container_t* container, const void* data, size_t index)
+bool container_replace(container_t *container, const void *data, size_t index)
 {
   UC_ASSERT(container);
   UC_ASSERT(data);
 
   return ((CONTAINER_LINKED_LIST_BASED == container->type)
-              ? ((linked_list_t*)container->core)->replace(((linked_list_t*)container->core), data, index)
-              : ((CONTAINER_VECTOR_BASED == container->type)
-                     ? ((vector_t*)container->core)->replace(((vector_t*)container->core), data, index)
-                     : false));
+            ? ((linked_list_t *)container->core)->replace(((linked_list_t *)container->core), data, index)
+            : ((CONTAINER_VECTOR_BASED == container->type)
+                 ? ((vector_t *)container->core)->replace(((vector_t *)container->core), data, index)
+                 : false));
 }
 
 /**
@@ -275,16 +274,16 @@ bool container_replace(container_t* container, const void* data, size_t index)
  *
  * Detailed description see in container.h
  */
-bool container_at(const container_t* container, void* data, size_t index)
+bool container_at(const container_t *container, void *data, size_t index)
 {
   UC_ASSERT(container);
   UC_ASSERT(data);
 
   return ((CONTAINER_LINKED_LIST_BASED == container->type)
-              ? ((linked_list_t*)container->core)->at(((linked_list_t*)container->core), data, index)
-              : ((CONTAINER_VECTOR_BASED == container->type)
-                     ? ((vector_t*)container->core)->at(((vector_t*)container->core), data, index)
-                     : false));
+            ? ((linked_list_t *)container->core)->at(((linked_list_t *)container->core), data, index)
+            : ((CONTAINER_VECTOR_BASED == container->type)
+                 ? ((vector_t *)container->core)->at(((vector_t *)container->core), data, index)
+                 : false));
 }
 
 /**
@@ -292,15 +291,15 @@ bool container_at(const container_t* container, void* data, size_t index)
  *
  * Detailed description see in container.h
  */
-bool container_erase(container_t* container, size_t index)
+bool container_erase(container_t *container, size_t index)
 {
   UC_ASSERT(container);
 
   return ((CONTAINER_LINKED_LIST_BASED == container->type)
-              ? ((linked_list_t*)container->core)->erase(((linked_list_t*)container->core), index)
-              : ((CONTAINER_VECTOR_BASED == container->type)
-                     ? ((vector_t*)container->core)->erase(((vector_t*)container->core), index)
-                     : false));
+            ? ((linked_list_t *)container->core)->erase(((linked_list_t *)container->core), index)
+            : ((CONTAINER_VECTOR_BASED == container->type)
+                 ? ((vector_t *)container->core)->erase(((vector_t *)container->core), index)
+                 : false));
 }
 
 /**
@@ -308,15 +307,15 @@ bool container_erase(container_t* container, size_t index)
  *
  * Detailed description see in container.h
  */
-void* container_peek(const container_t* container, size_t index)
+void *container_peek(const container_t *container, size_t index)
 {
   UC_ASSERT(container);
 
   return ((CONTAINER_LINKED_LIST_BASED == container->type)
-              ? ((linked_list_t*)container->core)->peek(((linked_list_t*)container->core), index)
-              : ((CONTAINER_VECTOR_BASED == container->type)
-                     ? ((vector_t*)container->core)->peek(((vector_t*)container->core), index)
-                     : NULL));
+            ? ((linked_list_t *)container->core)->peek(((linked_list_t *)container->core), index)
+            : ((CONTAINER_VECTOR_BASED == container->type)
+                 ? ((vector_t *)container->core)->peek(((vector_t *)container->core), index)
+                 : NULL));
 }
 
 /**
@@ -324,15 +323,15 @@ void* container_peek(const container_t* container, size_t index)
  *
  * Detailed description see in container.h
  */
-size_t container_clear(const container_t* container)
+size_t container_clear(const container_t *container)
 {
   UC_ASSERT(container);
 
   return ((CONTAINER_LINKED_LIST_BASED == container->type)
-              ? ((linked_list_t*)container->core)->clear(((linked_list_t*)container->core))
-              : ((CONTAINER_VECTOR_BASED == container->type)
-                     ? ((vector_t*)container->core)->clear(((vector_t*)container->core))
-                     : false));
+            ? ((linked_list_t *)container->core)->clear(((linked_list_t *)container->core))
+            : ((CONTAINER_VECTOR_BASED == container->type)
+                 ? ((vector_t *)container->core)->clear(((vector_t *)container->core))
+                 : false));
 }
 
 /**
@@ -340,13 +339,13 @@ size_t container_clear(const container_t* container)
  *
  * Detailed description see in container.h
  */
-size_t container_size(const container_t* container)
+size_t container_size(const container_t *container)
 {
   UC_ASSERT(container);
 
   return ((CONTAINER_LINKED_LIST_BASED == container->type)
-              ? ((linked_list_t*)container->core)->size(((linked_list_t*)container->core))
-              : ((CONTAINER_VECTOR_BASED == container->type)
-                     ? ((vector_t*)container->core)->size(((vector_t*)container->core))
-                     : false));
+            ? ((linked_list_t *)container->core)->size(((linked_list_t *)container->core))
+            : ((CONTAINER_VECTOR_BASED == container->type)
+                 ? ((vector_t *)container->core)->size(((vector_t *)container->core))
+                 : false));
 }
