@@ -69,3 +69,5 @@ src/algorithms/
 Todo.md
 /docs/linked_list.md
 CMakeLists.txt
+src/config.h
+src/main.c
