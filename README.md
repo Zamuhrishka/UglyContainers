@@ -86,3 +86,41 @@ free_cb_register(custom_free_function);
 ![Alt text](docs/alloc_warning.png)
 
 ### Structs
+
+This module contains implementations of data structures based on the containers of the `Core` module.
+
+#### Queue
+
+Implementation of a queue based on a container linked list.
+
+```c
+queue_t* queue = queue_create(10, sizeof(uint32_t));
+
+uint32_t data = 0x55;
+bool status = queue_add(queue, &data);
+status = queue_get(queue, &data);
+```
+
+#### Stack
+
+Stack implementation based on container vector.
+
+```c
+stack_t* stack = rb_create(10, sizeof(uint32_t));
+
+uint32_t data = 0x55;
+bool status = stack_push(queue, &data);
+status = stack_pop(queue, &data);
+```
+
+#### Ring Buffer
+
+Implementation of a ring buffer based on container vector.
+
+```c
+ring_buffer_t* rb = stack_create(10, sizeof(uint32_t));
+
+uint32_t data = 0x55;
+bool status = rb_add(queue, &data);
+status = rb_get(queue, &data);
+```
