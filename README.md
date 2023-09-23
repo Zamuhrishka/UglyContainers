@@ -124,3 +124,8 @@ uint32_t data = 0x55;
 bool status = rb_add(queue, &data);
 status = rb_get(queue, &data);
 ```
+
+## Unit Tests
+
+All unit tests locate in the `test` directory and were written by using [Ceedling framework](https://github.com/ThrowTheSwitch/Ceedling).
+So for run unit tests you need to install this framework using instruction from framework [repository](https://github.com/ThrowTheSwitch/Ceedling) and execute command `ceedling test:all`.
