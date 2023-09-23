@@ -8,10 +8,10 @@
 //_____ I N C L U D E S _______________________________________________________
 #include "ring_buffer.h"
 
-#include <math.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "common/uc_assert.h"
