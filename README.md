@@ -71,8 +71,8 @@ This module contains various interfaces for integrating external libraries.
 
 #### Allocator Interface
 
-`Ugly Containers` uses dynamic memory allocation and accordingly requires an allocator to work. This interface is used specifically for connecting external allocators.
-By default `Ugly Containers` uses the allocator of the standard C library and if you are satisfied with it, you don't need to do anything. However, if you want to use an allocator other than the standard one, you need to use the allocator registration functions from this interface:
+The Ugly Containers uses dynamic memory allocation and accordingly requires an allocator to work. This interface is used specifically for connecting external allocators.
+By default the Ugly Containers uses the allocator of the standard C library and if you are satisfied with it, you don't need to do anything. However, if you want to use an allocator other than the standard one, you need to use the allocator registration functions from this interface:
 
 ```c
 allocation_cb_register(custom_alloc_function);
