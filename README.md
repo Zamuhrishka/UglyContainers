@@ -52,7 +52,7 @@ uint8_t input = 0x55;
 bool status = container_push_front(container, (void*)&input);
 ```
 
-> When saving data in the container, a complete copy of this data is made, not just saving the pointer.
+![Alt text](docs/container_important.png)
 
 - A universal container can be implemented based on either a linked list or a vector. The specific type is chosen when creating the container using the second type argument, which can take two values: `CONTAINER_LINKED_LIST_BASED` and  `CONTAINER_VECTOR_BASED`.
 
@@ -61,6 +61,24 @@ container_t* container = container_create(sizeof(uint8_t), CONTAINER_LINKED_LIST
 container_t* container = container_create(sizeof(uint8_t), CONTAINER_VECTOR_BASED);
 ```
 
-This decision was made because, for different data structures like queues and stacks, it's convenient to choose different containers: for queues, a doubly linked list is `typically` the best fit, while for stacks, a vector is preferred. To offer users greater flexibility in choosing a container for a specific data structure, while maintaining a unified interface, the decision was made to combine the operation of linked lists and vectors through a single container interface, allowing the user to choose which of the two containers best suits their needs.
+This decision was made because, for different data structures like queues and stacks, it's convenient to choose different containers: for queues, a doubly linked list is **typically** the best fit, while for stacks, a vector is preferred. To offer users greater flexibility in choosing a container for a specific data structure, while maintaining a unified interface, the decision was made to combine the operation of linked lists and vectors through a single container interface, allowing the user to choose which of the two containers best suits their needs.
 
 Thus, the `Core` module consists of the `container` module, which provides an interface for working with the container, and sub-modules: `linked_list` and `vector`, which implement the container for data storage and ensure the operation of all necessary operations based on the specific data structure: linked list or vector.
+
+### Interface Module
+
+This module contains various interfaces for integrating external libraries.
+
+#### Allocator Interface
+
+`Ugly Containers` uses dynamic memory allocation and accordingly requires an allocator to work. This interface is used specifically for connecting external allocators.
+By default `Ugly Containers` uses the allocator of the standard C library and if you are satisfied with it, you don't need to do anything. However, if you want to use an allocator other than the standard one, you need to use the allocator registration functions from this interface:
+
+```c
+allocation_cb_register(custom_alloc_function);
+free_cb_register(custom_free_function);
+```
+
+![Alt text](docs/alloc_warning.png)
+
+### Structs
