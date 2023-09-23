@@ -27,25 +27,26 @@ typedef struct Private_tag private_t;
  */
 typedef struct
 {
-  private_t* private; /**< Private data, internal to the implementation. */
+  private_t *private; /**< Private data, internal to the implementation. */
 
   struct
   {
-    bool (*resize)(void* this, size_t new_size);                 /**< Resizes the linked list. */
-    bool (*push_front)(void* this, const void* data);            /**< Adds an element to the front of the list. */
-    bool (*pop_front)(void* this, void* data);                   /**< Removes an element from the front of the list. */
-    bool (*push_back)(void* this, const void* data);             /**< Adds an element to the back of the list. */
-    bool (*pop_back)(void* this, void* data);                    /**< Removes an element from the back of the list. */
-    bool (*insert)(void* this, const void* data, size_t index);  /**< Inserts an element at the specified index. */
-    bool (*extract)(void* this, void* data, size_t index);       /**< Extracts an element from the specified index. */
-    bool (*replace)(void* this, const void* data, size_t index); /**< Replaces an element at the specified index. */
-    bool (*at)(const void* this, void* data,
+    bool (*resize)(void *this, size_t new_size);                 /**< Resizes the linked list. */
+    bool (*push_front)(void *this, const void *data);            /**< Adds an element to the front of the list. */
+    bool (*pop_front)(void *this, void *data);                   /**< Removes an element from the front of the list. */
+    bool (*push_back)(void *this, const void *data);             /**< Adds an element to the back of the list. */
+    bool (*pop_back)(void *this, void *data);                    /**< Removes an element from the back of the list. */
+    bool (*insert)(void *this, const void *data, size_t index);  /**< Inserts an element at the specified index. */
+    bool (*extract)(void *this, void *data, size_t index);       /**< Extracts an element from the specified index. */
+    bool (*replace)(void *this, const void *data, size_t index); /**< Replaces an element at the specified index. */
+    bool (*at)(const void *this,
+               void *data,
                size_t index);                /**< Retrieves an element at the specified index without removing it. */
-    bool (*erase)(void* this, size_t index); /**< Removes an element at the specified index. */
-    void* (*peek)(void* this,
+    bool (*erase)(void *this, size_t index); /**< Removes an element at the specified index. */
+    void *(*peek)(void *this,
                   size_t index); /**< Retrieves a pointer to an element at the specified index without removing it. */
-    bool (*clear)(void* this);   /**< Clears all elements from the list. */
-    size_t (*size)(const void* this); /**< Returns the number of elements in the list. */
+    bool (*clear)(void *this);   /**< Clears all elements from the list. */
+    size_t (*size)(const void *this); /**< Returns the number of elements in the list. */
   };
 } linked_list_t;
 //_____ M A C R O S ___________________________________________________________
@@ -60,7 +61,7 @@ typedef struct
  *  \param[in] esize Size in bytes of each element that the linked list will store.
  *  \return Pointer to the newly created linked list or NULL if the allocation failed.
  */
-linked_list_t* linked_list_create(size_t esize);
+linked_list_t *linked_list_create(size_t esize);
 
 /**
  *  \brief Frees up the memory associated with the linked list.
@@ -69,4 +70,4 @@ linked_list_t* linked_list_create(size_t esize);
  *
  *  \param[in,out] list Double pointer to the linked list to be deleted.
  */
-void linked_list_delete(linked_list_t** list);
+void linked_list_delete(linked_list_t **list);

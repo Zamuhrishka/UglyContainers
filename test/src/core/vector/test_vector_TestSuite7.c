@@ -19,12 +19,12 @@
 //_____ C O N F I G S  ________________________________________________________
 
 //_____ D E F I N I T I O N S _________________________________________________
-#define DEFAULT_CAPACITY 10
+#define DEFAULT_CAPACITY        10
 #define DEFAULT_BIGGER_CAPACITY 15
 //_____ M A C R O S ___________________________________________________________
 
 //_____ V A R I A B L E S _____________________________________________________
-static vector_t* vector = NULL;
+static vector_t *vector = NULL;
 //_____ P R I V A T E  F U N C T I O N S_______________________________________
 
 //_____ P U B L I C  F U N C T I O N S_________________________________________
@@ -64,8 +64,8 @@ void test_TestCase_0(void)
  */
 void test_TestCase_1(void)
 {
-  uint16_t input[DEFAULT_CAPACITY] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
-  uint16_t expected[DEFAULT_CAPACITY] = {1, 562610, 907163, 90197, 10021, 771535, 54519, 66, 67793, 93274};
+  uint16_t input[DEFAULT_CAPACITY] = {93, 67, 66, 54, 77, 100, 90, 90, 56, 1};
+  uint16_t expected[DEFAULT_CAPACITY] = {1, 56, 90, 90, 100, 77, 54, 66, 67, 93};
   uint16_t output[DEFAULT_CAPACITY] = {};
 
   TEST_MESSAGE("[VECTOR_TEST]: push front/pop front without resize");
@@ -94,10 +94,8 @@ void test_TestCase_1(void)
  */
 void test_TestCase_2(void)
 {
-  uint16_t input[DEFAULT_BIGGER_CAPACITY] = {93274,  67793, 66,    54519, 771535, 10021, 90197, 907163,
-                                             562610, 1,     93274, 67793, 66,     54519, 771535};
-  uint16_t expected[DEFAULT_BIGGER_CAPACITY] = {771535, 54519, 66,     67793, 93274, 1,     562610, 907163,
-                                                90197,  10021, 771535, 54519, 66,    67793, 93274};
+  uint16_t input[DEFAULT_BIGGER_CAPACITY] = {93, 67, 66, 54, 77, 100, 90, 90, 56, 1, 93, 67, 66, 54, 77};
+  uint16_t expected[DEFAULT_BIGGER_CAPACITY] = {77, 54, 66, 67, 93, 1, 56, 90, 90, 100, 77, 54, 66, 67, 93};
   uint16_t output[DEFAULT_BIGGER_CAPACITY] = {};
 
   TEST_MESSAGE("[VECTOR_TEST]: push front/pop front with resize");
@@ -127,8 +125,8 @@ void test_TestCase_2(void)
  */
 void test_TestCase_3(void)
 {
-  uint16_t input[DEFAULT_CAPACITY] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
-  uint16_t expected[DEFAULT_CAPACITY] = {1, 562610, 907163, 90197, 10021, 771535, 54519, 66, 67793, 93274};
+  uint16_t input[DEFAULT_CAPACITY] = {93, 67, 66, 54, 77, 100, 90, 90, 56, 1};
+  uint16_t expected[DEFAULT_CAPACITY] = {1, 56, 90, 90, 100, 77, 54, 66, 67, 93};
   uint16_t output[DEFAULT_CAPACITY] = {};
 
   TEST_MESSAGE("[VECTOR_TEST]: push back/pop back without resize");
@@ -157,10 +155,8 @@ void test_TestCase_3(void)
  */
 void test_TestCase_4(void)
 {
-  uint16_t input[DEFAULT_BIGGER_CAPACITY] = {93274,  67793, 66,    54519, 771535, 10021, 90197, 907163,
-                                             562610, 1,     93274, 67793, 66,     54519, 771535};
-  uint16_t expected[DEFAULT_BIGGER_CAPACITY] = {771535, 54519, 66,     67793, 93274, 1,     562610, 907163,
-                                                90197,  10021, 771535, 54519, 66,    67793, 93274};
+  uint16_t input[DEFAULT_BIGGER_CAPACITY] = {93, 67, 66, 54, 77, 100, 90, 90, 56, 1, 93, 67, 66, 54, 77};
+  uint16_t expected[DEFAULT_BIGGER_CAPACITY] = {77, 54, 66, 67, 93, 1, 56, 90, 90, 100, 77, 54, 66, 67, 93};
   uint16_t output[DEFAULT_BIGGER_CAPACITY] = {};
 
   TEST_MESSAGE("[VECTOR_TEST]: push back/pop back with resize");
@@ -190,8 +186,8 @@ void test_TestCase_4(void)
  */
 void test_TestCase_5(void)
 {
-  uint16_t input[DEFAULT_CAPACITY] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
-  uint16_t expected[DEFAULT_CAPACITY] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
+  uint16_t input[DEFAULT_CAPACITY] = {93, 67, 66, 54, 77, 100, 90, 90, 56, 1};
+  uint16_t expected[DEFAULT_CAPACITY] = {93, 67, 66, 54, 77, 100, 90, 90, 56, 1};
   uint16_t output[DEFAULT_CAPACITY] = {};
 
   TEST_MESSAGE("[VECTOR_TEST]: push front/pop back without resize");
@@ -220,10 +216,8 @@ void test_TestCase_5(void)
  */
 void test_TestCase_6(void)
 {
-  uint16_t input[DEFAULT_BIGGER_CAPACITY] = {93274,  67793, 66,    54519, 771535, 10021,  90197, 907163,
-                                             562610, 1,     10021, 90197, 907163, 562610, 1};
-  uint16_t expected[DEFAULT_BIGGER_CAPACITY] = {93274,  67793, 66,    54519, 771535, 10021,  90197, 907163,
-                                                562610, 1,     10021, 90197, 907163, 562610, 1};
+  uint16_t input[DEFAULT_BIGGER_CAPACITY] = {93, 67, 66, 54, 77, 100, 90, 90, 56, 1, 100, 90, 90, 56, 1};
+  uint16_t expected[DEFAULT_BIGGER_CAPACITY] = {93, 67, 66, 54, 77, 100, 90, 90, 56, 1, 100, 90, 90, 56, 1};
   uint16_t output[DEFAULT_BIGGER_CAPACITY] = {};
 
   TEST_MESSAGE("[VECTOR_TEST]: push front/pop back with resize");
@@ -253,8 +247,8 @@ void test_TestCase_6(void)
  */
 void test_TestCase_7(void)
 {
-  uint16_t input[DEFAULT_CAPACITY] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
-  uint16_t expected[DEFAULT_CAPACITY] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
+  uint16_t input[DEFAULT_CAPACITY] = {93, 67, 66, 54, 77, 100, 90, 90, 56, 1};
+  uint16_t expected[DEFAULT_CAPACITY] = {93, 67, 66, 54, 77, 100, 90, 90, 56, 1};
   uint16_t output[DEFAULT_CAPACITY] = {};
 
   TEST_MESSAGE("[VECTOR_TEST]: push back/pop front without resize");
@@ -283,10 +277,8 @@ void test_TestCase_7(void)
  */
 void test_TestCase_8(void)
 {
-  uint16_t input[DEFAULT_BIGGER_CAPACITY] = {93274,  67793, 66,    54519, 771535, 10021,  90197, 907163,
-                                             562610, 1,     10021, 90197, 907163, 562610, 1};
-  uint16_t expected[DEFAULT_BIGGER_CAPACITY] = {93274,  67793, 66,    54519, 771535, 10021,  90197, 907163,
-                                                562610, 1,     10021, 90197, 907163, 562610, 1};
+  uint16_t input[DEFAULT_BIGGER_CAPACITY] = {93, 67, 66, 54, 77, 100, 90, 90, 56, 1, 100, 90, 90, 56, 1};
+  uint16_t expected[DEFAULT_BIGGER_CAPACITY] = {93, 67, 66, 54, 77, 100, 90, 90, 56, 1, 100, 90, 90, 56, 1};
   uint16_t output[DEFAULT_BIGGER_CAPACITY] = {};
 
   TEST_MESSAGE("[VECTOR_TEST]: push back/pop front with resize");
@@ -315,8 +307,8 @@ void test_TestCase_8(void)
  */
 void test_TestCase_9(void)
 {
-  uint16_t input[] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
-  uint16_t expected[] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
+  uint16_t input[] = {93, 67, 66, 54, 77, 100, 90, 90, 56, 1};
+  uint16_t expected[] = {93, 67, 66, 54, 77, 100, 90, 90, 56, 1};
   uint16_t output[sizeof(expected) / sizeof(uint16_t)] = {};
 
   TEST_MESSAGE("[VECTOR_TEST]: at");
@@ -346,8 +338,8 @@ void test_TestCase_9(void)
  */
 void test_TestCase_10(void)
 {
-  uint16_t input[DEFAULT_CAPACITY] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999};
-  uint16_t expected[DEFAULT_CAPACITY] = {93274, 11111, 67793, 33333, 66, 55555, 54519, 77777, 771535, 99999};
+  uint16_t input[DEFAULT_CAPACITY] = {93, 111, 67, 33, 66, 55, 54, 77, 77, 99};
+  uint16_t expected[DEFAULT_CAPACITY] = {93, 111, 67, 33, 66, 55, 54, 77, 77, 99};
   uint16_t output[DEFAULT_CAPACITY] = {};
 
   TEST_MESSAGE("[VECTOR_TEST]: insert into empty without resize");
@@ -376,10 +368,8 @@ void test_TestCase_10(void)
  */
 void test_TestCase_11(void)
 {
-  uint16_t input[DEFAULT_BIGGER_CAPACITY] = {93274,  11111, 67793, 33333, 66,     55555,  54519, 77777,
-                                             771535, 99999, 10021, 90197, 907163, 562610, 1};
-  uint16_t expected[DEFAULT_BIGGER_CAPACITY] = {93274,  11111, 67793, 33333, 66,     55555,  54519, 77777,
-                                                771535, 99999, 10021, 90197, 907163, 562610, 1};
+  uint16_t input[DEFAULT_BIGGER_CAPACITY] = {93, 111, 67, 33, 66, 55, 54, 77, 77, 99, 100, 90, 90, 56, 1};
+  uint16_t expected[DEFAULT_BIGGER_CAPACITY] = {93, 111, 67, 33, 66, 55, 54, 77, 77, 99, 100, 90, 90, 56, 1};
   uint16_t output[DEFAULT_BIGGER_CAPACITY] = {};
 
   TEST_MESSAGE("[VECTOR_TEST]: insert with resize");
@@ -408,9 +398,8 @@ void test_TestCase_11(void)
  */
 void test_TestCase_12(void)
 {
-  uint16_t input[] = {1, 562610, 907163, 90197, 10021, 771535, 54519, 66, 67793, 93274};
-  uint16_t expected[] = {93274,  11111, 67793, 33333, 66,     55555,  54519, 77777,
-                         771535, 99999, 10021, 90197, 907163, 562610, 1};
+  uint16_t input[] = {1, 56, 90, 90, 100, 77, 54, 66, 67, 93};
+  uint16_t expected[] = {93, 111, 67, 33, 66, 55, 54, 77, 77, 99, 100, 90, 90, 56, 1};
   uint16_t output[sizeof(expected) / sizeof(uint16_t)] = {};
 
   TEST_MESSAGE("[VECTOR_TEST]: insert method");
@@ -420,7 +409,7 @@ void test_TestCase_12(void)
     vector->push_front(vector, &input[i]);
   }
 
-  uint16_t values[] = {11111, 33333, 55555, 77777, 99999};
+  uint16_t values[] = {111, 33, 55, 77, 99};
   TEST_ASSERT_TRUE(vector->insert(vector, &values[0], 1));
   TEST_ASSERT_TRUE(vector->insert(vector, &values[1], 3));
   TEST_ASSERT_TRUE(vector->insert(vector, &values[2], 5));
@@ -447,11 +436,10 @@ void test_TestCase_12(void)
  */
 void test_TestCase_13(void)
 {
-  uint16_t input[] = {93274,  11111, 67793, 33333, 66,     55555,  54519, 77777,
-                      771535, 99999, 10021, 90197, 907163, 562610, 1};
-  uint16_t expected[] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
+  uint16_t input[] = {93, 111, 67, 33, 66, 55, 54, 77, 77, 99, 100, 90, 90, 56, 1};
+  uint16_t expected[] = {93, 67, 66, 54, 77, 100, 90, 90, 56, 1};
   uint16_t output[sizeof(expected) / sizeof(uint16_t)] = {};
-  uint16_t values[] = {11111, 33333, 55555, 77777, 99999};
+  uint16_t values[] = {111, 33, 55, 77, 99};
   uint16_t extracted[sizeof(values) / sizeof(uint16_t)] = {};
 
   TEST_MESSAGE("[VECTOR_TEST]: extract");
@@ -490,11 +478,9 @@ void test_TestCase_13(void)
  */
 void test_TestCase_14(void)
 {
-  uint16_t input[] = {93274,  11111, 67793, 33333, 66,     55555,  54519, 77777,
-                      771535, 99999, 10021, 90197, 907163, 562610, 1};
-  uint16_t expected[] = {11111, 11111, 33333, 33333, 55555,  55555,  77777, 77777,
-                         99999, 99999, 10021, 90197, 907163, 562610, 1};
-  uint16_t values[] = {11111, 33333, 55555, 77777, 99999};
+  uint16_t input[] = {93, 111, 67, 33, 66, 55, 54, 77, 77, 99, 100, 90, 90, 56, 1};
+  uint16_t expected[] = {111, 111, 33, 33, 55, 55, 77, 77, 99, 99, 100, 90, 90, 56, 1};
+  uint16_t values[] = {111, 33, 55, 77, 99};
   uint16_t output[sizeof(expected) / sizeof(uint16_t)] = {};
 
   TEST_MESSAGE("[VECTOR_TEST]: replace");
@@ -531,9 +517,8 @@ void test_TestCase_14(void)
  */
 void test_TestCase_15(void)
 {
-  uint16_t input[] = {93274,  11111, 67793, 33333, 66,     55555,  54519, 77777,
-                      771535, 99999, 10021, 90197, 907163, 562610, 1};
-  uint16_t expected[] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
+  uint16_t input[] = {93, 111, 67, 33, 66, 55, 54, 77, 77, 99, 100, 90, 90, 56, 1};
+  uint16_t expected[] = {93, 67, 66, 54, 77, 100, 90, 90, 56, 1};
   uint16_t output[sizeof(expected) / sizeof(uint16_t)] = {};
 
   TEST_MESSAGE("[VECTOR_TEST]: erase");
@@ -571,8 +556,7 @@ void test_TestCase_15(void)
  */
 void test_TestCase_16(void)
 {
-  uint16_t input[DEFAULT_BIGGER_CAPACITY] = {93274,  11111, 67793, 33333, 66,     55555,  54519, 77777,
-                                             771535, 99999, 10021, 90197, 907163, 562610, 1};
+  uint16_t input[DEFAULT_BIGGER_CAPACITY] = {93, 111, 67, 33, 66, 55, 54, 77, 77, 99, 100, 90, 90, 56, 1};
   uint16_t output[DEFAULT_BIGGER_CAPACITY] = {};
 
   TEST_MESSAGE("[VECTOR_TEST]: size #1");
@@ -605,8 +589,7 @@ void test_TestCase_16(void)
  */
 void test_TestCase_17(void)
 {
-  uint16_t input[DEFAULT_BIGGER_CAPACITY] = {93274,  11111, 67793, 33333, 66,     55555,  54519, 77777,
-                                             771535, 99999, 10021, 90197, 907163, 562610, 1};
+  uint16_t input[DEFAULT_BIGGER_CAPACITY] = {93, 111, 67, 33, 66, 55, 54, 77, 77, 99, 100, 90, 90, 56, 1};
   uint16_t output[DEFAULT_BIGGER_CAPACITY] = {};
 
   TEST_MESSAGE("[VECTOR_TEST]: size #2");
@@ -641,8 +624,7 @@ void test_TestCase_17(void)
  */
 void test_TestCase_18(void)
 {
-  uint16_t input[DEFAULT_BIGGER_CAPACITY] = {93274,  11111, 67793, 33333, 66,     55555,  54519, 77777,
-                                             771535, 99999, 10021, 90197, 907163, 562610, 1};
+  uint16_t input[DEFAULT_BIGGER_CAPACITY] = {93, 111, 67, 33, 66, 55, 54, 77, 77, 99, 100, 90, 90, 56, 1};
   uint16_t output[DEFAULT_BIGGER_CAPACITY] = {};
 
   TEST_MESSAGE("[VECTOR_TEST]: size #3");
@@ -678,8 +660,7 @@ void test_TestCase_18(void)
  */
 void test_TestCase_19(void)
 {
-  uint16_t input[DEFAULT_BIGGER_CAPACITY] = {93274,  11111, 67793, 33333, 66,     55555,  54519, 77777,
-                                             771535, 99999, 10021, 90197, 907163, 562610, 1};
+  uint16_t input[DEFAULT_BIGGER_CAPACITY] = {93, 111, 67, 33, 66, 55, 54, 77, 77, 99, 100, 90, 90, 56, 1};
   uint16_t output[DEFAULT_BIGGER_CAPACITY] = {};
 
   TEST_MESSAGE("[VECTOR_TEST]: size #4");
@@ -715,8 +696,7 @@ void test_TestCase_19(void)
  */
 void test_TestCase_20(void)
 {
-  uint16_t input[DEFAULT_BIGGER_CAPACITY] = {93274,  11111, 67793, 33333, 66,     55555,  54519, 77777,
-                                             771535, 99999, 10021, 90197, 907163, 562610, 1};
+  uint16_t input[DEFAULT_BIGGER_CAPACITY] = {93, 111, 67, 33, 66, 55, 54, 77, 77, 99, 100, 90, 90, 56, 1};
   uint16_t output[DEFAULT_BIGGER_CAPACITY] = {};
 
   TEST_MESSAGE("[VECTOR_TEST]: size #5");
@@ -753,8 +733,7 @@ void test_TestCase_20(void)
  */
 void test_TestCase_21(void)
 {
-  uint16_t input[DEFAULT_BIGGER_CAPACITY] = {93274,  11111, 67793, 33333, 66,     55555,  54519, 77777,
-                                             771535, 99999, 10021, 90197, 907163, 562610, 1};
+  uint16_t input[DEFAULT_BIGGER_CAPACITY] = {93, 111, 67, 33, 66, 55, 54, 77, 77, 99, 100, 90, 90, 56, 1};
 
   TEST_MESSAGE("[VECTOR_TEST]: size #6");
 
@@ -785,8 +764,7 @@ void test_TestCase_21(void)
  */
 void test_TestCase_22(void)
 {
-  uint16_t input[DEFAULT_BIGGER_CAPACITY] = {93274,  11111, 67793, 33333, 66,     55555,  54519, 77777,
-                                             771535, 99999, 10021, 90197, 907163, 562610, 1};
+  uint16_t input[DEFAULT_BIGGER_CAPACITY] = {93, 111, 67, 33, 66, 55, 54, 77, 77, 99, 100, 90, 90, 56, 1};
 
   TEST_MESSAGE("[VECTOR_TEST]: size #7");
 
@@ -816,8 +794,7 @@ void test_TestCase_22(void)
  */
 void test_TestCase_23(void)
 {
-  uint16_t input[] = {93274,  11111, 67793, 33333, 66,     55555,  54519, 77777,
-                      771535, 99999, 10021, 90197, 907163, 562610, 1};
+  uint16_t input[] = {93, 111, 67, 33, 66, 55, 54, 77, 77, 99, 100, 90, 90, 56, 1};
   uint16_t output = 0;
 
   TEST_MESSAGE("[VECTOR_TEST]: size #8");
@@ -843,10 +820,8 @@ void test_TestCase_23(void)
  */
 void test_TestCase_24(void)
 {
-  uint16_t input[] = {93274,  11111, 67793, 33333, 66,     55555,  54519, 77777,
-                      771535, 99999, 10021, 90197, 907163, 562610, 1};
-  uint16_t expected[] = {93274,  11111, 67793, 33333, 66,     55555,  54519, 77777,
-                         771535, 99999, 10021, 90197, 907163, 562610, 1};
+  uint16_t input[] = {93, 111, 67, 33, 66, 55, 54, 77, 77, 99, 100, 90, 90, 56, 1};
+  uint16_t expected[] = {93, 111, 67, 33, 66, 55, 54, 77, 77, 99, 100, 90, 90, 56, 1};
   uint16_t output[sizeof(expected) / sizeof(uint16_t)] = {};
 
   TEST_MESSAGE("[VECTOR_TEST]: clear");
@@ -890,8 +865,8 @@ void test_TestCase_24(void)
  */
 void test_TestCase_25(void)
 {
-  uint16_t input[] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
-  uint16_t expected[] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
+  uint16_t input[] = {93, 111, 67, 33, 66, 55, 54, 77, 77, 99, 100, 90, 90, 56, 1};
+  uint16_t expected[] = {93, 111, 67, 33, 66, 55, 54, 77, 77, 99, 100, 90, 90, 56, 1};
   uint16_t output[sizeof(expected) / sizeof(uint16_t)] = {};
 
   TEST_MESSAGE("[VECTOR_TEST]: peek");
@@ -903,7 +878,7 @@ void test_TestCase_25(void)
 
   for (size_t i = 0; i < sizeof(expected) / sizeof(uint16_t); i++)
   {
-    uint16_t* out = vector->peek(vector, i);
+    uint16_t *out = vector->peek(vector, i);
     TEST_ASSERT_TRUE(out);
     output[i] = *out;
   }

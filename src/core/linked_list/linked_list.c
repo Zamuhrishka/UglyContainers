@@ -21,37 +21,37 @@
 //_____ D E F I N I T I O N S _________________________________________________
 typedef struct _Node_tag
 {
-  volatile void* data;
-  volatile struct _Node_tag* next;
-  volatile struct _Node_tag* prev;
+  void *data;
+  struct _Node_tag *next;
+  struct _Node_tag *prev;
 } node_t;
 
 struct Private_tag
 {
   size_t esize;
-  volatile size_t size;
-  node_t* head;
-  node_t* tail;
+  size_t size;
+  node_t *head;
+  node_t *tail;
 };
 
 //_____ M A C R O S ___________________________________________________________
-#define IS_NODE_LAST(node) (NULL == node->next)
-#define IS_NODE_FIRST(node) (NULL == node->prev)
-#define IS_NODE_NOT_LAST(node) (NULL != node->next)
+#define IS_NODE_LAST(node)      (NULL == node->next)
+#define IS_NODE_FIRST(node)     (NULL == node->prev)
+#define IS_NODE_NOT_LAST(node)  (NULL != node->next)
 #define IS_NODE_NOT_FIRST(node) (NULL != node->prev)
 //_____ V A R I A B L E S _____________________________________________________
 //_____ P R I V A T E  F U N C T I O N S_______________________________________
-static inline bool is_empty(linked_list_t* linked_list)
+static inline bool is_empty(linked_list_t *linked_list)
 {
   return (0 == linked_list->private->size);
 }
 
-static inline node_t* node_allocate(size_t data_size)
+static inline node_t *node_allocate(size_t data_size)
 {
   allocate_fn_t mem_allocate = get_allocator();
   UC_ASSERT(mem_allocate);
 
-  node_t* tmp = (node_t*)mem_allocate(sizeof *tmp);
+  node_t *tmp = (node_t *)mem_allocate(sizeof *tmp);
   if (NULL == tmp)
   {
     return NULL;
@@ -69,7 +69,7 @@ static inline node_t* node_allocate(size_t data_size)
   return tmp;
 }
 
-static inline void node_free(node_t* node)
+static inline void node_free(node_t *node)
 {
   UC_ASSERT(node);
 
@@ -80,7 +80,7 @@ static inline void node_free(node_t* node)
   mem_free(node);
 }
 
-static inline void list_free(linked_list_t* linked_list)
+static inline void list_free(linked_list_t *linked_list)
 {
   UC_ASSERT(linked_list);
 
@@ -90,7 +90,7 @@ static inline void list_free(linked_list_t* linked_list)
   mem_free(linked_list);
 }
 
-static inline linked_list_t* list_allocate(void)
+static inline linked_list_t *list_allocate(void)
 {
   if (!is_allocator_valid())
   {
@@ -100,13 +100,13 @@ static inline linked_list_t* list_allocate(void)
   allocate_fn_t mem_allocate = get_allocator();
   free_fn_t mem_free = get_free();
 
-  linked_list_t* linked_list = (linked_list_t*)mem_allocate(sizeof *linked_list);
+  linked_list_t *linked_list = (linked_list_t *)mem_allocate(sizeof *linked_list);
   if (NULL == linked_list)
   {
     return NULL;
   }
 
-  linked_list->private = (private_t*)mem_allocate(sizeof(*linked_list->private));
+  linked_list->private = (private_t *)mem_allocate(sizeof(*linked_list->private));
   if (NULL == linked_list->private)
   {
     mem_free(linked_list);
@@ -116,7 +116,7 @@ static inline linked_list_t* list_allocate(void)
   return linked_list;
 }
 
-static inline node_t* get_nth(node_t* head, size_t index)
+static inline node_t *get_nth(node_t *head, size_t index)
 {
   size_t counter = 0;
   while (counter < index && head)
@@ -128,7 +128,7 @@ static inline node_t* get_nth(node_t* head, size_t index)
   return head;
 }
 
-static bool resize_cb(void* list, size_t new_size)
+static bool resize_cb(void *list, size_t new_size)
 {
   UC_ASSERT(list);
 
@@ -136,14 +136,14 @@ static bool resize_cb(void* list, size_t new_size)
   return true;
 }
 
-static bool push_front_cb(void* list, const void* data)
+static bool push_front_cb(void *list, const void *data)
 {
   UC_ASSERT(list);
   UC_ASSERT(data);
 
-  linked_list_t* linked_list = (linked_list_t*)list;
+  linked_list_t *linked_list = (linked_list_t *)list;
 
-  node_t* tmp = node_allocate(linked_list->private->esize);
+  node_t *tmp = node_allocate(linked_list->private->esize);
   if (NULL == tmp)
   {
     return false;
@@ -174,12 +174,12 @@ static bool push_front_cb(void* list, const void* data)
   return true;
 }
 
-static bool pop_front_cb(void* list, void* data)
+static bool pop_front_cb(void *list, void *data)
 {
   UC_ASSERT(list);
   UC_ASSERT(data);
 
-  linked_list_t* linked_list = (linked_list_t*)list;
+  linked_list_t *linked_list = (linked_list_t *)list;
 
   if (is_empty(linked_list))
   {
@@ -187,7 +187,7 @@ static bool pop_front_cb(void* list, void* data)
   }
 
   // Save HEAD pointer
-  node_t* prev_head = linked_list->private->head;
+  node_t *prev_head = linked_list->private->head;
 
   memcpy(data, linked_list->private->head->data, linked_list->private->esize);
 
@@ -213,14 +213,14 @@ static bool pop_front_cb(void* list, void* data)
   return true;
 }
 
-static bool push_back_cb(void* list, const void* data)
+static bool push_back_cb(void *list, const void *data)
 {
   UC_ASSERT(list);
   UC_ASSERT(data);
 
-  linked_list_t* linked_list = (linked_list_t*)list;
+  linked_list_t *linked_list = (linked_list_t *)list;
 
-  node_t* tmp = node_allocate(linked_list->private->esize);
+  node_t *tmp = node_allocate(linked_list->private->esize);
   if (NULL == tmp)
   {
     return false;
@@ -251,12 +251,12 @@ static bool push_back_cb(void* list, const void* data)
   return true;
 }
 
-static bool pop_back_cb(void* list, void* data)
+static bool pop_back_cb(void *list, void *data)
 {
   UC_ASSERT(list);
   UC_ASSERT(data);
 
-  linked_list_t* linked_list = (linked_list_t*)list;
+  linked_list_t *linked_list = (linked_list_t *)list;
 
   if (is_empty(linked_list))
   {
@@ -264,7 +264,7 @@ static bool pop_back_cb(void* list, void* data)
   }
 
   // Save TAIL pointer
-  node_t* prev_tail = linked_list->private->tail;
+  node_t *prev_tail = linked_list->private->tail;
 
   memcpy(data, prev_tail->data, linked_list->private->esize);
 
@@ -290,12 +290,12 @@ static bool pop_back_cb(void* list, void* data)
   return true;
 }
 
-static bool insert_cb(void* list, const void* data, size_t index)
+static bool insert_cb(void *list, const void *data, size_t index)
 {
   UC_ASSERT(list);
   UC_ASSERT(data);
 
-  linked_list_t* linked_list = (linked_list_t*)list;
+  linked_list_t *linked_list = (linked_list_t *)list;
 
   if (index > linked_list->private->size)
   {
@@ -308,13 +308,13 @@ static bool insert_cb(void* list, const void* data, size_t index)
   }
   else
   {
-    node_t* tmp = node_allocate(linked_list->private->esize);
+    node_t *tmp = node_allocate(linked_list->private->esize);
     if (NULL == tmp)
     {
       return false;
     }
 
-    node_t* elm = get_nth(linked_list->private->head, index - 1);
+    node_t *elm = get_nth(linked_list->private->head, index - 1);
 
     // Fill fields of new node
     memcpy(tmp->data, data, linked_list->private->esize);
@@ -348,12 +348,12 @@ static bool insert_cb(void* list, const void* data, size_t index)
   return true;
 }
 
-static bool extract_cb(void* list, void* data, size_t index)
+static bool extract_cb(void *list, void *data, size_t index)
 {
   UC_ASSERT(list);
   UC_ASSERT(data);
 
-  linked_list_t* linked_list = (linked_list_t*)list;
+  linked_list_t *linked_list = (linked_list_t *)list;
 
   if (index > linked_list->private->size)
   {
@@ -373,37 +373,37 @@ static bool extract_cb(void* list, void* data, size_t index)
   return true;
 }
 
-static bool replace_cb(void* list, const void* data, size_t index)
+static bool replace_cb(void *list, const void *data, size_t index)
 {
   UC_ASSERT(list);
   UC_ASSERT(data);
 
-  linked_list_t* linked_list = (linked_list_t*)list;
+  linked_list_t *linked_list = (linked_list_t *)list;
 
   if (index > linked_list->private->size || is_empty(linked_list))
   {
     return false;
   }
 
-  node_t* elm = get_nth(linked_list->private->head, index);
+  node_t *elm = get_nth(linked_list->private->head, index);
   memcpy(elm->data, data, linked_list->private->esize);
 
   return true;
 }
 
-static bool at_cb(const void* list, void* data, size_t index)
+static bool at_cb(const void *list, void *data, size_t index)
 {
   UC_ASSERT(list);
   UC_ASSERT(data);
 
-  linked_list_t* linked_list = (linked_list_t*)list;
+  linked_list_t *linked_list = (linked_list_t *)list;
 
   if (index > linked_list->private->size)
   {
     return false;
   }
 
-  node_t* elm = get_nth(linked_list->private->head, index);
+  node_t *elm = get_nth(linked_list->private->head, index);
   if (NULL == elm)
   {
     return false;
@@ -414,18 +414,18 @@ static bool at_cb(const void* list, void* data, size_t index)
   return true;
 }
 
-static bool erase_cb(void* list, size_t index)
+static bool erase_cb(void *list, size_t index)
 {
   UC_ASSERT(list);
 
-  linked_list_t* linked_list = (linked_list_t*)list;
+  linked_list_t *linked_list = (linked_list_t *)list;
 
   if (is_empty(linked_list) || index > linked_list->private->size)
   {
     return false;
   }
 
-  node_t* elm = get_nth(linked_list->private->head, index);
+  node_t *elm = get_nth(linked_list->private->head, index);
   if (NULL == elm)
   {
     return false;
@@ -462,18 +462,18 @@ static bool erase_cb(void* list, size_t index)
   return true;
 }
 
-static void* peek_cb(void* list, size_t index)
+static void *peek_cb(void *list, size_t index)
 {
   UC_ASSERT(list);
 
-  linked_list_t* linked_list = (linked_list_t*)list;
+  linked_list_t *linked_list = (linked_list_t *)list;
 
   if (index > linked_list->private->size)
   {
     return false;
   }
 
-  node_t* elm = get_nth(linked_list->private->head, index);
+  node_t *elm = get_nth(linked_list->private->head, index);
   if (NULL == elm)
   {
     return false;
@@ -482,17 +482,17 @@ static void* peek_cb(void* list, size_t index)
   return elm->data;
 }
 
-static bool clear_cb(const void* list)
+static bool clear_cb(void *list)
 {
   UC_ASSERT(list);
 
-  linked_list_t* linked_list = (linked_list_t*)list;
+  linked_list_t *linked_list = (linked_list_t *)list;
 
-  node_t* tmp = linked_list->private->head;
+  node_t *tmp = linked_list->private->head;
 
   while (tmp)
   {
-    node_t* next = tmp->next;
+    node_t *next = tmp->next;
     node_free(tmp);
     tmp = next;
   }
@@ -504,11 +504,11 @@ static bool clear_cb(const void* list)
   return true;
 }
 
-static size_t size_cb(const void* list)
+static size_t size_cb(const void *list)
 {
   UC_ASSERT(list);
 
-  return ((linked_list_t*)list)->private->size;
+  return ((linked_list_t *)list)->private->size;
 }
 
 //_____ P U B L I C  F U N C T I O N S_________________________________________
@@ -517,11 +517,11 @@ static size_t size_cb(const void* list)
  *
  * Detailed description see in linked_list.h
  */
-linked_list_t* linked_list_create(size_t esize)
+linked_list_t *linked_list_create(size_t esize)
 {
   UC_ASSERT(0 != esize);
 
-  linked_list_t* linked_list = list_allocate();
+  linked_list_t *linked_list = list_allocate();
   if (NULL == linked_list)
   {
     return NULL;
@@ -553,16 +553,16 @@ linked_list_t* linked_list_create(size_t esize)
  *
  * Detailed description see in linked_list.h
  */
-void linked_list_delete(linked_list_t** list)
+void linked_list_delete(linked_list_t **list)
 {
   UC_ASSERT(list);
   UC_ASSERT(*list);
 
-  node_t* tmp = (*list)->private->head;
+  node_t *tmp = (*list)->private->head;
 
   while (tmp)
   {
-    node_t* next = tmp->next;
+    node_t *next = tmp->next;
     node_free(tmp);
     tmp = next;
   }
