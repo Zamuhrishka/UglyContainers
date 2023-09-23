@@ -42,7 +42,6 @@ void tearDown(void)
 void test_init(void)
 {
   TEST_MESSAGE("Linked List Complex Tests For Struct Data");
-  TEST_IGNORE_MESSAGE("This TestSuite failed in github action! Need to figure out why.");
 }
 
 /**

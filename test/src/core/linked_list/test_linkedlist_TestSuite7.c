@@ -19,7 +19,7 @@
 //_____ D E F I N I T I O N S _________________________________________________
 //_____ M A C R O S ___________________________________________________________
 //_____ V A R I A B L E S _____________________________________________________
-static linked_list_t* ll = NULL;
+static linked_list_t *ll = NULL;
 //_____ P R I V A T E  F U N C T I O N S_______________________________________
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 void setUp(void)
@@ -525,8 +525,8 @@ void test_TestCase_19(void)
  */
 void test_TestCase_20(void)
 {
-  uint8_t input[] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
-  uint8_t expected[] = {93274, 67793, 66, 54519, 771535, 10021, 90197, 907163, 562610, 1};
+  uint8_t input[] = {93, 67, 66, 54, 77, 100, 90, 90, 56, 1};
+  uint8_t expected[] = {93, 67, 66, 54, 77, 100, 90, 90, 56, 1};
   uint8_t output[sizeof(expected) / sizeof(uint8_t)] = {};
 
   TEST_MESSAGE("[LL_TEST]: peek");
@@ -538,7 +538,7 @@ void test_TestCase_20(void)
 
   for (size_t i = 0; i < sizeof(expected) / sizeof(uint8_t); i++)
   {
-    uint8_t* out = ll->peek(ll, i);
+    uint8_t *out = ll->peek(ll, i);
     TEST_ASSERT_TRUE(out);
     output[i] = *out;
   }

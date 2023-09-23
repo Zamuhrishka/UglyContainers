@@ -60,12 +60,14 @@ build/
 linker/
 .vscode/
 tools/
+options/
+vendor
+test/src/algorithms/
+src/algorithms/
 
 #Files
-!project_x86.yml
-!options/debug.yml
-!options/release.yml
-!ceedling.cmd
-!rakefile.rb
 Todo.md
 /docs/linked_list.md
+CMakeLists.txt
+src/config.h
+src/main.c

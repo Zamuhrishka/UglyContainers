@@ -8,12 +8,13 @@
 //_____ I N C L U D E S _______________________________________________________
 #include "ring_buffer.h"
 
-#include "common/uc_assert.h"
+#include <math.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
 
+#include "common/uc_assert.h"
 #include "core/container.h"
 #include "interface/allocator_if.h"
 
@@ -24,7 +25,7 @@
  */
 struct RingBuffer_tag
 {
-  container_t* container;
+  container_t *container;
   volatile size_t tail;
   volatile size_t head;
   size_t max_size;
@@ -38,7 +39,7 @@ struct RingBuffer_tag
  *
  * Detailed description see in stack.h
  */
-ring_buffer_t* rb_create(size_t size, size_t esize)
+ring_buffer_t *rb_create(size_t size, size_t esize)
 {
   UC_ASSERT(0 != esize);
   UC_ASSERT(0 != size);
@@ -51,13 +52,13 @@ ring_buffer_t* rb_create(size_t size, size_t esize)
   allocate_fn_t mem_allocate = get_allocator();
   free_fn_t mem_free = get_free();
 
-  ring_buffer_t* rb = (ring_buffer_t*)mem_allocate(sizeof(ring_buffer_t));
+  ring_buffer_t *rb = (ring_buffer_t *)mem_allocate(sizeof(ring_buffer_t));
   if (NULL == rb)
   {
     return NULL;
   }
 
-  void* data = (void*)mem_allocate(esize);
+  void *data = (void *)mem_allocate(esize);
   if (NULL == data)
   {
     return NULL;
@@ -91,13 +92,13 @@ ring_buffer_t* rb_create(size_t size, size_t esize)
  *
  * Detailed description see in stack.h
  */
-void rb_delete(ring_buffer_t** rb)
+void rb_delete(ring_buffer_t **rb)
 {
   UC_ASSERT(rb);
   UC_ASSERT(*rb);
   UC_ASSERT((*rb)->container);
 
-  container_delete((container_t**)(*rb)->container);
+  container_delete((container_t **)(*rb)->container);
 }
 
 /**
@@ -105,7 +106,7 @@ void rb_delete(ring_buffer_t** rb)
  *
  * Detailed description see in stack.h
  */
-bool rb_add(ring_buffer_t* rb, const void* data)
+bool rb_add(ring_buffer_t *rb, const void *data)
 {
   UC_ASSERT(rb);
   UC_ASSERT(rb->container);
@@ -131,7 +132,7 @@ bool rb_add(ring_buffer_t* rb, const void* data)
  *
  * Detailed description see in stack.h
  */
-bool rb_get(ring_buffer_t* rb, void* data)
+bool rb_get(ring_buffer_t *rb, void *data)
 {
   UC_ASSERT(rb);
   UC_ASSERT(rb->container);
@@ -142,7 +143,7 @@ bool rb_get(ring_buffer_t* rb, void* data)
     return false;
   }
 
-  if (!container_at((container_t*)rb->container, data, rb->tail))
+  if (!container_at((container_t *)rb->container, data, rb->tail))
   {
     return false;
   }
@@ -155,7 +156,7 @@ bool rb_get(ring_buffer_t* rb, void* data)
  *
  * Detailed description see in stack.h
  */
-bool rb_peek(const ring_buffer_t* rb, void* data)
+bool rb_peek(const ring_buffer_t *rb, void *data)
 {
   UC_ASSERT(rb);
   UC_ASSERT(rb->container);
@@ -166,7 +167,7 @@ bool rb_peek(const ring_buffer_t* rb, void* data)
     return false;
   }
 
-  return container_at((container_t*)rb->container, data, rb->tail);
+  return container_at((container_t *)rb->container, data, rb->tail);
 }
 
 /**
@@ -174,10 +175,10 @@ bool rb_peek(const ring_buffer_t* rb, void* data)
  *
  * Detailed description see in stack.h
  */
-size_t rb_size(const ring_buffer_t* rb)
+size_t rb_size(const ring_buffer_t *rb)
 {
   UC_ASSERT(rb);
-  return abs(rb->tail - rb->head);
+  return abs((int)(rb->tail - rb->head));
 }
 
 /**
@@ -185,10 +186,10 @@ size_t rb_size(const ring_buffer_t* rb)
  *
  * Detailed description see in stack.h
  */
-bool rb_is_empty(const ring_buffer_t* rb)
+bool rb_is_empty(const ring_buffer_t *rb)
 {
   UC_ASSERT(rb);
-  return (abs(rb->tail - rb->head) == 0);
+  return (abs((int)(rb->tail - rb->head)) == 0);
 }
 
 /**
@@ -196,10 +197,10 @@ bool rb_is_empty(const ring_buffer_t* rb)
  *
  * Detailed description see in stack.h
  */
-bool rb_is_full(const ring_buffer_t* rb)
+bool rb_is_full(const ring_buffer_t *rb)
 {
   UC_ASSERT(rb);
-  return (abs(rb->tail - rb->head) >= rb->max_size - 1);
+  return (abs((int)(rb->tail - rb->head)) >= rb->max_size - 1);
 }
 
 /**
@@ -207,7 +208,7 @@ bool rb_is_full(const ring_buffer_t* rb)
  *
  * Detailed description see in stack.h
  */
-bool rb_clear(ring_buffer_t* rb)
+bool rb_clear(ring_buffer_t *rb)
 {
   UC_ASSERT(rb);
 
