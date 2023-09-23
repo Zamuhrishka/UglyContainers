@@ -55,14 +55,10 @@ Doxygen.conf
 *.cfg
 *.rb
 
-
 #Folders
 build/
 linker/
-# options/
 .vscode/
-# src/Core/
-# src/Drivers/
 tools/
 
 #Files
@@ -71,3 +67,5 @@ tools/
 !options/release.yml
 !ceedling.cmd
 !rakefile.rb
+Todo.md
+/docs/linked_list.md
