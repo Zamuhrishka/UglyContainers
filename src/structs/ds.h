@@ -1,8 +1,8 @@
 /**
  * @file    ds.h
  * @author  Aliaksander Kavalchuk (aliaksander.kavalchuk@gmail.com)
- * @brief   Interface structure which need to support all data structures to has
- *          unify interface for algorithm module.
+ * @brief   Special data structure interface which need to be supported by all data structures to has  unify interface
+ *          for algorithm module.
  * @date    2023-09-24
  */
 
