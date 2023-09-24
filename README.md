@@ -87,9 +87,30 @@ free_cb_register(custom_free_function);
 
 ### Structs
 
-This module contains implementations of data structures based on the containers of the `Core` module.
+This module contains implementations of data structures based on the containers of the `Core` module and special data structure interface which need to be supported by all data structures to has  unify interface for algorithm module.
 
-#### Queue
+#### Data Structure Interface
+
+This interface represents the following structure:
+
+```c
+typedef struct
+{
+  container_t *container;
+  void *meta;
+} ds_t;
+```
+
+where
+
+- `container` this is pointer to the universal container.
+- `meta` this is pointer to the private structure which contain meta data specific for current data structure.
+
+This interface provides universal access to the fields of the data structure necessary for the Algorithm module operation.
+
+#### Data Structures
+
+##### Queue
 
 Implementation of a queue based on a container linked list.
 
@@ -101,7 +122,7 @@ bool status = queue_add(queue, &data);
 status = queue_get(queue, &data);
 ```
 
-#### Stack
+##### Stack
 
 Stack implementation based on container vector.
 
@@ -113,7 +134,7 @@ bool status = stack_push(queue, &data);
 status = stack_pop(queue, &data);
 ```
 
-#### Ring Buffer
+##### Ring Buffer
 
 Implementation of a ring buffer based on container vector.
 
