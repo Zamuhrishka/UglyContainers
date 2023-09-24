@@ -183,3 +183,11 @@ size_t container_clear(const container_t *container);
  * \return Number of elements in the container.
  */
 size_t container_size(const container_t *container);
+
+/**
+ * \brief Returns the size of single element (in bytes).
+ *
+ * \param container Pointer to the container.
+ * \return Size of single element.
+ */
+size_t container_esize(const container_t *container);
