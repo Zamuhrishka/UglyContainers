@@ -23,13 +23,13 @@
 /**
  *  \brief
  */
-struct RingBuffer_tag
+typedef struct
 {
-  container_t *container;
   volatile size_t tail;
   volatile size_t head;
   size_t max_size;
-};
+} rbmeta_t;
+
 //_____ M A C R O S ___________________________________________________________
 //_____ V A R I A B L E S _____________________________________________________
 //_____ P R I V A T E  F U N C T I O N S_______________________________________
@@ -80,9 +80,19 @@ ring_buffer_t *rb_create(size_t size, size_t esize)
     }
   }
 
-  rb->head = 0;
-  rb->tail = 0;
-  rb->max_size = size;
+  rb->meta = (void *)mem_allocate(sizeof(rbmeta_t));
+  if (NULL == rb->meta)
+  {
+    container_delete(&rb->container);
+    mem_free(data);
+    mem_free(rb);
+    return NULL;
+  }
+
+  rbmeta_t *meta = (rbmeta_t *)rb->meta;
+  meta->head = 0;
+  meta->tail = 0;
+  meta->max_size = size;
 
   return rb;
 }
@@ -97,8 +107,14 @@ void rb_delete(ring_buffer_t **rb)
   UC_ASSERT(rb);
   UC_ASSERT(*rb);
   UC_ASSERT((*rb)->container);
+  UC_ASSERT((*rb)->meta);
+
+  free_fn_t mem_free = get_free();
 
   container_delete((container_t **)(*rb)->container);
+  mem_free(((*rb)->meta));
+  mem_free(*rb);
+  *rb = NULL;
 }
 
 /**
@@ -117,12 +133,14 @@ bool rb_add(ring_buffer_t *rb, const void *data)
     return false;
   }
 
-  if (!container_replace(rb->container, data, rb->head))
+  rbmeta_t *meta = (rbmeta_t *)rb->meta;
+
+  if (!container_replace(rb->container, data, meta->head))
   {
     return false;
   }
 
-  rb->head = (rb->head + 1) % rb->max_size;
+  meta->head = (meta->head + 1) % meta->max_size;
 
   return true;
 }
@@ -143,12 +161,14 @@ bool rb_get(ring_buffer_t *rb, void *data)
     return false;
   }
 
-  if (!container_at((container_t *)rb->container, data, rb->tail))
+  rbmeta_t *meta = (rbmeta_t *)rb->meta;
+
+  if (!container_at((container_t *)rb->container, data, meta->tail))
   {
     return false;
   }
 
-  rb->tail = (rb->tail + 1) % rb->max_size;
+  meta->tail = (meta->tail + 1) % meta->max_size;
 }
 
 /**
@@ -167,7 +187,9 @@ bool rb_peek(const ring_buffer_t *rb, void *data)
     return false;
   }
 
-  return container_at((container_t *)rb->container, data, rb->tail);
+  rbmeta_t *meta = (rbmeta_t *)rb->meta;
+
+  return container_at((container_t *)rb->container, data, meta->tail);
 }
 
 /**
@@ -178,7 +200,10 @@ bool rb_peek(const ring_buffer_t *rb, void *data)
 size_t rb_size(const ring_buffer_t *rb)
 {
   UC_ASSERT(rb);
-  return abs((int)(rb->tail - rb->head));
+
+  rbmeta_t *meta = (rbmeta_t *)rb->meta;
+
+  return abs((int)(meta->tail - meta->head));
 }
 
 /**
@@ -189,7 +214,9 @@ size_t rb_size(const ring_buffer_t *rb)
 bool rb_is_empty(const ring_buffer_t *rb)
 {
   UC_ASSERT(rb);
-  return (abs((int)(rb->tail - rb->head)) == 0);
+
+  rbmeta_t *meta = (rbmeta_t *)rb->meta;
+  return (abs((int)(meta->tail - meta->head)) == 0);
 }
 
 /**
@@ -200,7 +227,9 @@ bool rb_is_empty(const ring_buffer_t *rb)
 bool rb_is_full(const ring_buffer_t *rb)
 {
   UC_ASSERT(rb);
-  return (abs((int)(rb->tail - rb->head)) >= rb->max_size - 1);
+
+  rbmeta_t *meta = (rbmeta_t *)rb->meta;
+  return (abs((int)(meta->tail - meta->head)) >= meta->max_size - 1);
 }
 
 /**
@@ -212,7 +241,9 @@ bool rb_clear(ring_buffer_t *rb)
 {
   UC_ASSERT(rb);
 
-  rb->tail = rb->head = 0;
+  rbmeta_t *meta = (rbmeta_t *)rb->meta;
+
+  meta->tail = meta->head = 0;
 
   return true;
 }

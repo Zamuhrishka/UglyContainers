@@ -16,11 +16,10 @@
 
 //_____ C O N F I G S  ________________________________________________________
 //_____ D E F I N I T I O N S _________________________________________________
-struct stack_tag
+typedef struct
 {
-  container_t* container;
   size_t capacity;
-};
+} smeta_t;
 //_____ M A C R O S ___________________________________________________________
 //_____ V A R I A B L E S _____________________________________________________
 //_____ P R I V A T E  F U N C T I O N S_______________________________________
@@ -30,7 +29,7 @@ struct stack_tag
  *
  * Detailed description see in stack.h
  */
-stack_t* stack_create(size_t size, size_t esize)
+stack_t *stack_create(size_t size, size_t esize)
 {
   UC_ASSERT(0 != esize);
 
@@ -42,7 +41,7 @@ stack_t* stack_create(size_t size, size_t esize)
   allocate_fn_t mem_allocate = get_allocator();
   free_fn_t mem_free = get_free();
 
-  stack_t* stack = (stack_t*)mem_allocate(sizeof(stack_t));
+  stack_t *stack = (stack_t *)mem_allocate(sizeof(stack_t));
   if (NULL == stack)
   {
     return NULL;
@@ -55,7 +54,29 @@ stack_t* stack_create(size_t size, size_t esize)
     return NULL;
   }
 
-  stack->capacity = size;
+  // stack->private = (void *)mem_allocate(sizeof(smeta_t));
+  // if (NULL == stack->private)
+  // {
+  //   container_delete(&stack->container);
+  //   mem_free(stack);
+  //   return NULL;
+  // }
+
+  // smeta_t *stack_priv = (smeta_t *)stack->private;
+  // stack_priv->capacity = size;
+
+  // // stack->capacity = size;
+
+  stack->meta = (void *)mem_allocate(sizeof(smeta_t));
+  if (NULL == stack->meta)
+  {
+    container_delete(&stack->container);
+    mem_free(stack);
+    return NULL;
+  }
+
+  smeta_t *meta = (smeta_t *)stack->meta;
+  meta->capacity = size;
 
   return stack;
 }
@@ -65,15 +86,17 @@ stack_t* stack_create(size_t size, size_t esize)
  *
  * Detailed description see in stack.h
  */
-void stack_delete(stack_t** stack)
+void stack_delete(stack_t **stack)
 {
   UC_ASSERT(stack);
   UC_ASSERT(*stack);
   UC_ASSERT((*stack)->container);
+  UC_ASSERT((*stack)->meta);
 
   free_fn_t mem_free = get_free();
 
   container_delete(&((*stack)->container));
+  mem_free(((*stack)->meta));
   mem_free(*stack);
   *stack = NULL;
 }
@@ -83,7 +106,7 @@ void stack_delete(stack_t** stack)
  *
  * Detailed description see in stack.h
  */
-bool stack_push(stack_t* stack, const void* data)
+bool stack_push(stack_t *stack, const void *data)
 {
   UC_ASSERT(stack);
   UC_ASSERT(data);
@@ -97,7 +120,7 @@ bool stack_push(stack_t* stack, const void* data)
  *
  * Detailed description see in stack.h
  */
-bool stack_pop(stack_t* stack, void* data)
+bool stack_pop(stack_t *stack, void *data)
 {
   UC_ASSERT(stack);
   UC_ASSERT(data);
@@ -111,7 +134,7 @@ bool stack_pop(stack_t* stack, void* data)
  *
  * Detailed description see in stack.h
  */
-bool stack_peek(const stack_t* stack, void* data)
+bool stack_peek(const stack_t *stack, void *data)
 {
   UC_ASSERT(stack);
   UC_ASSERT(data);
@@ -125,7 +148,7 @@ bool stack_peek(const stack_t* stack, void* data)
  *
  * Detailed description see in stack.h
  */
-size_t stack_size(const stack_t* stack)
+size_t stack_size(const stack_t *stack)
 {
   UC_ASSERT(stack);
   UC_ASSERT(stack->container);
@@ -138,7 +161,7 @@ size_t stack_size(const stack_t* stack)
  *
  * Detailed description see in stack.h
  */
-bool stack_empty(const stack_t* stack)
+bool stack_empty(const stack_t *stack)
 {
   UC_ASSERT(stack);
   return (container_size(stack->container) == 0);
@@ -149,12 +172,13 @@ bool stack_empty(const stack_t* stack)
  *
  * Detailed description see in stack.h
  */
-bool stack_full(const stack_t* stack)
+bool stack_full(const stack_t *stack)
 {
   UC_ASSERT(stack);
   UC_ASSERT(stack->container);
 
-  return (stack->capacity != 0) ? container_size(stack->container) == stack->capacity : false;
+  size_t size = ((smeta_t *)stack->meta)->capacity;
+  return (size != 0) ? container_size(stack->container) == size : false;
 }
 
 /**
@@ -162,7 +186,7 @@ bool stack_full(const stack_t* stack)
  *
  * Detailed description see in stack.h
  */
-bool stack_clear(stack_t* stack)
+bool stack_clear(stack_t *stack)
 {
   UC_ASSERT(stack);
   UC_ASSERT(stack->container);

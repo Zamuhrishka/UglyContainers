@@ -15,7 +15,7 @@
 typedef struct
 {
   container_t *container; /**< Pointer to the universal container */
-  void *private; /**< Pointer to the private structure which contain fields specific for current data structure */
+  void *meta; /**< Pointer to the private structure which contain meta data specific for current data structure */
 } ds_t;
 //_____ M A C R O S ___________________________________________________________
 //_____ V A R I A B L E S _____________________________________________________

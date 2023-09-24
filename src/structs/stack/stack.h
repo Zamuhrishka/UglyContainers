@@ -14,10 +14,10 @@
 #include <stdlib.h>
 
 #include "core/container.h"
+#include "structs/ds.h"
 //_____ C O N F I G S  ________________________________________________________
 //_____ D E F I N I T I O N S _________________________________________________
-struct stack_tag;
-typedef struct stack_tag stack_t;
+typedef ds_t stack_t;
 //_____ M A C R O S ___________________________________________________________
 //_____ V A R I A B L E S _____________________________________________________
 //_____ P U B L I C  F U N C T I O N S_________________________________________
@@ -31,14 +31,14 @@ typedef struct stack_tag stack_t;
  *
  * \return Pointer to the newly created stack or NULL.
  */
-stack_t* stack_create(size_t size, size_t esize);
+stack_t *stack_create(size_t size, size_t esize);
 
 /**
  * \brief Frees up the memory associated with the stack.
  *
  * \param[in] stack Double pointer to the stack to be deleted.
  */
-void stack_delete(stack_t** stack);
+void stack_delete(stack_t **stack);
 
 /**
  * \brief Adds an element to the top of the stack.
@@ -47,7 +47,7 @@ void stack_delete(stack_t** stack);
  * \param[in] data Pointer to the variable to be pushed.
  * \return true if the operation was successful, false otherwise.
  */
-bool stack_push(stack_t* stack, const void* data);
+bool stack_push(stack_t *stack, const void *data);
 
 /**
  * \brief Removes the top element from the stack and returns it.
@@ -56,7 +56,7 @@ bool stack_push(stack_t* stack, const void* data);
  * \param[out] data Pointer to a variable where the popped element will be stored.
  * \return true if the operation was successful, false otherwise.
  */
-bool stack_pop(stack_t* stack, void* data);
+bool stack_pop(stack_t *stack, void *data);
 
 /**
  * \brief Retrieves the top element from the stack without removing it.
@@ -65,7 +65,7 @@ bool stack_pop(stack_t* stack, void* data);
  * \param[out] data Pointer to a variable where the peeked element will be stored.
  * \return true if the operation was successful, false otherwise.
  */
-bool stack_peek(const stack_t* stack, void* data);
+bool stack_peek(const stack_t *stack, void *data);
 
 /**
  * \brief Returns the number of elements in the stack.
@@ -73,7 +73,7 @@ bool stack_peek(const stack_t* stack, void* data);
  * \param[in] stack Pointer to the stack.
  * \return Number of elements in the stack.
  */
-size_t stack_size(const stack_t* stack);
+size_t stack_size(const stack_t *stack);
 
 /**
  * \brief Checks if the stack is empty.
@@ -81,7 +81,7 @@ size_t stack_size(const stack_t* stack);
  * \param[in] stack Pointer to the stack.
  * \return true if the stack is empty, false otherwise.
  */
-bool stack_empty(const stack_t* stack);
+bool stack_empty(const stack_t *stack);
 
 /**
  * \brief Checks if the stack is full.
@@ -89,7 +89,7 @@ bool stack_empty(const stack_t* stack);
  * \param[in] stack Pointer to the stack.
  * \return true if the stack is full, false otherwise.
  */
-bool stack_full(const stack_t* stack);
+bool stack_full(const stack_t *stack);
 
 /**
  * \brief Clears all the elements from the stack.
@@ -97,4 +97,4 @@ bool stack_full(const stack_t* stack);
  * \param[in] stack Pointer to the stack.
  * \return true if the operation was successful, false otherwise.
  */
-bool stack_clear(stack_t* stack);
+bool stack_clear(stack_t *stack);

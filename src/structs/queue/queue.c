@@ -9,7 +9,6 @@
 #include "queue.h"
 
 #include "common/uc_assert.h"
-#include "core/container.h"
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -17,11 +16,10 @@
 #include <string.h>
 //_____ C O N F I G S  ________________________________________________________
 //_____ D E F I N I T I O N S _________________________________________________
-struct queue_tag
+typedef struct
 {
-  container_t* container;
   size_t capacity;
-};
+} qmeta_t;
 //_____ M A C R O S ___________________________________________________________
 //_____ V A R I A B L E S _____________________________________________________
 //_____ P R I V A T E  F U N C T I O N S_______________________________________
@@ -31,7 +29,7 @@ struct queue_tag
  *
  * Detailed description see in queue.h
  */
-queue_t* queue_create(size_t size, size_t esize)
+queue_t *queue_create(size_t size, size_t esize)
 {
   UC_ASSERT(0 != esize);
 
@@ -43,7 +41,7 @@ queue_t* queue_create(size_t size, size_t esize)
   allocate_fn_t mem_allocate = get_allocator();
   free_fn_t mem_free = get_free();
 
-  queue_t* queue = (queue_t*)mem_allocate(sizeof(queue_t));
+  queue_t *queue = (queue_t *)mem_allocate(sizeof(queue_t));
   if (NULL == queue)
   {
     return NULL;
@@ -56,7 +54,16 @@ queue_t* queue_create(size_t size, size_t esize)
     return NULL;
   }
 
-  queue->capacity = size;
+  queue->meta = (void *)mem_allocate(sizeof(qmeta_t));
+  if (NULL == queue->meta)
+  {
+    container_delete(&queue->container);
+    mem_free(queue);
+    return NULL;
+  }
+
+  qmeta_t *meta = (qmeta_t *)queue->meta;
+  meta->capacity = size;
 
   return queue;
 }
@@ -66,15 +73,17 @@ queue_t* queue_create(size_t size, size_t esize)
  *
  * Detailed description see in queue.h
  */
-void queue_delete(queue_t** queue)
+void queue_delete(queue_t **queue)
 {
   UC_ASSERT(queue);
   UC_ASSERT(*queue);
   UC_ASSERT((*queue)->container);
+  UC_ASSERT((*queue)->meta);
 
   free_fn_t mem_free = get_free();
 
   container_delete(&((*queue)->container));
+  mem_free(((*queue)->meta));
   mem_free(*queue);
   *queue = NULL;
 }
@@ -84,7 +93,7 @@ void queue_delete(queue_t** queue)
  *
  * Detailed description see in queue.h
  */
-bool queue_empty(const queue_t* queue)
+bool queue_empty(const queue_t *queue)
 {
   UC_ASSERT(queue);
   UC_ASSERT(queue->container);
@@ -97,12 +106,13 @@ bool queue_empty(const queue_t* queue)
  *
  * Detailed description see in queue.h
  */
-bool queue_full(const queue_t* queue)
+bool queue_full(const queue_t *queue)
 {
   UC_ASSERT(queue);
   UC_ASSERT(queue->container);
 
-  return (queue->capacity != 0) ? container_size(queue->container) == queue->capacity : false;
+  size_t size = ((qmeta_t *)queue->meta)->capacity;
+  return (size != 0) ? container_size(queue->container) == size : false;
 }
 
 /**
@@ -110,7 +120,7 @@ bool queue_full(const queue_t* queue)
  *
  * Detailed description see in queue.h
  */
-bool queue_add(queue_t* queue, const void* data)
+bool queue_add(queue_t *queue, const void *data)
 {
   UC_ASSERT(queue);
   UC_ASSERT(data);
@@ -124,7 +134,7 @@ bool queue_add(queue_t* queue, const void* data)
  *
  * Detailed description see in queue.h
  */
-bool queue_get(queue_t* queue, void* data)
+bool queue_get(queue_t *queue, void *data)
 {
   UC_ASSERT(NULL != queue);
   UC_ASSERT(NULL != data);
@@ -138,7 +148,7 @@ bool queue_get(queue_t* queue, void* data)
  *
  * Detailed description see in queue.h
  */
-bool queue_peek(const queue_t* queue, void* data)
+bool queue_peek(const queue_t *queue, void *data)
 {
   UC_ASSERT(NULL != queue);
   UC_ASSERT(NULL != data);
@@ -152,7 +162,7 @@ bool queue_peek(const queue_t* queue, void* data)
  *
  * Detailed description see in queue.h
  */
-size_t queue_size(const queue_t* queue)
+size_t queue_size(const queue_t *queue)
 {
   UC_ASSERT(NULL != queue);
   UC_ASSERT(queue->container);
@@ -165,7 +175,7 @@ size_t queue_size(const queue_t* queue)
  *
  * Detailed description see in queue.h
  */
-bool queue_clear(queue_t* queue)
+bool queue_clear(queue_t *queue)
 {
   UC_ASSERT(NULL != queue);
   UC_ASSERT(queue->container);
