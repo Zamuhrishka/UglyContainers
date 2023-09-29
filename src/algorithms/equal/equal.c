@@ -66,7 +66,7 @@ bool container_equal(AlgEqualArg_t arg)
   bool status1 = to_array(arg.container1, arr1, arr_size);
   bool status2 = to_array(arg.container2, arr2, arr_size);
 
-  if (!(status1 & status2))
+  if (!(status1 && status2))
   {
     status = false;
     goto exit;
