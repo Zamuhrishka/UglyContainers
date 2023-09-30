@@ -1,8 +1,8 @@
 /**
- * @file
- * @author Aleksander Kovalchuk (aliaksander.kavalchuk@gmail.com)
- * @brief
- * @date 2023-01-25
+ * @file    equal.c
+ * @author  Aliaksander Kavalchuk (aliaksander.kavalchuk@gmail.com)
+ * @brief   Utility functions for comparing containers for equality.
+ * @date    2023-09-28
  */
 
 //_____ I N C L U D E S _______________________________________________________
@@ -27,7 +27,12 @@ static bool default_compare(const void *value1, const void *value2, size_t esize
   return 0 == memcmp(value1, value2, esize);
 }
 //_____ P U B L I C  F U N C T I O N S_________________________________________
-bool container_equal(AlgEqualArg_t arg)
+/**
+ * Checks two containers for equality.
+ *
+ * Detailed description see in equal.h
+ */
+bool uc_equal_base(AlgEqualArg_t arg)
 {
   bool status = true;
   equal_fn_t compare = (arg.cmp == NULL) ? default_compare : arg.cmp;
