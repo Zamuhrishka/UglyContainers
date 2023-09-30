@@ -14,7 +14,6 @@ The project consists of the following modules:
 
 - core
 - interface
-- structs
 - algorithms
 
 ### Core Module
