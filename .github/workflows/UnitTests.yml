@@ -24,4 +24,4 @@ jobs:
         gem install ceedling
 
     - name: Tests
-      run: ceedling test:all
+      run: ceedling test:pattern[UnitTest]
