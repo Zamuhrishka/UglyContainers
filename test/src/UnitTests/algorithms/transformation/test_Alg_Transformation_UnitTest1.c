@@ -58,9 +58,6 @@ void test_UnitTest_0(void)
   uint32_t output[2] = {};
   size_t arr_size = sizeof(output) / sizeof(uint32_t);
 
-  // TEST_MESSAGE("[UNIT_TEST:TRANSFORMATION]:");
-  // TEST_MESSAGE("                           Func - `uc_to_array`");
-  // TEST_MESSAGE("                           Case - Zero size of container");
   TEST_MESSAGE("Testing `uc_to_array` with zero-sized container.");
 
   container_size_ExpectAnyArgsAndReturn(0);
@@ -82,9 +79,6 @@ void test_UnitTest_1(void)
   uint32_t output[2] = {};
   size_t arr_size = sizeof(output) / sizeof(uint32_t);
 
-  // TEST_MESSAGE("[UNIT_TEST:TRANSFORMATION]:");
-  // TEST_MESSAGE("                           Func - `uc_to_array`");
-  // TEST_MESSAGE("                           Size of container and array are equal");
   TEST_MESSAGE("Testing `uc_to_array`: Size of container matches array size");
 
   container_size_ExpectAnyArgsAndReturn(2);
