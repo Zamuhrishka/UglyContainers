@@ -1,10 +1,10 @@
 /**
- * @file    test_to_array_TestSuite1.c
+ * @file    test_Alg_Transformation_TestSuite4.c
  * @author  Aleksander Kovalchuk (aliaksander.kavalchuk@gmail.com)
  * @brief   Unit tests for container transformation functions.
  *
- * This file contains unit tests that validate the functionality of converting
- * between container based on Linked List representations and `uint8_t` data arrays.
+ * This file contains functional tests that validate the functionality of converting
+ * between container based on Vector representations and `uint16_t` data arrays.
  * The tests ensure that data integrity is maintained during the transformation processes and
  * that the order of elements remains consistent. It's crucial that any modifications to the
  * transformation functions be reflected in these tests to ensure continued reliability of the
@@ -25,7 +25,7 @@
 #include "core/vector/vector.h"
 #include "interface/allocator_if.h"
 //_____ C O N F I G S  ________________________________________________________
-typedef uint8_t element_t;
+typedef uint16_t element_t;
 //_____ D E F I N I T I O N S _________________________________________________
 //_____ M A C R O S ___________________________________________________________
 //_____ V A R I A B L E S _____________________________________________________
@@ -34,7 +34,7 @@ container_t *container = NULL;
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 void setUp(void)
 {
-  container = container_create(sizeof(element_t), CONTAINER_LINKED_LIST_BASED);
+  container = container_create(sizeof(element_t), CONTAINER_VECTOR_BASED);
   TEST_ASSERT_NOT_NULL(container);
 }
 
@@ -59,7 +59,7 @@ void test_TestCase_0(void)
   element_t output[sizeof(expected) / sizeof(element_t)] = {};
   size_t arr_size = sizeof(expected) / sizeof(element_t);
 
-  TEST_MESSAGE("[TRANSFORMATION]: Linked list based container to array transformation test");
+  TEST_MESSAGE("[TRANSFORMATION]: Vector based container to `uint16_t` array transformation test");
 
   for (size_t i = 0; i < sizeof(input) / sizeof(element_t); i++)
   {
@@ -70,10 +70,10 @@ void test_TestCase_0(void)
 
   /* Checking that size of container is valid */
   size_t size = container_size(container);
-  TEST_ASSERT_EQUAL_UINT8(size, arr_size);
+  TEST_ASSERT_EQUAL_UINT16(size, arr_size);
 
   /* Checking that data in array is valid */
-  TEST_ASSERT_EQUAL_UINT8_ARRAY(expected, output, arr_size);
+  TEST_ASSERT_EQUAL_UINT16_ARRAY(expected, output, arr_size);
 }
 
 /**
@@ -92,7 +92,7 @@ void test_TestCase_1(void)
   element_t output[sizeof(expected) / sizeof(element_t)] = {};
   size_t arr_size = sizeof(expected) / sizeof(element_t);
 
-  TEST_MESSAGE("[TRANSFORMATION]: Array to linked list based container transformation test");
+  TEST_MESSAGE("[TRANSFORMATION]: Array of `uint16_t` data to vector based container transformation test");
 
   TEST_ASSERT_TRUE(from_array(container, input, sizeof(input) / sizeof(element_t)));
 
@@ -103,8 +103,8 @@ void test_TestCase_1(void)
 
   /* Checking that size of container is valid */
   size_t size = container_size(container);
-  TEST_ASSERT_EQUAL_UINT8(size, arr_size);
+  TEST_ASSERT_EQUAL_UINT16(size, arr_size);
 
   /* Checking that data in container is valid */
-  TEST_ASSERT_EQUAL_UINT8_ARRAY(expected, output, arr_size);
+  TEST_ASSERT_EQUAL_UINT16_ARRAY(expected, output, arr_size);
 }

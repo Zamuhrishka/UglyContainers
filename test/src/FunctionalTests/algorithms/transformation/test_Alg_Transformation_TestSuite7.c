@@ -1,8 +1,13 @@
 /**
- * @file    test_to_array_TestSuite3.c
+ * @file    test_Alg_Transformation_TestSuite7.c
  * @author  Aleksander Kovalchuk (aliaksander.kavalchuk@gmail.com)
- * @brief   Unit tests for container transformation functions.
+ * @brief   Functional tests for the transformation functions of the data structures library.
  *
+ * This file contains a suite of tests specifically designed to validate the
+ * correctness and robustness of the transformation functions (`to_array` and `from_array`)
+ * in the data structures library. The tests cover various scenarios including:
+ *   - Handling of corner cases such as invalid arguments.
+ *   - Boundary conditions related to size mismatches.
  *
  * @date    2023-01-14
  */
@@ -38,6 +43,18 @@ void tearDown(void)
   container_delete(&container);
 }
 
+/**
+ * @brief Test for handling an invalid `container` argument in the `to_array` function.
+ *
+ * This test evaluates the robustness of the `to_array` function when provided
+ * with a NULL `container` argument. The function is expected to detect the
+ * invalid input and throw an exception accordingly. The specific exception
+ * value being thrown is also validated to ensure correct error handling.
+ *
+ * Important scenarios like these test the edge cases and ensure that the
+ * function doesn't misbehave or crash when given unexpected inputs, thereby
+ * ensuring the stability and reliability of the library.
+ */
 void test_TestCase_0(void)
 {
   CEXCEPTION_T e;
@@ -57,6 +74,19 @@ void test_TestCase_0(void)
   }
 }
 
+/**
+ * @brief Test for handling an invalid `arr` argument in the `to_array` function.
+ *
+ * This test evaluates the robustness of the `to_array` function when provided
+ * with a NULL `arr` argument. The function's responsibility is to detect the
+ * invalid output array pointer and throw an exception accordingly. The specific
+ * exception value being thrown is also validated to ensure correct error handling.
+ *
+ * Such tests are vital as they ensure that the function reacts appropriately to
+ * edge cases, thus preventing potential segmentation faults or unpredictable behaviors
+ * that could arise from dereferencing null pointers. It upholds the integrity and
+ * safety of the library in various usage scenarios.
+ */
 void test_TestCase_1(void)
 {
   CEXCEPTION_T e;
@@ -75,6 +105,14 @@ void test_TestCase_1(void)
   }
 }
 
+/**
+ * @brief Test for handling an invalid `size` argument in the `to_array` function.
+ *
+ * This test checks the `to_array` function's capability to detect and handle
+ * a situation where an invalid size (0 in this case) is provided for the transformation.
+ * The expected behavior is that the function should throw an exception when faced
+ * with such an argument.
+ */
 void test_TestCase_2(void)
 {
   CEXCEPTION_T e;
@@ -93,6 +131,13 @@ void test_TestCase_2(void)
   }
 }
 
+/**
+ * @brief Test for handling an invalid `container` argument in the `from_array` function.
+ *
+ * This test ensures that the `from_array` function reacts appropriately when
+ * provided with a NULL `container` argument. It's expected to detect the
+ * NULL pointer and raise an exception in response.
+ */
 void test_TestCase_3(void)
 {
   CEXCEPTION_T e;
@@ -112,6 +157,13 @@ void test_TestCase_3(void)
   }
 }
 
+/**
+ * @brief Test for handling an invalid `arr` argument in the `from_array` function.
+ *
+ * The test evaluates how the `from_array` function behaves when presented with
+ * a NULL array pointer. The function should recognize the NULL pointer and
+ * respond by throwing an exception.
+ */
 void test_TestCase_4(void)
 {
   CEXCEPTION_T e;
@@ -130,6 +182,14 @@ void test_TestCase_4(void)
   }
 }
 
+/**
+ * @brief Test for handling an invalid `size` argument in the `from_array` function.
+ *
+ * This test checks the `from_array` function's capability to detect and handle
+ * a situation where an invalid size (0 in this case) is provided for the transformation.
+ * The expected behavior is that the function should throw an exception when faced
+ * with such an argument.
+ */
 void test_TestCase_5(void)
 {
   CEXCEPTION_T e;
@@ -148,6 +208,14 @@ void test_TestCase_5(void)
   }
 }
 
+/**
+ * @brief Test for the linked-list based `to_array` transformation, with a mismatch in array sizes.
+ *
+ * This test evaluates the `to_array` function's transformation capabilities
+ * and its behavior when the size of the container does not match the size
+ * of the expected result. This helps verify boundary conditions and ensures
+ * that the function behaves predictably even in scenarios with potential mismatches.
+ */
 void test_TestCase_6(void)
 {
   element_t input[] = {93, 111, 67, 33, 66, 55, 54, 77, 77, 99, 100, 90, 90, 56, 1};
