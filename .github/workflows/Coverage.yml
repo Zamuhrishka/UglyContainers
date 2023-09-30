@@ -8,7 +8,7 @@ on:
     branches: 
       - master
 jobs:
-  unit_tests:
+  code_coverage:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -19,9 +19,13 @@ jobs:
       with:
         ruby-version: 2.7
         
-    - name: Install dependencies
+    - name: Install ceedling
       run: |
-        gem install ceedling && pip install gcovr
+        gem install ceedling
+        
+    - name: Install gcovr
+      run: |
+        pip install gcovr
 
     - name: Coverage
       run: ceedling gcov:all utils:gcov
