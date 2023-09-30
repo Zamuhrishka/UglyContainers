@@ -2,6 +2,7 @@
 [![FunctionalTests](https://github.com/Zamuhrishka/UglyContainers/actions/workflows/FunctionalTests.yml/badge.svg)](https://github.com/Zamuhrishka/UglyContainers/actions/workflows/FunctionalTests.yml)
 ![Coverage:Lines](https://img.shields.io/badge/coverage-89%25-yellowgreen)
 ![Coverage:Functions](https://img.shields.io/badge/coverage-93%25-green)
+![Coverage:Branches](https://img.shields.io/badge/coverage-65%25-red)
 
 
 # Ugly Containers
