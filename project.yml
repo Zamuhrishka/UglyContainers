@@ -50,6 +50,19 @@
     int8:     INT8
     bool:     UINT8
 
+:gcov:
+  :utilities:
+    - gcovr           # Use gcovr to create the specified reports (default).
+  :reports:
+    - HtmlDetailed
+    - JSON
+    - Cobertura
+  :gcovr:
+    :html_medium_threshold: 75
+    :html_high_threshold: 90
+    :branches: true
+    :print_summary: true
+
 # LIBRARIES
 # These libraries are automatically injected into the build process. Those specified as
 # common will be used in all types of builds. Otherwise, libraries can be injected in just
@@ -62,6 +75,55 @@
   :test: []
   :release: []
 
+:tools:
+  :gcov_compiler:
+    :executable: gcc
+    :arguments:
+      - -g
+      - -fprofile-arcs
+      - -ftest-coverage
+      - -I"$": COLLECTION_PATHS_TEST_SUPPORT_SOURCE_INCLUDE_VENDOR
+      - -I"$": COLLECTION_PATHS_TEST_TOOLCHAIN_INCLUDE
+      - -D$: COLLECTION_DEFINES_TEST_AND_VENDOR
+      - -DGCOV_COMPILER
+      - -DCODE_COVERAGE
+      - -c "${1}"
+      - -o "${2}"
+  :gcov_linker:
+    :executable: gcc
+    :arguments:
+      - -fprofile-arcs
+      - -ftest-coverage
+      - ${1}
+      - -o ${2}
+      - ${4}
+      - ${5}
+  :gcov_fixture:
+    :executable: ${1}
+  :gcov_report:
+    :executable: gcov
+    :arguments:
+      - -n
+      - -p
+      - -b
+      - -o "$": GCOV_BUILD_OUTPUT_PATH
+      - "\"${1}\""
+  :gcov_gcov_post_report:
+    :executable: gcov
+    :optional: TRUE
+    :arguments:
+      - ${1}
+  :gcov_gcovr_post_report:
+    :executable: gcovr
+    :optional: TRUE
+    :arguments:
+      - ${1}
+  :gcov_report_generator_post_report:
+    :executable: reportgenerator
+    :optional: TRUE
+    :arguments:
+      - ${1}
+
 :plugins:
   :load_paths:
     - "#{Ceedling.load_path}"
@@ -73,3 +135,4 @@
     - xml_tests_report
     - command_hooks
     - colour_report
+    - gcov
