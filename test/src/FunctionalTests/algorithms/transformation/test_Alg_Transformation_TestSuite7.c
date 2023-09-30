@@ -4,7 +4,7 @@
  * @brief   Functional tests for the transformation functions of the data structures library.
  *
  * This file contains a suite of tests specifically designed to validate the
- * correctness and robustness of the transformation functions (`to_array` and `from_array`)
+ * correctness and robustness of the transformation functions (`uc_to_array` and `uc_from_array`)
  * in the data structures library. The tests cover various scenarios including:
  *   - Handling of corner cases such as invalid arguments.
  *   - Boundary conditions related to size mismatches.
@@ -44,9 +44,9 @@ void tearDown(void)
 }
 
 /**
- * @brief Test for handling an invalid `container` argument in the `to_array` function.
+ * @brief Test for handling an invalid `container` argument in the `uc_to_array` function.
  *
- * This test evaluates the robustness of the `to_array` function when provided
+ * This test evaluates the robustness of the `uc_to_array` function when provided
  * with a NULL `container` argument. The function is expected to detect the
  * invalid input and throw an exception accordingly. The specific exception
  * value being thrown is also validated to ensure correct error handling.
@@ -61,11 +61,11 @@ void test_TestCase_0(void)
   element_t output[10] = {};
   size_t arr_size = sizeof(output) / sizeof(element_t);
 
-  TEST_MESSAGE("[TRANSFORMATION]: Corner case -> invalid `container` argument for `to_array` function");
+  TEST_MESSAGE("[TRANSFORMATION]: Corner case -> invalid `container` argument for `uc_to_array` function");
 
   Try
   {
-    bool res = to_array(NULL, output, arr_size);
+    bool res = uc_to_array(NULL, output, arr_size);
     TEST_FAIL_MESSAGE("Should have thrown!");
   }
   Catch(e)
@@ -75,9 +75,9 @@ void test_TestCase_0(void)
 }
 
 /**
- * @brief Test for handling an invalid `arr` argument in the `to_array` function.
+ * @brief Test for handling an invalid `arr` argument in the `uc_to_array` function.
  *
- * This test evaluates the robustness of the `to_array` function when provided
+ * This test evaluates the robustness of the `uc_to_array` function when provided
  * with a NULL `arr` argument. The function's responsibility is to detect the
  * invalid output array pointer and throw an exception accordingly. The specific
  * exception value being thrown is also validated to ensure correct error handling.
@@ -92,11 +92,11 @@ void test_TestCase_1(void)
   CEXCEPTION_T e;
   size_t arr_size = 10;
 
-  TEST_MESSAGE("[TRANSFORMATION]: Corner case -> invalid `arr` argument for `to_array` function");
+  TEST_MESSAGE("[TRANSFORMATION]: Corner case -> invalid `arr` argument for `uc_to_array` function");
 
   Try
   {
-    bool res = to_array(container, NULL, arr_size);
+    bool res = uc_to_array(container, NULL, arr_size);
     TEST_FAIL_MESSAGE("Should have thrown!");
   }
   Catch(e)
@@ -106,9 +106,9 @@ void test_TestCase_1(void)
 }
 
 /**
- * @brief Test for handling an invalid `size` argument in the `to_array` function.
+ * @brief Test for handling an invalid `size` argument in the `uc_to_array` function.
  *
- * This test checks the `to_array` function's capability to detect and handle
+ * This test checks the `uc_to_array` function's capability to detect and handle
  * a situation where an invalid size (0 in this case) is provided for the transformation.
  * The expected behavior is that the function should throw an exception when faced
  * with such an argument.
@@ -118,11 +118,11 @@ void test_TestCase_2(void)
   CEXCEPTION_T e;
   element_t output[10] = {};
 
-  TEST_MESSAGE("[TRANSFORMATION]: Corner case -> invalid `size` argument for `to_array` function");
+  TEST_MESSAGE("[TRANSFORMATION]: Corner case -> invalid `size` argument for `uc_to_array` function");
 
   Try
   {
-    bool res = to_array(container, output, 0);
+    bool res = uc_to_array(container, output, 0);
     TEST_FAIL_MESSAGE("Should have thrown!");
   }
   Catch(e)
@@ -132,9 +132,9 @@ void test_TestCase_2(void)
 }
 
 /**
- * @brief Test for handling an invalid `container` argument in the `from_array` function.
+ * @brief Test for handling an invalid `container` argument in the `uc_from_array` function.
  *
- * This test ensures that the `from_array` function reacts appropriately when
+ * This test ensures that the `uc_from_array` function reacts appropriately when
  * provided with a NULL `container` argument. It's expected to detect the
  * NULL pointer and raise an exception in response.
  */
@@ -144,11 +144,11 @@ void test_TestCase_3(void)
   element_t output[10] = {};
   size_t arr_size = sizeof(output) / sizeof(element_t);
 
-  TEST_MESSAGE("[TRANSFORMATION]: Corner case -> invalid `container` argument for `from_array` function");
+  TEST_MESSAGE("[TRANSFORMATION]: Corner case -> invalid `container` argument for `uc_from_array` function");
 
   Try
   {
-    bool res = from_array(NULL, output, arr_size);
+    bool res = uc_from_array(NULL, output, arr_size);
     TEST_FAIL_MESSAGE("Should have thrown!");
   }
   Catch(e)
@@ -158,9 +158,9 @@ void test_TestCase_3(void)
 }
 
 /**
- * @brief Test for handling an invalid `arr` argument in the `from_array` function.
+ * @brief Test for handling an invalid `arr` argument in the `uc_from_array` function.
  *
- * The test evaluates how the `from_array` function behaves when presented with
+ * The test evaluates how the `uc_from_array` function behaves when presented with
  * a NULL array pointer. The function should recognize the NULL pointer and
  * respond by throwing an exception.
  */
@@ -169,11 +169,11 @@ void test_TestCase_4(void)
   CEXCEPTION_T e;
   size_t arr_size = 10;
 
-  TEST_MESSAGE("[TRANSFORMATION]: Corner case -> invalid `arr` argument for `from_array` function");
+  TEST_MESSAGE("[TRANSFORMATION]: Corner case -> invalid `arr` argument for `uc_from_array` function");
 
   Try
   {
-    bool res = from_array(container, NULL, arr_size);
+    bool res = uc_from_array(container, NULL, arr_size);
     TEST_FAIL_MESSAGE("Should have thrown!");
   }
   Catch(e)
@@ -183,9 +183,9 @@ void test_TestCase_4(void)
 }
 
 /**
- * @brief Test for handling an invalid `size` argument in the `from_array` function.
+ * @brief Test for handling an invalid `size` argument in the `uc_from_array` function.
  *
- * This test checks the `from_array` function's capability to detect and handle
+ * This test checks the `uc_from_array` function's capability to detect and handle
  * a situation where an invalid size (0 in this case) is provided for the transformation.
  * The expected behavior is that the function should throw an exception when faced
  * with such an argument.
@@ -195,11 +195,11 @@ void test_TestCase_5(void)
   CEXCEPTION_T e;
   element_t output[10] = {};
 
-  TEST_MESSAGE("[TRANSFORMATION]: Corner case -> invalid `size` argument for `from_array` function");
+  TEST_MESSAGE("[TRANSFORMATION]: Corner case -> invalid `size` argument for `uc_from_array` function");
 
   Try
   {
-    bool res = from_array(container, output, 0);
+    bool res = uc_from_array(container, output, 0);
     TEST_FAIL_MESSAGE("Should have thrown!");
   }
   Catch(e)
@@ -209,9 +209,9 @@ void test_TestCase_5(void)
 }
 
 /**
- * @brief Test for the linked-list based `to_array` transformation, with a mismatch in array sizes.
+ * @brief Test for the linked-list based `uc_to_array` transformation, with a mismatch in array sizes.
  *
- * This test evaluates the `to_array` function's transformation capabilities
+ * This test evaluates the `uc_to_array` function's transformation capabilities
  * and its behavior when the size of the container does not match the size
  * of the expected result. This helps verify boundary conditions and ensures
  * that the function behaves predictably even in scenarios with potential mismatches.
@@ -230,7 +230,7 @@ void test_TestCase_6(void)
     container_push_back(container, &input[i]);
   }
 
-  TEST_ASSERT_TRUE(to_array(container, output, arr_size));
+  TEST_ASSERT_TRUE(uc_to_array(container, output, arr_size));
 
   /* Checking that size of container is valid */
   size_t size = container_size(container);

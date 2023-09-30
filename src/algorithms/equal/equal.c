@@ -63,8 +63,8 @@ bool container_equal(AlgEqualArg_t arg)
   free_fn_t mem_free = get_free();
 
   size_t arr_size = esize1 * size1;
-  bool status1 = to_array(arg.container1, arr1, arr_size);
-  bool status2 = to_array(arg.container2, arr2, arr_size);
+  bool status1 = uc_to_array(arg.container1, arr1, arr_size);
+  bool status2 = uc_to_array(arg.container2, arr2, arr_size);
 
   if (!(status1 && status2))
   {

@@ -1,8 +1,8 @@
 /**
- * @file transformation.c
- * @author Aliaksander Kavalchuk (aliaksander.kavalchuk@gmail.com)
- * @brief
- * @date 2023-09-27
+ * @file    transformation.c
+ * @author  Aliaksander Kavalchuk (aliaksander.kavalchuk@gmail.com)
+ * @brief   Transformation functions for converting between containers and arrays.
+ * @date    2023-09-27
  */
 
 //_____ I N C L U D E S _______________________________________________________
@@ -15,7 +15,12 @@
 //_____ V A R I A B L E S _____________________________________________________
 //_____ P R I V A T E  F U N C T I O N S_______________________________________
 //_____ P U B L I C  F U N C T I O N S_________________________________________
-bool to_array(const container_t *container, void *arr, size_t size)
+/**
+ * Copy all data from container to selected array.
+ *
+ * Detailed description see in transformation.h
+ */
+bool uc_to_array(const container_t *container, void *arr, size_t size)
 {
   UC_ASSERT(container && "Invalid argument: container");
   UC_ASSERT(arr && "Invalid argument: arr");
@@ -26,8 +31,7 @@ bool to_array(const container_t *container, void *arr, size_t size)
 
   for (size_t i = 0; i < len; i++)
   {
-    bool status = container_at(container, (arr + (container_esize(container) * i)), i);
-    if (!status)
+    if (!container_at(container, (arr + (container_esize(container) * i)), i))
     {
       return false;
     }
@@ -37,15 +41,11 @@ bool to_array(const container_t *container, void *arr, size_t size)
 }
 
 /**
- * \brief
+ * Fill container by data from array.
  *
- * \param[] ds
- * \param[] arr
- * \param[] size
- * \return true
- * \return false
+ * Detailed description see in transformation.h
  */
-bool from_array(container_t *container, void *arr, size_t size)
+bool uc_from_array(container_t *container, const void *arr, size_t size)
 {
   UC_ASSERT(container && "Invalid argument: container");
   UC_ASSERT(arr && "Invalid argument: arr");
@@ -53,8 +53,7 @@ bool from_array(container_t *container, void *arr, size_t size)
 
   for (size_t i = 0; i < size; i++)
   {
-    bool status = container_push_back(container, (void *)(arr + (container_esize(container) * i)));
-    if (!status)
+    if (!container_push_back(container, (void *)(arr + (container_esize(container) * i))))
     {
       return false;
     }

@@ -46,7 +46,7 @@ void tearDown(void)
 /**
  * @brief Test for the container to array transformation function.
  *
- * This test evaluates the correctness of the `to_array` function which
+ * This test evaluates the correctness of the `uc_to_array` function which
  * transforms a container to an array representation. The function is tested
  * by populating the container with known values from an input array and
  * then converting it back to an array. The output array is then compared
@@ -66,7 +66,7 @@ void test_TestCase_0(void)
     container_push_back(container, &input[i]);
   }
 
-  TEST_ASSERT_TRUE(to_array(container, output, arr_size));
+  TEST_ASSERT_TRUE(uc_to_array(container, output, arr_size));
 
   /* Checking that size of container is valid */
   size_t size = container_size(container);
@@ -94,7 +94,7 @@ void test_TestCase_1(void)
 
   TEST_MESSAGE("[TRANSFORMATION]: Array of `uint16_t` data to vector based container transformation test");
 
-  TEST_ASSERT_TRUE(from_array(container, input, sizeof(input) / sizeof(element_t)));
+  TEST_ASSERT_TRUE(uc_from_array(container, input, sizeof(input) / sizeof(element_t)));
 
   for (size_t i = 0; i < sizeof(output) / sizeof(element_t); i++)
   {

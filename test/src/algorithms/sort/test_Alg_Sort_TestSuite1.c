@@ -53,7 +53,7 @@ void test_TestCase_1(void)
 
   TEST_ASSERT_TRUE(uc_sort(.container = container));
 
-  to_array(container, output, arr_size);
+  uc_to_array(container, output, arr_size);
 
   /* Checking that data in container is valid */
   TEST_ASSERT_EQUAL_UINT8_ARRAY(expected, output, arr_size);
@@ -75,7 +75,7 @@ void test_TestCase_2(void)
 
   TEST_ASSERT_TRUE(uc_sort(.container = container, .sort = UC_SELECTION_SORT));
 
-  to_array(container, output, arr_size);
+  uc_to_array(container, output, arr_size);
 
   /* Checking that data in container is valid */
   TEST_ASSERT_EQUAL_UINT8_ARRAY(expected, output, arr_size);
@@ -97,7 +97,7 @@ void test_TestCase_3(void)
 
   TEST_ASSERT_TRUE(uc_sort(.container = container, .order = SORT_DESCENDING));
 
-  to_array(container, output, arr_size);
+  uc_to_array(container, output, arr_size);
 
   /* Checking that data in container is valid */
   TEST_ASSERT_EQUAL_UINT8_ARRAY(expected, output, arr_size);
@@ -119,7 +119,7 @@ void test_TestCase_4(void)
 
   TEST_ASSERT_TRUE(uc_sort(.container = container, .sort = UC_SELECTION_SORT, .order = SORT_DESCENDING));
 
-  to_array(container, output, arr_size);
+  uc_to_array(container, output, arr_size);
 
   /* Checking that data in container is valid */
   TEST_ASSERT_EQUAL_UINT8_ARRAY(expected, output, arr_size);

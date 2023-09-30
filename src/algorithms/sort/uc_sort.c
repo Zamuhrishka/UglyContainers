@@ -117,7 +117,7 @@ bool uc_sort_base(AlgSortArg_t arg)
     return false;
   }
 
-  bool status1 = to_array(arg.container, arr, arr_size);
+  bool status1 = uc_to_array(arg.container, arr, arr_size);
   if (!status1)
   {
     mem_free(arr);
@@ -127,7 +127,7 @@ bool uc_sort_base(AlgSortArg_t arg)
   sort(arr, arr_size, esize, compare, arg.order);
 
   container_clear(arg.container);
-  from_array(arg.container, arr, arr_size);
+  uc_from_array(arg.container, arr, arr_size);
 
   mem_free(arr);
   return true;
