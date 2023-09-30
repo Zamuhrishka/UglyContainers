@@ -511,6 +511,12 @@ static size_t size_cb(const void *list)
   return ((linked_list_t *)list)->private->size;
 }
 
+static size_t esize_cb(const void *list)
+{
+  UC_ASSERT(list);
+
+  return ((linked_list_t *)list)->private->esize;
+}
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 /**
  * \brief Creates a new linked list with a specified element size.
@@ -544,6 +550,7 @@ linked_list_t *linked_list_create(size_t esize)
   linked_list->peek = peek_cb;
   linked_list->clear = clear_cb;
   linked_list->size = size_cb;
+  linked_list->esize = esize_cb;
 
   return linked_list;
 }

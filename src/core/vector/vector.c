@@ -463,6 +463,13 @@ static size_t size_cb(const void *vector)
   return ((vector_t *)vector)->private->size;
 }
 
+static size_t esize_cb(const void *vector)
+{
+  UC_ASSERT(vector);
+
+  return ((vector_t *)vector)->private->esize;
+}
+
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 /**
  * \brief Creates a new vector with a specified element size.
@@ -502,6 +509,7 @@ vector_t *vector_create(size_t esize)
   vector->peek = peek_cb;
   vector->clear = clear_cb;
   vector->size = size_cb;
+  vector->esize = esize_cb;
 
   return vector;
 }

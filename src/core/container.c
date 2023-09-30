@@ -349,3 +349,19 @@ size_t container_size(const container_t *container)
                  ? ((vector_t *)container->core)->size(((vector_t *)container->core))
                  : false));
 }
+
+/**
+ * \brief Returns the size of single element (in bytes).
+ *
+ * Detailed description see in container.h
+ */
+size_t container_esize(const container_t *container)
+{
+  UC_ASSERT(container);
+
+  return ((CONTAINER_LINKED_LIST_BASED == container->type)
+            ? ((linked_list_t *)container->core)->esize(((linked_list_t *)container->core))
+            : ((CONTAINER_VECTOR_BASED == container->type)
+                 ? ((vector_t *)container->core)->esize(((vector_t *)container->core))
+                 : false));
+}

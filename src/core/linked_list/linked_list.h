@@ -46,7 +46,8 @@ typedef struct
     void *(*peek)(void *this,
                   size_t index); /**< Retrieves a pointer to an element at the specified index without removing it. */
     bool (*clear)(void *this);   /**< Clears all elements from the list. */
-    size_t (*size)(const void *this); /**< Returns the number of elements in the list. */
+    size_t (*size)(const void *this);  /**< Returns the number of elements in the list. */
+    size_t (*esize)(const void *this); /**< Get the size of single element (in bytes). */
   };
 } linked_list_t;
 //_____ M A C R O S ___________________________________________________________
