@@ -6,7 +6,7 @@ The primary goal of writing this library was an attempt to study data structures
 
 ## Disclaimer
 
-**This library has been developed primarily for educational purposes. It is not designed to be thread-safe, nor is its reliability guaranteed for use in critical or production environments. Any use of this library in projects is at the sole risk and discretion of the user. The author(s) of this library shall not be held liable for any consequences arising from its use.**
+![Alt text](docs/Disclaimer.png)
 
 ## Project Structure
 
@@ -14,7 +14,6 @@ The project consists of the following modules:
 
 - core
 - interface
-- structs
 - algorithms
 
 ### Core Module
@@ -85,47 +84,30 @@ free_cb_register(custom_free_function);
 
 ![Alt text](docs/alloc_warning.png)
 
-### Structs
+### Algorithms
 
-This module contains implementations of data structures based on the containers of the `Core` module.
-
-#### Queue
-
-Implementation of a queue based on a container linked list.
+This module contains implementations of various algorithms for working with containers: sorting, searching, comparing, converting to an array and back. To provide more flexibility for the implementation of many functions, the [Default and named arguments](https://medium.com/@aliaksandr.kavalchuk/default-and-named-arguments-in-c-functions-9af8c4e34f9b) method is used. Thanks to this method, many functions support default arguments. For example, the default sorting algorithm is the bubble method, so if this method suits you, you don't need to specify it when calling a function:
 
 ```c
-queue_t* queue = queue_create(10, sizeof(uint32_t));
-
-uint32_t data = 0x55;
-bool status = queue_add(queue, &data);
-status = queue_get(queue, &data);
+bool res = uc_sort(.container = container);
 ```
 
-#### Stack
-
-Stack implementation based on container vector.
+But if you want to apply a different method, you can specify it in the `sort` argument:
 
 ```c
-stack_t* stack = rb_create(10, sizeof(uint32_t));
-
-uint32_t data = 0x55;
-bool status = stack_push(queue, &data);
-status = stack_pop(queue, &data);
-```
-
-#### Ring Buffer
-
-Implementation of a ring buffer based on container vector.
-
-```c
-ring_buffer_t* rb = stack_create(10, sizeof(uint32_t));
-
-uint32_t data = 0x55;
-bool status = rb_add(queue, &data);
-status = rb_get(queue, &data);
+bool res = uc_sort(.container = container, .sort=UC_SELECTION_SORT, .order=SORT_DESCENDING);
 ```
 
 ## Unit Tests
 
-All unit tests locate in the `test` directory and were written by using [Ceedling framework](https://github.com/ThrowTheSwitch/Ceedling).
+I am not a QA engineer, so my approach to the organization of testing may seem strange, but I divided the tests into two types: unit tests and functional tests, which are located in the corresponding folders in the `test` directory.
+
+- unit tests - test individual functions.
+- functional tests - test the module functionality. For example, whether the sorting function sorts the data correctly and the comparison function compares the data.
+
+All tests were written by using [Ceedling framework](https://github.com/ThrowTheSwitch/Ceedling).
 So for run unit tests you need to install this framework using instruction from framework [repository](https://github.com/ThrowTheSwitch/Ceedling) and execute command `ceedling test:all`.
+
+## Examples
+
+The main idea I had in mind when developing this library is to make it as flexible and versatile as possible. So everyone can use this library for their own implementations of data structures, but keep in mind the information from the disclaimer. I am developing my implementation of queue, stack, ring buffer and others in this repository: [UglyDataStructures](https://github.com/Zamuhrishka/UglyDataStructures)

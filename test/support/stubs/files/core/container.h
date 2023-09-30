@@ -1,31 +1,20 @@
 /**
- * \file    container.h
- * \author  Aleksander Kovalchuk (aliaksander.kavalchuk@gmail.com)
- * \brief   Universal data storage container.
- *
- * This file contains function prototypes for working with a universal container.
- * The container can be implemented based on a linked list or a vector.
- * The provided functions allow for basic operations on the container,
- * such as adding, removing, extracting, and replacing elements.
- *
- * For correct operation with the container, before using the container functions,
- * it's necessary to initialize memory allocation and deallocation functions using
- * the `container_alloc_init` function.
- *
- * \date  2023-01-14
+ * @file container.h
+ * @author Aliaksander Kavalchuk (aliaksander.kavalchuk@gmail.com)
+ * @brief
+ * @date 2023-09-27
  */
 
 #pragma once
 
 //_____ I N C L U D E S _______________________________________________________
-#include "interface/allocator_if.h"
-
 #include <stdbool.h>
 #include <stddef.h>
+#include <stdint.h>
+
 //_____ C O N F I G S  ________________________________________________________
 //_____ D E F I N I T I O N S _________________________________________________
-struct Container_tag;
-typedef struct Container_tag container_t;
+typedef uint32_t container_t;
 
 /**
  *  \brief Enumerates the types of containers available.
@@ -35,11 +24,8 @@ typedef enum ContainerType_tag
   CONTAINER_LINKED_LIST_BASED = 0, /**< Specifies a container based on a linked list. */
   CONTAINER_VECTOR_BASED = 1,      /**< Specifies a container based on a vector (dynamic array). */
 } container_type_e;
-
 //_____ M A C R O S ___________________________________________________________
-
 //_____ V A R I A B L E S _____________________________________________________
-
 //_____ P U B L I C  F U N C T I O N S_________________________________________
 /**
  * \brief Initializes the container allocator with custom memory functions.
@@ -47,7 +33,7 @@ typedef enum ContainerType_tag
  * \param alloc_cb Callback function for memory allocation.
  * \param free_cb Callback function for memory deallocation.
  */
-void container_alloc_init(allocate_fn_t alloc_cb, free_fn_t free_cb);
+// void container_alloc_init(allocate_fn_t alloc_cb, free_fn_t free_cb);
 
 /**
  * \brief Creates a new container of a specified type.

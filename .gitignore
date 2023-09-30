@@ -62,11 +62,8 @@ linker/
 tools/
 options/
 vendor
-test/src/algorithms/
-src/algorithms/
 
 #Files
-Todo.md
 /docs/linked_list.md
 CMakeLists.txt
 src/config.h

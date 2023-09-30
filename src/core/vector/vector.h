@@ -30,22 +30,23 @@ typedef struct Private_tag private_t;
  */
 typedef struct
 {
-  private_t* private;
+  private_t *private;
   struct
   {
-    bool (*resize)(void* this, size_t new_size);      /**< Resize the vector to a new size. */
-    bool (*push_front)(void* this, const void* data); /**< Add an element to the front of the vector. */
-    bool (*pop_front)(void* this, void* data);        /**< Remove and retrieve the front element of the vector. */
-    bool (*push_back)(void* this, const void* data);  /**< Add an element to the back of the vector. */
-    bool (*pop_back)(void* this, void* data);         /**< Remove and retrieve the back element of the vector. */
-    bool (*insert)(void* this, const void* data, size_t index); /**< Insert an element at a specific index. */
-    bool (*extract)(void* this, void* data, size_t index); /**< Remove and retrieve an element at a specific index. */
-    bool (*replace)(void* this, const void* data, size_t index); /**< Replace an element at a specific index. */
-    bool (*at)(const void* this, void* data, size_t index);      /**< Retrieve an element at a specific index. */
-    bool (*erase)(void* this, size_t index);                     /**< Remove an element at a specific index. */
-    void* (*peek)(void* this, size_t index); /**< Get a pointer to an element at a specific index without removal. */
-    bool (*clear)(void* this);               /**< Clear all elements from the vector. */
-    size_t (*size)(const void* this);        /**< Get the number of elements in the vector. */
+    bool (*resize)(void *this, size_t new_size);      /**< Resize the vector to a new size. */
+    bool (*push_front)(void *this, const void *data); /**< Add an element to the front of the vector. */
+    bool (*pop_front)(void *this, void *data);        /**< Remove and retrieve the front element of the vector. */
+    bool (*push_back)(void *this, const void *data);  /**< Add an element to the back of the vector. */
+    bool (*pop_back)(void *this, void *data);         /**< Remove and retrieve the back element of the vector. */
+    bool (*insert)(void *this, const void *data, size_t index); /**< Insert an element at a specific index. */
+    bool (*extract)(void *this, void *data, size_t index); /**< Remove and retrieve an element at a specific index. */
+    bool (*replace)(void *this, const void *data, size_t index); /**< Replace an element at a specific index. */
+    bool (*at)(const void *this, void *data, size_t index);      /**< Retrieve an element at a specific index. */
+    bool (*erase)(void *this, size_t index);                     /**< Remove an element at a specific index. */
+    void *(*peek)(void *this, size_t index); /**< Get a pointer to an element at a specific index without removal. */
+    bool (*clear)(void *this);               /**< Clear all elements from the vector. */
+    size_t (*size)(const void *this);        /**< Get the number of elements in the vector. */
+    size_t (*esize)(const void *this);       /**< Get the size of single element (in bytes). */
   };
 } vector_t;
 //_____ M A C R O S ___________________________________________________________
@@ -60,7 +61,7 @@ typedef struct
  *  \param[in] esize Size in bytes of each element that the vector will store.
  *  \return Pointer to the newly created vector or NULL if the allocation failed.
  */
-vector_t* vector_create(size_t esize);
+vector_t *vector_create(size_t esize);
 
 /**
  *  \brief Frees up the memory associated with the vector.
@@ -69,4 +70,4 @@ vector_t* vector_create(size_t esize);
  *
  *  \param[in,out] vector Double pointer to the vector to be deleted.
  */
-void vector_delete(vector_t** vector);
+void vector_delete(vector_t **vector);
