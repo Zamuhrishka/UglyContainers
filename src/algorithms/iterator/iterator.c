@@ -1,3 +1,8 @@
+//==============================================================================
+// !!!!!!!!!!!!!!!!!!!!!!!!!!! IN DEVELOPMENT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//==============================================================================
+
+#if 0
 /**
  * @file iterator.c
  * @author Aleksander Kovalchuk (aliaksander.kavalchuk@gmail.com)
@@ -6,10 +11,10 @@
  */
 
 //_____ I N C L U D E S _______________________________________________________
-#include "iterator.h"
+  #include "iterator.h"
 
-#include "common/uc_assert.h"
-#include "interface/allocator_if.h"
+  #include "common/uc_assert.h"
+  #include "interface/allocator_if.h"
 
 //_____ C O N F I G S  ________________________________________________________
 
@@ -110,3 +115,4 @@ bool iterator_set(iterator_t *iterator, const void *data)
 
   return container_replace(iterator->container, data, iterator->index);
 }
+#endif

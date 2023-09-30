@@ -8,6 +8,9 @@
 #pragma once
 
 //_____ I N C L U D E S _______________________________________________________
+#include "algorithms/equal/equal.h"
+#include "algorithms/sort/uc_sort.h"
+#include "algorithms/transformation/uc_transformation.h"
 //_____ C O N F I G S  ________________________________________________________
 //_____ D E F I N I T I O N S _________________________________________________
 //_____ M A C R O S ___________________________________________________________

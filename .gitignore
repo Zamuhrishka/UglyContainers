@@ -64,7 +64,6 @@ options/
 vendor
 
 #Files
-Todo.md
 /docs/linked_list.md
 CMakeLists.txt
 src/config.h

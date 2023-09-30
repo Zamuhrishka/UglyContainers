@@ -3,7 +3,7 @@
 //==============================================================================
 #if 0
 /**
- * @file iterator.h
+ * @file msc.h
  * @author Aleksander Kovalchuk (aliaksander.kavalchuk@gmail.com)
  * @brief
  * @date 2023-01-25
@@ -16,20 +16,22 @@
   #include <stdint.h>
 
   #include "core/container.h"
+  #include "structs/ds.h"
 //_____ C O N F I G S  ________________________________________________________
+
 //_____ D E F I N I T I O N S _________________________________________________
-struct Iterator_tag;
-typedef struct Iterator_tag iterator_t;
+// typedef bool (*PFCMP_t)(void *data1, void *data2);
 //_____ M A C R O S ___________________________________________________________
+
 //_____ V A R I A B L E S _____________________________________________________
+
 //_____ P U B L I C  F U N C T I O N S_________________________________________
-iterator_t *iterator_create(const container_t *container);
-void iterator_delete(iterator_t **iterator);
-bool iterator_next(const iterator_t *iterator);
-bool iterator_prev(const iterator_t *iterator);
-bool iterator_start(const iterator_t *iterator);
-bool iterator_end(const iterator_t *iterator);
-// bool iterator_reset(const iterator_t *iterator);
-bool iterator_get(const iterator_t *iterator, void *data);
-bool iterator_set(iterator_t *iterator, const void *data);
+// bool uc_to_array(const container_t *container, void *arr, size_t arr_size);
+// bool uc_from_array(container_t *container, void *arr, size_t size);
+
+void to_string(const container_t *container, char *string);
+
+bool unique(container_t *container);
+bool fill(container_t *container, size_t start, size_t end, void *value);
+container_t *reverse(container_t *container);
 #endif
