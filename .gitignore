@@ -47,9 +47,6 @@
 *.zip
 
 #Build system files
-.clang-format
-ceedling.cmd
-Doxygen.conf
 *.yml
 *.bat
 *.cfg
