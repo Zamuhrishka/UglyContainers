@@ -27,7 +27,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "algorithms/equal/equal.h"
+#include "algorithms/equal/uc_equal.h"
 
 // stubs
 #include "compare_stub.h"

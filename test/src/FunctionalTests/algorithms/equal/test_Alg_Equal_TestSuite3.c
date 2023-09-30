@@ -22,7 +22,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "algorithms/equal/equal.h"
+#include "algorithms/equal/uc_equal.h"
 #include "algorithms/transformation/transformation.h"
 #include "core/container.h"
 #include "core/linked_list/linked_list.h"

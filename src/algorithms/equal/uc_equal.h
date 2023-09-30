@@ -1,5 +1,5 @@
 /**
- * @file    equal.h
+ * @file    uc_equal.h
  * @author  Aliaksander Kavalchuk (aliaksander.kavalchuk@gmail.com)
  * @brief   Utility functions for comparing containers for equality.
  * @date    2023-09-28

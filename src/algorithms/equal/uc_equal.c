@@ -1,12 +1,12 @@
 /**
- * @file    equal.c
+ * @file    uc_equal.c
  * @author  Aliaksander Kavalchuk (aliaksander.kavalchuk@gmail.com)
  * @brief   Utility functions for comparing containers for equality.
  * @date    2023-09-28
  */
 
 //_____ I N C L U D E S _______________________________________________________
-#include "equal.h"
+#include "uc_equal.h"
 
 #include <string.h>
 
