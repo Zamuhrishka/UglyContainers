@@ -111,3 +111,7 @@ So for run unit tests you need to install this framework using instruction from 
 ## Examples
 
 The main idea I had in mind when developing this library is to make it as flexible and versatile as possible. So everyone can use this library for their own implementations of data structures, but keep in mind the information from the disclaimer. I am developing my implementation of queue, stack, ring buffer and others in this repository: [UglyDataStructures](https://github.com/Zamuhrishka/UglyDataStructures)
+
+## Contributing
+
+Bug reports and/or pull requests are welcome. In case of any questions please contact me. All contact information can be found on my profile main page.
