@@ -28,7 +28,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "algorithms/transformation/transformation.h"
+#include "algorithms/transformation/uc_transformation.h"
 #include "interface/allocator_if.h"
 
 // mock

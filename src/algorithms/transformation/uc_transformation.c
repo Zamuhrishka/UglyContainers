@@ -1,12 +1,12 @@
 /**
- * @file    transformation.c
+ * @file    uc_transformation.c
  * @author  Aliaksander Kavalchuk (aliaksander.kavalchuk@gmail.com)
  * @brief   Transformation functions for converting between containers and arrays.
  * @date    2023-09-27
  */
 
 //_____ I N C L U D E S _______________________________________________________
-#include "transformation.h"
+#include "uc_transformation.h"
 
 #include "common/uc_assert.h"
 //_____ C O N F I G S  ________________________________________________________

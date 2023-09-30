@@ -10,7 +10,7 @@
 #include "interface/allocator_if.h"
 
 #include "algorithms/sort/uc_sort.h"
-#include "algorithms/transformation/transformation.h"
+#include "algorithms/transformation/uc_transformation.h"
 //_____ C O N F I G S  ________________________________________________________
 typedef uint32_t element_t;
 //_____ D E F I N I T I O N S _________________________________________________

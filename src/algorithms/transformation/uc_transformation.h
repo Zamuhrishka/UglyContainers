@@ -1,5 +1,5 @@
 /**
- * @file    transformation.h
+ * @file    uc_transformation.h
  * @author  Aliaksander Kavalchuk (aliaksander.kavalchuk@gmail.com)
  * @brief   Transformation functions for converting between containers and arrays.
  *
