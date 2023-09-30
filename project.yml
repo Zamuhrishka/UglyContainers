@@ -18,13 +18,15 @@
   :test:
     - +:test/**
     - +:test/support
-    - +:build/test/mocks
+    - +:test/support/stubs
+    - +:build/test/mocks/**
   :source:
     - src/**
   :include:
     - src/
   :support:
     - test/support
+    - test/support/stubs/**
   :libraries: []
 
 :defines:
