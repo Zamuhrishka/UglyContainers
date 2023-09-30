@@ -62,6 +62,7 @@ linker/
 tools/
 options/
 vendor
+docs/html
 
 #Files
 /docs/linked_list.md
