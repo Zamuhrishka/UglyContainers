@@ -1,4 +1,8 @@
-<img src="https://github.com/Zamuhrishka/UglyContainers/workflows/UnitTest/badge.svg?branch=master">
+[![UnitTests](https://github.com/Zamuhrishka/UglyContainers/actions/workflows/UnitTests.yml/badge.svg)](https://github.com/Zamuhrishka/UglyContainers/actions/workflows/UnitTests.yml)
+[![FunctionalTests](https://github.com/Zamuhrishka/UglyContainers/actions/workflows/FunctionalTests.yml/badge.svg)](https://github.com/Zamuhrishka/UglyContainers/actions/workflows/FunctionalTests.yml)
+![Coverage:Lines](https://img.shields.io/badge/Coverage%3ALines-89%25-yellow)
+![Coverage:Functions](https://img.shields.io/badge/Coverage%3AFunctions-93%25-green)
+![Coverage:Branches](https://img.shields.io/badge/Coverage%3ABranches-65%25-red)
 
 # Ugly Containers
 
