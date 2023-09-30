@@ -1,5 +1,7 @@
 [![UnitTests](https://github.com/Zamuhrishka/UglyContainers/actions/workflows/UnitTests.yml/badge.svg)](https://github.com/Zamuhrishka/UglyContainers/actions/workflows/UnitTests.yml)
 [![FunctionalTests](https://github.com/Zamuhrishka/UglyContainers/actions/workflows/FunctionalTests.yml/badge.svg)](https://github.com/Zamuhrishka/UglyContainers/actions/workflows/FunctionalTests.yml)
+![Coverage:Lines](https://img.shields.io/badge/coverage-89%25-yellowgreen)
+
 
 # Ugly Containers
 
