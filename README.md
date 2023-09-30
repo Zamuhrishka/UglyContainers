@@ -1,4 +1,5 @@
-<img src="https://github.com/Zamuhrishka/UglyContainers/workflows/UnitTest/badge.svg?branch=master">
+[![UnitTests](https://github.com/Zamuhrishka/UglyContainers/actions/workflows/UnitTests.yml/badge.svg)](https://github.com/Zamuhrishka/UglyContainers/actions/workflows/UnitTests.yml)
+[![FunctionalTests](https://github.com/Zamuhrishka/UglyContainers/actions/workflows/FunctionalTests.yml/badge.svg)](https://github.com/Zamuhrishka/UglyContainers/actions/workflows/FunctionalTests.yml)
 
 # Ugly Containers
 
