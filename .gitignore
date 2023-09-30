@@ -47,9 +47,6 @@
 *.zip
 
 #Build system files
-.clang-format
-ceedling.cmd
-Doxygen.conf
 *.yml
 *.bat
 *.cfg
@@ -62,6 +59,7 @@ linker/
 tools/
 options/
 vendor
+docs/html
 
 #Files
 /docs/linked_list.md
