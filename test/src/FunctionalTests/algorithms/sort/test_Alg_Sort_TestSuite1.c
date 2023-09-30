@@ -32,8 +32,6 @@ void tearDown(void)
 
 void test_TestCase_0(void)
 {
-  TEST_MESSAGE("[EQUAL]: Test for the 'equal' function with empty linked list containers stores `uint8_t` data");
-
   TEST_ASSERT_TRUE(uc_sort(.container = container));
 }
 
@@ -44,7 +42,7 @@ void test_TestCase_1(void)
   element_t output[sizeof(expected) / sizeof(element_t)] = {};
   size_t arr_size = sizeof(expected) / sizeof(element_t);
 
-  TEST_MESSAGE("[EQUAL]: Test for the 'equal' function with one empty and one full linked list  container stores `uint8_t` data");
+  TEST_MESSAGE("[SORT]: Sorting function testing with default sort function");
 
   for (size_t i = 0; i < sizeof(input) / sizeof(element_t); i++)
   {
@@ -66,7 +64,7 @@ void test_TestCase_2(void)
   element_t output[sizeof(expected) / sizeof(element_t)] = {};
   size_t arr_size = sizeof(expected) / sizeof(element_t);
 
-  TEST_MESSAGE("[EQUAL]: Test for the 'equal' function with one empty and one full linked list  container stores `uint8_t` data");
+  TEST_MESSAGE("[SORT]: Sorting function testing with selection sort function");
 
   for (size_t i = 0; i < sizeof(input) / sizeof(element_t); i++)
   {
@@ -88,7 +86,7 @@ void test_TestCase_3(void)
   element_t output[sizeof(expected) / sizeof(element_t)] = {};
   size_t arr_size = sizeof(expected) / sizeof(element_t);
 
-  TEST_MESSAGE("[EQUAL]: Test for the 'equal' function with one empty and one full linked list  container stores `uint8_t` data");
+  TEST_MESSAGE("[SORT]: Sorting function testing with default sort function. Descending order");
 
   for (size_t i = 0; i < sizeof(input) / sizeof(element_t); i++)
   {
@@ -110,7 +108,7 @@ void test_TestCase_4(void)
   element_t output[sizeof(expected) / sizeof(element_t)] = {};
   size_t arr_size = sizeof(expected) / sizeof(element_t);
 
-  TEST_MESSAGE("[EQUAL]: Test for the 'equal' function with one empty and one full linked list  container stores `uint8_t` data");
+  TEST_MESSAGE("[SORT]: Sorting function testing with selection sort function. Descending order");
 
   for (size_t i = 0; i < sizeof(input) / sizeof(element_t); i++)
   {

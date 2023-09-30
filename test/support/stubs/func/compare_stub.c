@@ -22,3 +22,5 @@ bool compare_true(const void *value1, const void *value2, size_t esize)
 {
   return true;
 }
+
+void sort_stub(void *arr, size_t size, size_t esize, compare_fn_t cmp, ContainerSortOrder_e order) {}

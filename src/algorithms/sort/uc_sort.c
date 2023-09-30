@@ -88,9 +88,14 @@ static void selection_sort(void *arr, size_t size, size_t esize, compare_fn_t cm
 }
 
 //_____ P U B L I C  F U N C T I O N S_________________________________________
+/**
+ * ort data in selecting container.
+ *
+ * Detailed description see in uc_sort.h
+ */
 bool uc_sort_base(AlgSortArg_t arg)
 {
-  bool status = true;
+  // bool status = true;
   compare_fn_t compare = (arg.cmp == NULL) ? default_compare : arg.cmp;
   sort_fn_t sort = (arg.sort == NULL) ? bubble_sort : sorts_callbacks[arg.sort];
 
@@ -127,8 +132,8 @@ bool uc_sort_base(AlgSortArg_t arg)
   sort(arr, arr_size, esize, compare, arg.order);
 
   container_clear(arg.container);
-  uc_from_array(arg.container, arr, arr_size);
+  bool status = uc_from_array(arg.container, arr, arr_size);
 
   mem_free(arr);
-  return true;
+  return status;
 }

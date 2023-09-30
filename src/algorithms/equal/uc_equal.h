@@ -54,7 +54,7 @@ extern "C"
    *
    * \param[in] container1.First container (mandatory argument).
    * \param[in] container2.Second container (mandatory argument).
-   * \param[in] cmp callback fuction which will be used for comparing.This argument isn`t mandatory. In case if user do not give
+   * \param[in] cmp callback fuction which will be used for comparing. This argument isn`t mandatory. In case if user do not give
    *   this argument the default comparision function will be used.
    * \return true if container are equal
    * \return false if container aren`t equal
@@ -64,7 +64,7 @@ extern "C"
   /**
    * \brief A special macro that allows you to apply default arguments and a variable list of arguments.
    *
-   * \note The use need call tha compare function by this macros calling only.
+   * \note The use need call tha equal function by this macros calling only.
    *
    * \example
    *

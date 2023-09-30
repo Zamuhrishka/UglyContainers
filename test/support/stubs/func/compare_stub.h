@@ -11,6 +11,8 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+
+#include "algorithms/sort/uc_sort.h"
 //_____ C O N F I G S  ________________________________________________________
 //_____ D E F I N I T I O N S _________________________________________________
 //_____ M A C R O S ___________________________________________________________
@@ -23,6 +25,7 @@ extern "C"
 #endif
   bool compare_false(const void *value1, const void *value2, size_t esize);
   bool compare_true(const void *value1, const void *value2, size_t esize);
+  void sort_stub(void *arr, size_t size, size_t esize, compare_fn_t cmp, ContainerSortOrder_e order);
 /* C++ detection */
 #ifdef __cplusplus
 }
