@@ -3,6 +3,7 @@
 ![Coverage:Lines](https://img.shields.io/badge/Coverage%3ALines-89%25-yellow)
 ![Coverage:Functions](https://img.shields.io/badge/Coverage%3AFunctions-93%25-green)
 ![Coverage:Branches](https://img.shields.io/badge/Coverage%3ABranches-65%25-red)
+[![Doxygen](https://github.com/Zamuhrishka/UglyContainers/actions/workflows/Doxygen.yml/badge.svg)](https://github.com/Zamuhrishka/UglyContainers/actions/workflows/Doxygen.yml)
 
 # Ugly Containers
 
