@@ -1,0 +1,39 @@
+name: AllTests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches: 
+      - master
+jobs:
+  all_tests:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7
+        
+    - name: Install ceedling
+      run: |
+        gem install ceedling
+        
+    - name: Install gcovr
+      run: |
+        pip install gcovr
+
+    - name: Tests
+      run: ceedling test:all
+
+    - name: Coverage
+      run: ceedling gcov:all utils:gcov
+
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v3
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
