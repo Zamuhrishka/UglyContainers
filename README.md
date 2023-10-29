@@ -4,7 +4,9 @@
 ![Coverage:Functions](https://img.shields.io/badge/Coverage%3AFunctions-93%25-green)
 ![Coverage:Branches](https://img.shields.io/badge/Coverage%3ABranches-65%25-red)
 
-# Ugly Containers
+# UglyContainers: C Library for Universal Data Storing
+
+<img src="docs/LOGO.png" width="200" height="200">
 
 The primary goal of writing this library was an attempt to study data structures and algorithms. As is commonly known, the best way to learn something is to implement it. However, implementing data structures in languages like Python and C++ isn't as intriguing, as these languages already have built-in data structures. Therefore, C was chosen as the main development language. Another reason for this choice was the ambition to create a convenient and universal library for working with data structures and algorithms.
 
